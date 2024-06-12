@@ -6,19 +6,14 @@ import LoginButton from './components/LoginButton';
 
 function App() {
 
-  const [data, setData] = React.useState(null);
-
-  React.useEffect(() => {
-    fetch("http://localhost:8080/")
-      .then((res) => res.json())
-      .then((data) => { console.log(data); setData(data)});
-  }, []);
 
 
   return (
     <div className="App">
+      <h1>Source Platform</h1>
       <header className="App-header">
-      <LoginButton />
+      <LoginButton name="Spotify"/> 
+      <LoginButton name="Apple Music "/>
       </header>
     </div>
   );
