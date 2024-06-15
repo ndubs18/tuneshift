@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 
 import Root from "./pages/Root";
 import ErrorPage from "./pages/Error-page";
+import Playlist from "./pages/Playlist";
 
 import {createBrowserRouter, RouterProvider } from "react-router-dom";
 
@@ -14,6 +15,11 @@ const router = createBrowserRouter([
     path: "/",
     element: <App />,
     errorElement: <ErrorPage />
+  },
+  {
+    path: "/playlist",
+    element: <Playlist />,
+    errorElement: <ErrorPage/>
   }
 ])
 const root = ReactDOM.createRoot(

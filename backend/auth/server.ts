@@ -20,7 +20,7 @@ app.get('/login/spotify', (req : any, res : any) => {
     let queryString = querystring.stringify({
         response_type: 'code',
         redirect_uri: spotify_redirect_uri_login,
-        scope: 'user-read-private user-read-email user-library-read',
+        scope: 'user-read-private user-read-email user-library-read playlist-read-private',
         client_id: spotify_client_id
     })
     res.redirect('https://accounts.spotify.com/authorize?' + queryString);
@@ -44,7 +44,8 @@ app.get('/spotify/callback', (req, res) => {
     }
     request.post(authOptions, function(error, response, body) {
       var access_token = body.access_token
-      let uri = process.env.FRONTEND_URI || 'http://localhost:3000/'
+      let uri = process.env.FRONTEND_URI || 'http://localhost:3000/playlist'
+      console.log(`retrieved access token: ${access_token}`);
 
       res.redirect(uri + '?access_token=' + access_token)
     })
