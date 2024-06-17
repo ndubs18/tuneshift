@@ -24,13 +24,13 @@ export let getCurrentUserProfile : object = async () => {
 }
 
 export let getCurrentUsersPlaylits = async () => {
-    let accessToken = parseAccessToken();
+    // let accessToken = parseAccessToken();
     // let response = await fetch(`${baseSpotifyAPI}/me/playlists`, {
     //     headers: {
     //         Authorization: `Bearer ${accessToken}`
     //     }
     // })
-    // let response = await fetch('https://my-json-server.typicode.com/typicode/demo/posts')
+
     // let data = await response.json()
 
     //mock data return from playlists endpoint

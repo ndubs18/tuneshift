@@ -8,9 +8,32 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
   font-size: calc(10px + 2vmin);
   color: white;
+}
+
+.App-header h4 {
+  margin: 5rem 0 3rem
+}
+.sourceSelection {
+  width: 75%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+
+.sourceSelection span {
+  align-self: center;
+  
+}
+.sourceSelection span img {
+  width: 100px;
+}
+.sourceSelection .sourceCard img {
+  display: block;
+  width: 150px;
 }
 
 

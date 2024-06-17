@@ -1,6 +1,10 @@
 import {useState, useEffect} from 'react';
 
+import PlaylistCard from '../components/PlaylistCard/PlaylistCard';
 import {parseAccessToken, getCurrentUsersPlaylits} from '../spotify/spotify';
+
+import './Playlists.module.css'
+//import '../components/PlaylistCard/PlaylistCard.module.css'
 
 interface IPlaylists {
     items : IPlaylist[]
@@ -8,12 +12,11 @@ interface IPlaylists {
 }
 interface IPlaylist {
     name: string,
-    images: object[]
+    images: {url : string}[]
 } 
 
-let Playlist = () => {
+let Playlists = () => {
     let [playlists, setPlaylists] = useState<IPlaylists | null>(null);
-
 
     useEffect(() => {
         //let accessToken = parseAccessToken();
@@ -28,11 +31,14 @@ let Playlist = () => {
     return (
         <div>
             <h1>Spotify Playlists</h1>
-            <ul>
-                {playlists?.items.map(playlist => <li>{playlist.name}</li> )}
+            <ul className='playlists'>
+                {playlists?.items.map(playlist => <li key={playlist.name}>
+                    <PlaylistCard name={playlist.name} imgUrl={playlist.images[0].url}/> 
+                    </li>)
+                }
             </ul>
         </div>
     )
 }
 
-export default Playlist
+export default Playlists
