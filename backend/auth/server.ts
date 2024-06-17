@@ -11,6 +11,7 @@ const port : any =  process.env.PORT || 8080 ;
 let spotify_redirect_uri_login : string = 'http://localhost:8080/spotify/callback'
 let spotify_client_id : string | undefined = process.env.SPOTIFY_CLIENT_ID;
 let spotify_client_secret : string | undefined = process.env.SPOTIFY_CLIENT_SECRET;
+let spofify_access_token : string = '';
 
 app.get('/', (req : any, res: any) => {
     res.send("This is the home route");
@@ -43,11 +44,9 @@ app.get('/spotify/callback', (req, res) => {
       json: true
     }
     request.post(authOptions, function(error, response, body) {
-      var access_token = body.access_token
+      spofify_access_token = body.access_token;
       let uri = process.env.FRONTEND_URI || 'http://localhost:3000/playlist'
-      console.log(`retrieved access token: ${access_token}`);
-
-      res.redirect(uri + '?access_token=' + access_token)
+      res.redirect(uri + '?access_token=' + spofify_access_token)
     })
 })
 

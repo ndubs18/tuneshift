@@ -1,6 +1,5 @@
 let baseSpotifyAPI = "https://api.spotify.com/v1";
 
-
 // TODO We need to store and retrieve this toke sfrom server sessions instead of url
 export let parseAccessToken = () => {
     let queryString : string = window.location.search;
@@ -26,15 +25,21 @@ export let getCurrentUserProfile : object = async () => {
 
 export let getCurrentUsersPlaylits = async () => {
     let accessToken = parseAccessToken();
-    await fetch(`${baseSpotifyAPI}/me/playlists`, {
-        headers: {
-            Authorization: `Bearer ${accessToken}`
-        }
+    // let response = await fetch(`${baseSpotifyAPI}/me/playlists`, {
+    //     headers: {
+    //         Authorization: `Bearer ${accessToken}`
+    //     }
+    // })
+    // let response = await fetch('https://my-json-server.typicode.com/typicode/demo/posts')
+    // let data = await response.json()
+
+    //mock data return from playlists endpoint
+    let data = {
+        items: [{name: "kaythenbounce", images: [{url: "image1"}]}, 
+                {name: "mayem", images: [{url: "image2"}]},
+                {name: "test", images: [{url: "image3"}]}
+        ]
     }
-    )
-    .then(res => res.json())
-    .then(data => {
-        console.log(data);
-    })
+    return data;
 
 }
