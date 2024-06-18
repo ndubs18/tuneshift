@@ -45,7 +45,7 @@ app.get('/spotify/callback', (req, res) => {
     }
     request.post(authOptions, function(error, response, body) {
       spofify_access_token = body.access_token;
-      let uri = process.env.FRONTEND_URI || 'http://localhost:3000/playlist'
+      let uri = process.env.FRONTEND_URI || 'http://localhost:3000/playlists'
       res.redirect(uri + '?access_token=' + spofify_access_token)
     })
 })

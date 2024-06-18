@@ -24,22 +24,22 @@ export let getCurrentUserProfile : object = async () => {
 }
 
 export let getCurrentUsersPlaylits = async () => {
-    // let accessToken = parseAccessToken();
-    // let response = await fetch(`${baseSpotifyAPI}/me/playlists`, {
-    //     headers: {
-    //         Authorization: `Bearer ${accessToken}`
-    //     }
-    // })
+    let accessToken = parseAccessToken();
+    let response = await fetch(`${baseSpotifyAPI}/me/playlists`, {
+        headers: {
+            Authorization: `Bearer ${accessToken}`
+        }
+    })
 
-    // let data = await response.json()
+    let data = await response.json()
 
     //mock data return from playlists endpoint
-    let data = {
-        items: [{name: "kaythenbounce", images: [{url: "image1"}]}, 
-                {name: "mayem", images: [{url: "image2"}]},
-                {name: "test", images: [{url: "image3"}]}
-        ]
-    }
+    // let data = {
+    //     items: [{name: "kaythenbounce", images: [{url: "image1"}]}, 
+    //             {name: "mayem", images: [{url: "image2"}]},
+    //             {name: "test", images: [{url: "image3"}]}
+    //     ]
+    // }
     return data;
 
 }
