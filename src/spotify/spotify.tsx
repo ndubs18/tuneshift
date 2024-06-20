@@ -43,3 +43,24 @@ export let getCurrentUsersPlaylits = async () => {
     return data;
 
 }
+
+export let getPlaylistItems = async (playlist_id = '') => {
+    let accessToken = parseAccessToken();
+    let response = await fetch(`${baseSpotifyAPI}/${playlist_id}/tracks`)
+    let data = await response.json();
+
+    return data.items;
+}
+
+type Track = {
+    external_ids: {
+        isrc: string;
+    }
+}
+
+export let getPlaylistItemCodes = ((tracks : Track[]) => {
+    let isrcList : string[] = [] 
+    tracks.forEach((track : Track) => isrcList.push(track.external_ids.isrc))
+    return isrcList;
+    
+})

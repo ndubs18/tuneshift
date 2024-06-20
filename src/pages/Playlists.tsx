@@ -3,7 +3,7 @@ import {useState, useEffect} from 'react';
 import PlaylistCard from '../components/PlaylistCard/PlaylistCard';
 import {parseAccessToken, getCurrentUsersPlaylits} from '../spotify/spotify';
 
-import './Playlists.module.css'
+import styles from './Playlists.module.css';
 import '../components/PlaylistCard/PlaylistCard.module.css'
 
 interface IPlaylists {
@@ -11,9 +11,11 @@ interface IPlaylists {
 
 }
 interface IPlaylist {
-    name: string,
-    snapshot_id: string,
-    images: {url : string}[]
+    name : string,
+    snapshot_id : string,
+    images : {url : string}[],
+    id : string
+    owner: {display_name : string}
 } 
 
 let Playlists = () => {
@@ -23,6 +25,7 @@ let Playlists = () => {
         let accessToken = parseAccessToken();
         getCurrentUsersPlaylits().then(data=> {
             let playlists = data;
+            //console.log(playlists);
             setPlaylists(playlists);
             
     });
@@ -33,9 +36,9 @@ let Playlists = () => {
         <div>
             <h1 style={{marginLeft: '2rem'}}>Spotify Playlists</h1>
             <h2>Choose a playlist to transfer</h2>
-            <ul className='playlists'>
-                {playlists?.items.map(playlist =>
-                    <PlaylistCard name={playlist.name ? playlist.name : 'null'} imgUrl={playlist.images[0].url}/> 
+            <ul className={styles.playlists}>
+                {playlists?.items.map(playlist => <li key={playlist.id}>
+                    <PlaylistCard  playlistId={playlist.id}name={playlist.name ? playlist.name : 'null'} owner={playlist.owner.display_name} imgUrl={playlist.images[0].url}/> </li>
                     )
                 }
             </ul>

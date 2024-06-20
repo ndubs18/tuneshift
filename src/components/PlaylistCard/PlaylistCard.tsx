@@ -1,34 +1,45 @@
 import { useState } from 'react';
-import styles from './PlaylistCard.module.css'
+import styles from './PlaylistCard.module.css';
 
-export default function PlaylistCard({name, imgUrl}
+export default function PlaylistCard({playlistId, name, imgUrl, owner}
     : {
+    playlistId : string
     name: string,
-    imgUrl: string
+    imgUrl: string, 
+    owner: string, 
     }
 ){
-    let [open, setOpen] = useState(false);
+    let [open, setOpen] = useState<boolean>(false);
 
-    //!TODO we need to figure out what to display if there is no name 
+
 
     if(open) {
-        return (   
-                <li className={styles.playlistCard} onClick={() => {
+        return (
+            <> 
+                <div className={styles.playlistCard} onClick={() => {
                     setOpen(open => !open);
                 }}>
                     <img src={imgUrl} alt={name} />
                     <h4>{name}</h4>
-                    <button>Transfer</button>
-                </li> 
+                </div>
+                    <div className={styles.playlistCardDropdown}>
+                        <ul className={styles.metaData}>
+                            <li>owner: {owner}</li>
+                            <li>id: {playlistId}</li> 
+                        </ul>
+                        <button onClick = {() => window.location.replace(`localhost:8080/playlists/${playlistId}`)}>Transfer</button>
+                    </div>
+                 
+            </>
         )  
     } else {
         return (
-                <li className={styles.playlistCard} onClick={() => {
+                <div className={styles.playlistCard} onClick={() => {
                 setOpen(open => !open);
                 }}>
                     <img src={imgUrl} alt={name} />
                     <h4>{name}</h4>
-                </li>
+                </div>
         )
     }
 }

@@ -1,13 +1,20 @@
+* {
+    box-sizing: border-box;
+}
 .playlistCard {
     width: 25rem;;
     display: flex;
     flex-direction: row;
     align-items: center;
     width: 100%;
-    margin: .5rem
+
 }
 .playlistCardOpen {
     /* height: 40rem; */
+}
+
+.playlistCardDropdown ul {
+    padding: 0;
 }
 
 .playlistCard img {
@@ -17,7 +24,18 @@
 }
 
 .playlistCard:hover {
-    background-color: rgba(128, 128, 128, 0.382);
+    background-color: rgba(128, 128, 128, 0.25);
     cursor: pointer;
 }
 
+.playlistCardDropdown {
+    width: 100%;
+    padding: 1rem;
+    background-color: rgba(128, 128, 128, 0.058);
+}
+.playlistCardDropdown button {
+    padding: 1rem;
+    width: 8rem;
+    margin: 0 auto
+
+}
