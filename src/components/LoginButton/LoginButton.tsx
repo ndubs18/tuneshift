@@ -6,7 +6,7 @@ interface Props {
 let LoginButton : React.FC<Props>= ({name}) => {
     return (
         <button onClick={() => {
-            window.location.replace(`http://localhost:8080/login/${name === 'Spotify' ? 'spotify' : 'applemusic'}`)
+            window.location.replace(`http://localhost:8080/login/${name === 'Spotify' ? 'spotify' : 'apple'}`)
         }}>{name}</button>
  
     )

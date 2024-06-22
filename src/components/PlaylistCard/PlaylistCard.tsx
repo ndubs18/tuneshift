@@ -11,8 +11,6 @@ export default function PlaylistCard({playlistId, name, imgUrl, owner}
 ){
     let [open, setOpen] = useState<boolean>(false);
 
-
-
     if(open) {
         return (
             <> 
@@ -27,9 +25,8 @@ export default function PlaylistCard({playlistId, name, imgUrl, owner}
                             <li>owner: {owner}</li>
                             <li>id: {playlistId}</li> 
                         </ul>
-                        <button onClick = {() => window.location.replace(`localhost:8080/playlists/${playlistId}`)}>Transfer</button>
-                    </div>
-                 
+                        <button onClick = {() => window.location.replace(`http://localhost:8080/login/apple`)}>Transfer</button>
+                    </div>      
             </>
         )  
     } else {

@@ -16,7 +16,12 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />
   },
   {
-    path: "/playlists",
+    path: "/playlists/spotify",
+    element: <Playlists />,
+    errorElement: <ErrorPage/>
+  },
+  {
+    path: "/playlists/apple",
     element: <Playlists />,
     errorElement: <ErrorPage/>
   }

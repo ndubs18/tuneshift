@@ -43,18 +43,20 @@ app.get('/spotify/callback', (req, res) => {
       },
       json: true
     }
-    request.post(authOptions, function(error, response, body) {
+    request.post(authOptions, (error, response, body) => {
       spofify_access_token = body.access_token;
-      let uri = process.env.FRONTEND_URI || 'http://localhost:3000/playlists'
-      res.redirect(uri + '?access_token=' + spofify_access_token)
+      let uri = process.env.FRONTEND_URI || 'http://localhost:3000/playlists/spotify'
+      res.cookie('access_token', body.access_token);
+      // res.redirect(uri + '?access_token=' + spofify_access_token)
+      res.redirect(uri);
     })
 })
 
 //apple music authentication
-app.get('/login/applemusic', (req : any, res : any) => {
-
+app.get('/login/apple', (req, res) => {
+let uri = process.env.FRONTEND_URI || 'http://localhost:3000/playlists/apple' 
+res.redirect(uri)
 })
-
 
 app.listen(port, () => {
     console.log(`Listening on port ${port} 🩵`)

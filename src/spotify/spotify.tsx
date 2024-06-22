@@ -2,9 +2,8 @@ let baseSpotifyAPI = "https://api.spotify.com/v1";
 
 // TODO We need to store and retrieve this toke sfrom server sessions instead of url
 export let parseAccessToken = () => {
-    let queryString : string = window.location.search;
-    let urlParams = new URLSearchParams(queryString);
-    let accessToken : string | null = urlParams.get('access_token');
+    let cookie : string[] = document.cookie.split('=');
+    let accessToken : string | undefined = cookie.at(1);
 
     return accessToken;
 
