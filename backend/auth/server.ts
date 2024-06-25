@@ -1,4 +1,5 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
 const app = express();
 
 const querystring = require('querystring');
@@ -52,10 +53,30 @@ app.get('/spotify/callback', (req, res) => {
     })
 })
 
+//logic for creating jwt known as developer token
+const fs = require('fs');
+const path = require('path');
+let fullPath = path.resolve(__dirname, "AuthKey_ZCU99CVLSD.p8")
+
+const private_key = fs.readFileSync(fullPath).toString(); 
+
+const team_id = 'MU3Z747TR4'; 
+const key_id = 'ZCU99CVLSD'; 
+const token = jwt.sign({}, private_key, {
+  algorithm: 'ES256',
+  expiresIn: '180d',
+  issuer: team_id,
+  header: {
+    alg: 'ES256',
+    kid: key_id
+  }
+});
+
 //apple music authentication
 app.get('/login/apple', (req, res) => {
-let uri = process.env.FRONTEND_URI || 'http://localhost:3000/playlists/apple' 
-res.redirect(uri)
+  let uri = process.env.FRONTEND_URI || 'http://localhost:3000/playlists/apple'
+  res.redirect(uri + '?token=' + token)
+  
 })
 
 app.listen(port, () => {

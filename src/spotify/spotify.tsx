@@ -1,6 +1,5 @@
 let baseSpotifyAPI = "https://api.spotify.com/v1";
 
-// TODO We need to store and retrieve this toke sfrom server sessions instead of url
 export let parseAccessToken = () => {
     let cookie : string[] = document.cookie.split('=');
     let accessToken : string | undefined = cookie.at(1);
@@ -32,13 +31,6 @@ export let getCurrentUsersPlaylits = async () => {
 
     let data = await response.json()
 
-    //mock data return from playlists endpoint
-    // let data = {
-    //     items: [{name: "kaythenbounce", images: [{url: "image1"}]}, 
-    //             {name: "mayem", images: [{url: "image2"}]},
-    //             {name: "test", images: [{url: "image3"}]}
-    //     ]
-    // }
     return data;
 
 }
