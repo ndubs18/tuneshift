@@ -1,11 +1,14 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
+const cookieParser = require('cookie-parser');
 const app = express();
 
 const querystring = require('querystring');
 const request = require('request');
 const cors = require('cors')
-app.use(cors());
+
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
+app.use(cookieParser());
 
 const port : any =  process.env.PORT || 8080 ;
 
@@ -53,6 +56,9 @@ app.get('/spotify/callback', (req, res) => {
     })
 })
 
+//apple music authentication
+app.get('/login/apple', (req, res) => {
+
 //logic for creating jwt known as developer token
 const fs = require('fs');
 const path = require('path');
@@ -71,12 +77,33 @@ const token = jwt.sign({}, private_key, {
     kid: key_id
   }
 });
-
-//apple music authentication
-app.get('/login/apple', (req, res) => {
   let uri = process.env.FRONTEND_URI || 'http://localhost:3000/playlists/apple'
-  res.redirect(uri + '?token=' + token)
+  // Send the JWT as an HttpOnly cookie
+  res.cookie('dev_token', token, { httpOnly: true, secure: true, sameSite: 'Strict' });
+  res.redirect(uri)
   
+})
+
+app.get('/protected', (req, res) => {
+  const token = req.cookies.dev_token;
+
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    let fullPath = path.resolve(__dirname, "AuthKey_ZCU99CVLSD.p8")
+
+    const private_key = fs.readFileSync(fullPath).toString(); 
+
+    const decoded = jwt.verify(token, private_key);
+    res.json({ message: 'Protected data', token: token});
+  } catch (err) {
+    res.status(401).json({ message: 'Invalid token' });
+  }
+
 })
 
 app.listen(port, () => {

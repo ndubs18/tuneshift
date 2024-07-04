@@ -5,7 +5,7 @@ import PlaylistCard from '../PlaylistCard/PlaylistCard';
 
 import noArtImg from '../../assets/images/noArtwork.png'
 
-import {getApplePlaylists, formatImgUrl} from '../../apple/apple';
+import {getApplePlaylists, handleMusicKitLoaded, parseAccessToken, formatImgUrl} from '../../apple/apple';
 interface IPlaylists {
     data : IPlaylist[];
 
@@ -21,15 +21,34 @@ interface IPlaylist {
 let ApplePlaylists = () => {
 
     let [playlists, setPlaylists] = useState<IPlaylists | null>(null)
+    const [isMusicKitLoaded, setIsMusicKitLoaded] = useState(false);
+
 
     useEffect(() => {
-      getApplePlaylists().then((data) => {
-        let playlists : IPlaylists = data.data;
-        console.log(playlists)
-        setPlaylists(playlists);
+      handleMusicKitLoaded().then(() => {
+      // Fetch Apple Music playlists
+      let getPlaylists = async () => {
+        let data = await getApplePlaylists();
+        let playlists = data.data;
+
+        setPlaylists(playlists)
+        
+      }
+
+      getPlaylists();
       })
- 
+
+      
+  
+      // Add the event listener for musickitloaded
+      //document.addEventListener('musickitloaded', handleMusicKitLoaded);
+  
+      // Clean up the event listener on component unmount
+      // return () => {
+      // document.removeEventListener('musickitloaded', handleMusicKitLoaded);
+      // };
     }, [])
+    
     return (
         <div>
         <h1 style={{marginLeft: '2rem'}}>Apple Music Playlists</h1>
