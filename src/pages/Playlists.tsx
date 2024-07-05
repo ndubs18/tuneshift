@@ -9,13 +9,10 @@ import styles from './Playlists.module.css';
 import '../components/PlaylistCard/PlaylistCard.module.css'
  
 let Playlists = () => {
-
-    useEffect(() => {
-    }, [])
-     
+ 
     return (
         <>
-        {window.location.pathname === '/playlists/spotify' ? <SpotifyPlaylists/> : <ApplePlaylists/>}
+        {window.location.pathname === '/transfer' && window.location.search ==='?state=Spotify' ? <SpotifyPlaylists/> : <ApplePlaylists/>}
         </>
     )
 }

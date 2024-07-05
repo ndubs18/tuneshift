@@ -1,5 +1,6 @@
 let baseSpotifyAPI = "https://api.spotify.com/v1";
 
+
 export let parseAccessToken = () => {
     let cookie : string[] = document.cookie.split('=');
     let accessToken : string | undefined = cookie.at(1);

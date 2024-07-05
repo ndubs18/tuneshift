@@ -1,5 +1,6 @@
 // import React from 'react';
-// import {useState} from 'react';
+import {useState, useEffect} from 'react';
+import {Link, useLocation,useSearchParams,Outlet} from 'react-router-dom';
 import './App.css';
 
 import LoginButton from './components/LoginButton/LoginButton';
@@ -8,22 +9,43 @@ import AppleLogo from './assets/images/apple_music_icon.svg'
 import BidirectionalArrow from './assets/images/double_arrow_icon.svg'
 
 function App() {
+
+  let [sourcePlatform, setSourcePlatform] = useState<string|null>('');
+  const [searchParams] = useSearchParams();
+
+  
+  let setSourcePlatformWrapper = (platform : string) => {
+    setSourcePlatform(platform)
+  }
+
+  useEffect(() => {
+    let source = searchParams.get('state');
+    console.log(source);
+    setSourcePlatform(source);
+  })
+
   return (
     <div className="App">
-      <h1>TuneShift</h1>
-      <header className="App-header">
+      <Link to="/"><h1>TuneShift</h1></Link>
+      <header className="App-header"> 
+        {sourcePlatform !== "Spotify" && sourcePlatform !== "Apple Music" ? 
+        
+        (<>
         <h4>Select the source platform</h4>
-        <div className='sourceSelection'>
+       <div className='sourceSelection'>
           <div className='sourceCard'>
             <img src={SpotifyLogo} alt="spotify" />
-            <LoginButton name="Spotify"/>
+            <LoginButton name="Spotify" setSourcePlatform={setSourcePlatformWrapper}/>
           </div>
           <span><img src={BidirectionalArrow} alt="arrow"/></span>  
           <div className='sourceCard'>
             <img src={AppleLogo} alt="apple music" />
-            <LoginButton name="Apple Music"/>
+            <LoginButton name="Apple Music" setSourcePlatform={setSourcePlatformWrapper}/>
           </div>
-        </div>
+        </div></>) : (
+          <Outlet/>
+        )
+        }
       </header>
     </div>
   );

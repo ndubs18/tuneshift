@@ -26,13 +26,15 @@ app.get('/login/spotify', (req : any, res : any) => {
         response_type: 'code',
         redirect_uri: spotify_redirect_uri_login,
         scope: 'user-read-private user-read-email user-library-read playlist-read-private',
-        client_id: spotify_client_id
+        client_id: spotify_client_id,
+        state: 'Spotify'
     })
     res.redirect('https://accounts.spotify.com/authorize?' + queryString);
 })
 
 app.get('/spotify/callback', (req, res) => {
-    let code = req.query.code || null
+    let code = req.query.code || null;
+    let state = req.query.state;
     let authOptions = {
       url: 'https://accounts.spotify.com/api/token',
       form: {
@@ -49,10 +51,11 @@ app.get('/spotify/callback', (req, res) => {
     }
     request.post(authOptions, (error, response, body) => {
       spofify_access_token = body.access_token;
-      let uri = process.env.FRONTEND_URI || 'http://localhost:3000/playlists/spotify'
+      // let uri = process.env.FRONTEND_URI || 'http://localhost:3000/playlists/spotify'
+      let uri = process.env.FRONTEND_URI || 'http://localhost:3000/transfer'
       res.cookie('access_token', body.access_token);
-      // res.redirect(uri + '?access_token=' + spofify_access_token)
-      res.redirect(uri);
+
+      res.redirect(uri + '?state=' + state);
     })
 })
 
@@ -77,10 +80,12 @@ const token = jwt.sign({}, private_key, {
     kid: key_id
   }
 });
-  let uri = process.env.FRONTEND_URI || 'http://localhost:3000/playlists/apple'
+  // let uri = process.env.FRONTEND_URI || 'http://localhost:3000/playlists/apple'
+  let uri = process.env.FRONTEND_URI || 'http://localhost:3000/transfer';
   // Send the JWT as an HttpOnly cookie
   res.cookie('dev_token', token, { httpOnly: true, secure: true, sameSite: 'Strict' });
-  res.redirect(uri)
+  //TODO why is it that we have to pass a space to the search param to get the apple music component to render?
+  res.redirect(uri + '?state=Apple Music')
   
 })
 

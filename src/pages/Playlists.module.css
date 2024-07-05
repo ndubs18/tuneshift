@@ -2,9 +2,10 @@ h2 {
     width: 100%;
     text-align: center;
 }
+
 .playlists {
     width: 35%;
-    height: 100vh;
+    height: 83vh;
     margin: 0 auto;
     padding: 0;
     display: flex;

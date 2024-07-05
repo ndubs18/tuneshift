@@ -13,17 +13,14 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    errorElement: <ErrorPage />
-  },
-  {
-    path: "/playlists/spotify",
-    element: <Playlists />,
-    errorElement: <ErrorPage/>
-  },
-  {
-    path: "/playlists/apple",
-    element: <Playlists />,
-    errorElement: <ErrorPage/>
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "transfer",
+        element: <Playlists />,
+        errorElement: <ErrorPage />
+      }
+    ]
   }
 ])
 const root = ReactDOM.createRoot(

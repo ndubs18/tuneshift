@@ -5,6 +5,7 @@ declare global {
   }
 }
 //get httpOnly access token from server
+//TODO we should rename this or make it more self explanatory
 let parseAccessToken = async () => {
   try {
     const response = await fetch('http://localhost:8080/protected', {
@@ -12,7 +13,7 @@ let parseAccessToken = async () => {
     });
 
     const data = await response.json();
-    const token = data.token;
+    const token : string = data.token;
     return token;
   } catch (error) {
     console.error('Error fetching protected data:', error);
@@ -20,7 +21,7 @@ let parseAccessToken = async () => {
 
 }
 
-const handleMusicKitLoaded = async () => {
+const handleMusicKitLoaded = async () : Promise<void> => {
   let key = await parseAccessToken();
   try {
     await window.MusicKit.configure({
@@ -41,7 +42,7 @@ let getApplePlaylists = async () => {
   const music = window.MusicKit.getInstance(); 
   await music.authorize(); 
   const result = await music.api.music('v1/me/library/playlists');
-  let playlists = await result
+  let playlists = await result;
   return playlists;
 }
 
