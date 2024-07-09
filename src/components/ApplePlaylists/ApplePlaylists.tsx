@@ -23,15 +23,18 @@ let ApplePlaylists = () => {
 
     let [playlists, setPlaylists] = useState<IPlaylists | null>(null)
 
+    let [loading, setLoading] = useState(false);
+
     useEffect(() => {
       handleMusicKitLoaded().then(() => {
-      // Fetch Apple Music playlists
+      setLoading(true);
+      // Fetch Apple Music playlist
       let getPlaylists = async () => {
         let data = await getApplePlaylists();
         let playlists = data.data;
         
         setPlaylists(playlists)
-        
+        setLoading(false);   
       }
 
       getPlaylists();
@@ -39,18 +42,20 @@ let ApplePlaylists = () => {
     }, [])
     
     return (
-        <div>
+      <div>
         <h1 style={{marginLeft: '2rem'}}>Apple Music Playlists</h1>
         <h2>Choose a playlist to transfer</h2>
         <ul className={styles.playlists}>
-            {playlists?.data.map(playlist => 
+          
+            {loading ? <h3>Loading...</h3> : 
+            playlists?.data.map(playlist => 
               <li key={playlist.id}>
                 <PlaylistCard  playlistId={playlist.id} name={playlist.attributes.name ? playlist.attributes.name : 'null'} imgUrl={playlist.attributes.artwork?.url ? formatImgUrl(playlist.attributes.artwork?.url) : noArtImg}/> 
               </li>
-              )      
+            )      
             }
         </ul>
-    </div>
+      </div>
     )
 }
 

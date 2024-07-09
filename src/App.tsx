@@ -11,6 +11,10 @@ import BidirectionalArrow from './assets/images/double_arrow_icon.svg'
 function App() {
 
   let [sourcePlatform, setSourcePlatform] = useState<string|null>('');
+  
+  let [sourceLoggedIn, setSourceLoggedIn] = useState(false);
+  let [targetLoggedIn, setTargetLoggedIn] = useState(false);
+
   const [searchParams] = useSearchParams();
 
   
@@ -19,8 +23,7 @@ function App() {
   }
 
   useEffect(() => {
-    let source = searchParams.get('state');
-    console.log(source);
+    let source = searchParams.get('source');
     setSourcePlatform(source);
   })
 

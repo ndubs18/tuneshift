@@ -17,6 +17,7 @@
     "request": "^2.88.2"
   },
   "devDependencies": {
-    "@types/node": "^20.14.2"
+    "@types/node": "^20.14.10",
+    "typescript": "^5.5.3"
   }
 }

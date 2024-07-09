@@ -55,7 +55,7 @@ app.get('/spotify/callback', (req, res) => {
       let uri = process.env.FRONTEND_URI || 'http://localhost:3000/transfer'
       res.cookie('access_token', body.access_token);
 
-      res.redirect(uri + '?state=' + state);
+      res.redirect(uri + '?source=' + state);
     })
 })
 
@@ -65,12 +65,12 @@ app.get('/login/apple', (req, res) => {
 //logic for creating jwt known as developer token
 const fs = require('fs');
 const path = require('path');
-let fullPath = path.resolve(__dirname, "AuthKey_ZCU99CVLSD.p8")
+let fullPath = path.resolve(__dirname, "AuthKey_U354DP9LKL.p8")
 
 const private_key = fs.readFileSync(fullPath).toString(); 
 
 const team_id = 'MU3Z747TR4'; 
-const key_id = 'ZCU99CVLSD'; 
+const key_id = 'U354DP9LKL'; 
 const token = jwt.sign({}, private_key, {
   algorithm: 'ES256',
   expiresIn: '180d',
@@ -83,9 +83,9 @@ const token = jwt.sign({}, private_key, {
   // let uri = process.env.FRONTEND_URI || 'http://localhost:3000/playlists/apple'
   let uri = process.env.FRONTEND_URI || 'http://localhost:3000/transfer';
   // Send the JWT as an HttpOnly cookie
-  res.cookie('dev_token', token, { httpOnly: true, secure: true, sameSite: 'Strict' });
+  res.cookie('dev_token', token, { httpOnly: true, sameSite: 'Strict' });
   //TODO why is it that we have to pass a space to the search param to get the apple music component to render?
-  res.redirect(uri + '?state=Apple Music')
+  res.redirect(uri + '?source=Apple Music')
   
 })
 
@@ -99,10 +99,9 @@ app.get('/protected', (req, res) => {
   try {
     const fs = require('fs');
     const path = require('path');
-    let fullPath = path.resolve(__dirname, "AuthKey_ZCU99CVLSD.p8")
+    let fullPath = path.resolve(__dirname, "AuthKey_U354DP9LKL.p8")
 
     const private_key = fs.readFileSync(fullPath).toString(); 
-
     const decoded = jwt.verify(token, private_key);
     res.json({ message: 'Protected data', token: token});
   } catch (err) {

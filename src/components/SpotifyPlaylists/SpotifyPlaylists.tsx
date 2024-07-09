@@ -19,13 +19,14 @@ interface IPlaylist {
 let SpotifyPlaylists =  () => {
 
     let [playlists, setPlaylists] = useState<IPlaylists | null>(null);
+    let [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        //let accessToken = parseAccessToken();
+        setLoading(true);
         getCurrentUsersPlaylits().then(data=> {
             let playlists = data;
-            //console.log(playlists);
             setPlaylists(playlists)
+            setLoading(false);
         });
     }, [])
 
@@ -34,8 +35,9 @@ let SpotifyPlaylists =  () => {
             <h1 style={{marginLeft: '2rem'}}>Spotify Playlists</h1>
             <h2>Choose a playlist to transfer</h2>
             <ul className={styles.playlists}>
-                {playlists?.items.map(playlist => <li key={playlist.id}>
-                    <PlaylistCard  playlistId={playlist.id} name={playlist.name ? playlist.name : 'null'} owner={playlist.owner.display_name} imgUrl={playlist.images[0].url}/> </li>
+                {loading ? <h3>Loading...</h3> :
+                playlists?.items.map(playlist => <li key={playlist.id}>
+                    <PlaylistCard playlistId={playlist.id} name={playlist.name ? playlist.name : 'null'} owner={playlist.owner.display_name} imgUrl={playlist.images[0].url}/> </li>
                     )
                 }
             </ul>
