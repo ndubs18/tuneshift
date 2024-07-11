@@ -1,6 +1,6 @@
 // import React from 'react';
 import {useState, useEffect} from 'react';
-import {Link, useLocation,useSearchParams,Outlet} from 'react-router-dom';
+import {Link, useSearchParams, Outlet, useOutletContext} from 'react-router-dom';
 import './App.css';
 
 import LoginButton from './components/LoginButton/LoginButton';
@@ -11,9 +11,10 @@ import BidirectionalArrow from './assets/images/double_arrow_icon.svg'
 function App() {
 
   let [sourcePlatform, setSourcePlatform] = useState<string|null>('');
-  
-  let [sourceLoggedIn, setSourceLoggedIn] = useState(false);
-  let [targetLoggedIn, setTargetLoggedIn] = useState(false);
+ 
+  // TODO we need to manage state globally to handle re-authenticating
+  // let [sourceLoggedIn, setSourceLoggedIn] = useState(false);
+  // let [targetLoggedIn, setTargetLoggedIn] = useState(false);
 
   const [searchParams] = useSearchParams();
 
@@ -46,12 +47,16 @@ function App() {
             <LoginButton name="Apple Music" setSourcePlatform={setSourcePlatformWrapper}/>
           </div>
         </div></>) : (
-          <Outlet/>
+          <Outlet context={sourcePlatform}/>
         )
         }
       </header>
     </div>
   );
+}
+
+export function useSource() {
+  return useOutletContext<string>();
 }
 
 export default App;

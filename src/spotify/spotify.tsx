@@ -1,5 +1,6 @@
-let baseSpotifyAPI = "https://api.spotify.com/v1";
+import {Profile} from '../types/types';
 
+let baseSpotifyAPI = "https://api.spotify.com/v1";
 
 export let parseAccessToken = () => {
     let cookie : string[] = document.cookie.split('=');
@@ -8,18 +9,23 @@ export let parseAccessToken = () => {
     return accessToken;
 
 }
-export let getCurrentUserProfile : object = async () => {
+export let getCurrentUserProfile = async () : Promise<Profile> => {
     let accessToken = parseAccessToken();
-    let profile = {};
 
-    await fetch(`${baseSpotifyAPI}/me`, {
+    let profile : Profile;
+
+    let response = await fetch(`${baseSpotifyAPI}/me`, {
         headers: {
             Authorization: `Bearer  ${accessToken}`
         }
-    }).then(res => res.json())
-    .then(data => profile = data);
-
+    })
+   
+    let data = await response.json();
+    profile = data;
     return profile;
+
+
+    
 }
 
 export let getCurrentUsersPlaylits = async () => {

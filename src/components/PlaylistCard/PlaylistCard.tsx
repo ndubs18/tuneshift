@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import styles from './PlaylistCard.module.css';
 
-export default function PlaylistCard({playlistId, name, imgUrl, owner}
+export default function PlaylistCard({playlistId, name, imgUrl, owner, sourcePlatform}
     : {
     playlistId : string
-    name: string,
-    imgUrl?: string, 
-    owner?: string, 
+    name : string,
+    imgUrl? : string, 
+    owner? : string, 
+    sourcePlatform: string
     }
 ){
     let [open, setOpen] = useState<boolean>(false);
@@ -25,7 +26,14 @@ export default function PlaylistCard({playlistId, name, imgUrl, owner}
                             <li>owner: {owner}</li>
                             <li>id: {playlistId}</li> 
                         </ul>
-                        <button onClick = {() => window.location.replace(`http://localhost:8080/login/apple`)}>Transfer</button>
+                        {
+                        sourcePlatform === 'Spotify' ?
+                        <button onClick = {() => 
+                                window.location.replace(`http://localhost:8080/login/apple`)}>Transfer</button> 
+                            :
+                            <button onClick = {() => 
+                                window.location.replace(`http://localhost:8080/login/spotify`)}>Transfer</button>  
+                        }
                     </div>      
             </>
         )  
