@@ -59,5 +59,4 @@ let formatImgUrl = (url : string) => {
   return url;
 }
 
-
 export { getApplePlaylists, handleMusicKitLoaded, parseAccessToken, formatImgUrl, logOut };

@@ -30,7 +30,6 @@ let ApplePlaylists = () => {
     let [loading, setLoading] = useState(false);
 
     useEffect(() => {
-      console.log(source);
       handleMusicKitLoaded().then(() => {
       setLoading(true);
       // Fetch Apple Music playlist

@@ -67,7 +67,6 @@ let SpotifyPlaylists =  () => {
                    <PlaylistCard playlistId={playlist.id} name={playlist.name ? playlist.name : 'null'} owner={playlist.owner.display_name} imgUrl={playlist.images[0].url} sourcePlatform = {source}/> 
                 </li>
                 }
-                else return <></>;
 
                }
                 )

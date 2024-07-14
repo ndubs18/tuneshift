@@ -18,18 +18,20 @@ app.get('/', function (req, res) {
     res.send("This is the home route");
 });
 app.get('/login/spotify', function (req, res) {
+    var sourcePlatform = req.query.source;
+    console.log(sourcePlatform);
     var queryString = querystring.stringify({
         response_type: 'code',
         redirect_uri: spotify_redirect_uri_login,
         scope: 'user-read-private user-read-email user-library-read playlist-read-private',
         client_id: spotify_client_id,
-        state: 'Spotify'
+        state: sourcePlatform
     });
     res.redirect('https://accounts.spotify.com/authorize?' + queryString);
 });
 app.get('/spotify/callback', function (req, res) {
     var code = req.query.code || null;
-    var state = req.query.state;
+    var source = req.query.state;
     var authOptions = {
         url: 'https://accounts.spotify.com/api/token',
         form: {
@@ -47,18 +49,24 @@ app.get('/spotify/callback', function (req, res) {
         // let uri = process.env.FRONTEND_URI || 'http://localhost:3000/playlists/spotify'
         var uri = process.env.FRONTEND_URI || 'http://localhost:3000/transfer';
         res.cookie('access_token', body.access_token);
-        res.redirect(uri + '?source=' + state);
+        if (source === "Apple Music") {
+            res.redirect("".concat(uri, "?source=").concat(source, "&target=Spotify"));
+        }
+        else {
+            res.redirect(uri + '?source=' + source);
+        }
     });
 });
 //apple music authentication
 app.get('/login/apple', function (req, res) {
+    var sourcePlatform = req.query.source;
     //logic for creating jwt known as developer token
     var fs = require('fs');
     var path = require('path');
-    var fullPath = path.resolve(__dirname, "AuthKey_U354DP9LKL.p8");
+    var fullPath = path.resolve(__dirname, "AuthKey_ZN56MFKNYV.p8");
     var private_key = fs.readFileSync(fullPath).toString();
     var team_id = 'MU3Z747TR4';
-    var key_id = 'U354DP9LKL';
+    var key_id = 'ZN56MFKNYV';
     var token = jwt.sign({}, private_key, {
         algorithm: 'ES256',
         expiresIn: '180d',
@@ -73,7 +81,7 @@ app.get('/login/apple', function (req, res) {
     // Send the JWT as an HttpOnly cookie
     res.cookie('dev_token', token, { httpOnly: true, sameSite: 'Strict' });
     //TODO why is it that we have to pass a space to the search param to get the apple music component to render?
-    res.redirect(uri + '?source=Apple Music');
+    res.redirect(uri + "?source=".concat(sourcePlatform));
 });
 app.get('/protected', function (req, res) {
     var token = req.cookies.dev_token;
@@ -83,7 +91,7 @@ app.get('/protected', function (req, res) {
     try {
         var fs = require('fs');
         var path = require('path');
-        var fullPath = path.resolve(__dirname, "AuthKey_U354DP9LKL.p8");
+        var fullPath = path.resolve(__dirname, "AuthKey_ZN56MFKNYV.p8");
         var private_key = fs.readFileSync(fullPath).toString();
         var decoded = jwt.verify(token, private_key);
         res.json({ message: 'Protected data', token: token });

@@ -15,24 +15,24 @@ export default function PlaylistCard({playlistId, name, imgUrl, owner, sourcePla
     if(open) {
         return (
             <> 
-                <div className={styles.playlistCard} onClick={() => {
-                    setOpen(open => !open);
-                }}>
+                <div className={styles.playlistCard} onClick={() => { 
+                    setOpen(open => !open)}}>
                     <img src={imgUrl} alt={name} />
                     <h4>{name}</h4>
                 </div>
                     <div className={styles.playlistCardDropdown}>
                         <ul className={styles.metaData}>
-                            <li>owner: {owner}</li>
+                            {owner ? <li>owner: {owner}</li> : null }
+
                             <li>id: {playlistId}</li> 
                         </ul>
                         {
                         sourcePlatform === 'Spotify' ?
                         <button onClick = {() => 
-                                window.location.replace(`http://localhost:8080/login/apple`)}>Transfer</button> 
+                                window.location.replace(`http://localhost:8080/login/apple?source=${sourcePlatform}`)}>Transfer</button> 
                             :
                             <button onClick = {() => 
-                                window.location.replace(`http://localhost:8080/login/spotify`)}>Transfer</button>  
+                                window.location.replace(`http://localhost:8080/login/spotify?source=${sourcePlatform}`)}>Transfer</button>  
                         }
                     </div>      
             </>
