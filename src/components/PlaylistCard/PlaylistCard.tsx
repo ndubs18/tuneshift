@@ -29,10 +29,10 @@ export default function PlaylistCard({playlistId, name, imgUrl, owner, sourcePla
                         {
                         sourcePlatform === 'Spotify' ?
                         <button onClick = {() => 
-                                window.location.replace(`http://localhost:8080/login/apple?source=${sourcePlatform}`)}>Transfer</button> 
+                                window.location.replace(`http://localhost:8080/login/apple?source=${sourcePlatform}&target=Apple Music`)}>Transfer</button> 
                             :
                             <button onClick = {() => 
-                                window.location.replace(`http://localhost:8080/login/spotify?source=${sourcePlatform}`)}>Transfer</button>  
+                                window.location.replace(`http://localhost:8080/login/spotify?source=${sourcePlatform}&target=Spotify`)}>Transfer</button>  
                         }
                     </div>      
             </>

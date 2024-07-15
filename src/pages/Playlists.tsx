@@ -14,6 +14,8 @@ let Playlists = () => {
     //TODO we should set the target and source as a global state variable (pass setState hook from app with useSource)
     const source = useSource();
 
+    let [sourcePlaylist, setSourcePlaylist] = useState([]);
+
     let getSearchParams = () : URLSearchParams => {
         let urlSearch = window.location.search;
         let params = new URLSearchParams(urlSearch);
@@ -25,14 +27,13 @@ let Playlists = () => {
         if(!target) {
             return ( 
                 <>
-                    {window.location.pathname === '/transfer' && window.location.search ==='?source=Spotify' ? <SpotifyPlaylists/> : <ApplePlaylists/>}
+                    {source === 'Spotify' ? <SpotifyPlaylists /> : <ApplePlaylists/>}
                 </>
             )
-        }
-        else {
+        } else {
             return (
                 <>
-                    {target && source === 'Spotify' ? <ApplePlaylists/> : <SpotifyPlaylists/>}
+                    {target && target === 'Apple Music' ? <ApplePlaylists/> : <SpotifyPlaylists/>}
                 </>
             )
         }

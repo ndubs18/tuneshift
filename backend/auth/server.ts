@@ -37,6 +37,7 @@ app.get('/login/spotify', (req : any, res : any) => {
 app.get('/spotify/callback', (req, res) => {
     let code = req.query.code || null;
     let source = req.query.state;
+    let target = req.query.target;
     let authOptions = {
       url: 'https://accounts.spotify.com/api/token',
       form: {
@@ -66,7 +67,7 @@ app.get('/spotify/callback', (req, res) => {
 
 //apple music authentication
 app.get('/login/apple', (req, res) => {
-  let sourcePlatform = req.query.source;
+  let source = req.query.source;
 
   //logic for creating jwt known as developer token
   const fs = require('fs');
@@ -91,10 +92,10 @@ app.get('/login/apple', (req, res) => {
   // Send the JWT as an HttpOnly cookie
   res.cookie('dev_token', token, { httpOnly: true, sameSite: 'Strict' });
   //TODO why is it that we have to pass a space to the search param to get the apple music component to render?
-  if(sourcePlatform === 'Apple Music') {
-    res.redirect(uri + `?source=${sourcePlatform}&target=Apple Music`)
+  if(source === 'Spotify') {
+    res.redirect(uri + `?source=${source}&target=Apple Music`)
   } else {
-    res.redirect(uri + `?source=${sourcePlatform}`) 
+    res.redirect(uri + `?source=${source}`) 
   } 
 })
 
