@@ -10,11 +10,14 @@ import { useSource } from '../App';
 let Playlists = () => {
 
     let [target, setTarget] = useState<null | string>('');
+    let [sourcePlaylist, setSourcePlaylist] = useState<string[]>([]);
     //grab the context value
     //TODO we should set the target and source as a global state variable (pass setState hook from app with useSource)
     const source = useSource();
 
-    let [sourcePlaylist, setSourcePlaylist] = useState([]);
+    let setSourcePlaylistWrapper = (songs : string[]) => {
+        setSourcePlaylist(songs);
+    }
 
     let getSearchParams = () : URLSearchParams => {
         let urlSearch = window.location.search;
@@ -26,15 +29,11 @@ let Playlists = () => {
     let renderPlaylist = () => {
         if(!target) {
             return ( 
-                <>
-                    {source === 'Spotify' ? <SpotifyPlaylists /> : <ApplePlaylists/>}
-                </>
+                <>{source === 'Spotify' ? <SpotifyPlaylists setSourcePlaylist={setSourcePlaylistWrapper}/> : <ApplePlaylists setSourcePlaylist={setSourcePlaylistWrapper}/>}</>
             )
         } else {
             return (
-                <>
-                    {target && target === 'Apple Music' ? <ApplePlaylists/> : <SpotifyPlaylists/>}
-                </>
+                <>{target === 'Spotify' ? <SpotifyPlaylists setSourcePlaylist={setSourcePlaylistWrapper}/> : <ApplePlaylists setSourcePlaylist={setSourcePlaylistWrapper}/>}</>
             )
         }
     }

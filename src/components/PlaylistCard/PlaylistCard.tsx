@@ -7,7 +7,8 @@ export default function PlaylistCard({playlistId, name, imgUrl, owner, sourcePla
     name : string,
     imgUrl? : string, 
     owner? : string, 
-    sourcePlatform: string
+    sourcePlatform: string,
+    setSourcePlaylist: (songs : string[]) => void
     }
 ){
     let [open, setOpen] = useState<boolean>(false);

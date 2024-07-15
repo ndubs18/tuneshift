@@ -4,6 +4,8 @@ import styles from '../../pages/Playlists.module.css';
 import PlaylistCard from '../PlaylistCard/PlaylistCard';
 import {useSource} from '../../App';
 
+import { PlaylistProps } from '../../types/types';
+
 import noArtImg from '../../assets/images/noArtwork.png'
 
 import {getApplePlaylists, handleMusicKitLoaded, formatImgUrl} from '../../apple/apple';
@@ -20,7 +22,7 @@ interface IPlaylist {
         canEdit : boolean;
     }
 } 
-let ApplePlaylists = () => {
+let ApplePlaylists = ({setSourcePlaylist} : PlaylistProps) => {
 
     //get the context value
 
@@ -55,21 +57,34 @@ let ApplePlaylists = () => {
               {loading ? <h3>Loading...</h3> : 
               playlists?.data.map(playlist => 
                 <li key={playlist.id}>
-                  <PlaylistCard playlistId={playlist.id} name={playlist.attributes.name ? playlist.attributes.name : 'null'} sourcePlatform={source} imgUrl={playlist.attributes.artwork?.url ? formatImgUrl(playlist.attributes.artwork?.url) : noArtImg} /> 
+                  <PlaylistCard 
+                  playlistId={playlist.id} 
+                  name={playlist.attributes.name ? playlist.attributes.name : 'null'} 
+                  sourcePlatform={source} 
+                  imgUrl={playlist.attributes.artwork?.url ? formatImgUrl(playlist.attributes.artwork?.url) : noArtImg}
+                  setSourcePlaylist={setSourcePlaylist} /> 
                 </li>
               )      
               }
           </ul>
           </> :
           <>
-          <h2>Choose a playlist to transfer to</h2>
+          <h2>What playlist would you like to transfer to?</h2>
           <ul className={styles.playlists}>
             
               {loading ? <h3>Loading...</h3> : 
-              playlists?.data.map(playlist => 
-                <li key={playlist.id}>
-                  <PlaylistCard playlistId={playlist.id} name={playlist.attributes.name ? playlist.attributes.name : 'null'} sourcePlatform={source} imgUrl={playlist.attributes.artwork?.url ? formatImgUrl(playlist.attributes.artwork?.url) : noArtImg} /> 
+              playlists?.data.map(playlist => {
+                if(playlist.attributes.canEdit) {
+                  return <li key={playlist.id}>
+                  <PlaylistCard playlistId={playlist.id} 
+                  name={playlist.attributes.name ? playlist.attributes.name : 'null'} 
+                  sourcePlatform={source} 
+                  imgUrl={playlist.attributes.artwork?.url ? formatImgUrl(playlist.attributes.artwork?.url) : noArtImg} 
+                  setSourcePlaylist={setSourcePlaylist}/> 
                 </li>
+                }
+                else return <></>
+              }
               )      
               }
           </ul>

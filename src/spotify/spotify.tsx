@@ -43,7 +43,6 @@ export let getCurrentUsersPlaylits = async () => {
 }
 
 export let getPlaylistItems = async (playlist_id = '') => {
-    let accessToken = parseAccessToken();
     let response = await fetch(`${baseSpotifyAPI}/${playlist_id}/tracks`)
     let data = await response.json();
 

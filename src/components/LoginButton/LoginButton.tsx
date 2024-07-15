@@ -1,10 +1,10 @@
 
 interface Props {
     name: string;
-    setSourcePlatform: ( platform : string ) => void
+    setSourcePlatform: (platform : string) => void
  }
 
-let LoginButton = ({name, setSourcePlatform = ()=> {}} : Props) => {
+let LoginButton = ({name, setSourcePlatform } : Props) => {
     return (
         <button onClick={() => {
             setSourcePlatform(name);
