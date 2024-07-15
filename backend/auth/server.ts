@@ -22,15 +22,14 @@ app.get('/', (req : any, res: any) => {
 })
 
 app.get('/login/spotify', (req : any, res : any) => {
-    let sourcePlatform = req.query.source;
-    console.log(sourcePlatform);
+    let source = req.query.source;
 
     let queryString = querystring.stringify({
         response_type: 'code',
         redirect_uri: spotify_redirect_uri_login,
         scope: 'user-read-private user-read-email user-library-read playlist-read-private',
         client_id: spotify_client_id,
-        state: sourcePlatform
+        state: source
     })
     res.redirect('https://accounts.spotify.com/authorize?' + queryString);
 })
@@ -69,31 +68,34 @@ app.get('/spotify/callback', (req, res) => {
 app.get('/login/apple', (req, res) => {
   let sourcePlatform = req.query.source;
 
-//logic for creating jwt known as developer token
-const fs = require('fs');
-const path = require('path');
-let fullPath = path.resolve(__dirname, "AuthKey_ZN56MFKNYV.p8")
+  //logic for creating jwt known as developer token
+  const fs = require('fs');
+  const path = require('path');
+  let fullPath = path.resolve(__dirname, "AuthKey_ZN56MFKNYV.p8")
 
-const private_key = fs.readFileSync(fullPath).toString(); 
+  const private_key = fs.readFileSync(fullPath).toString(); 
 
-const team_id = 'MU3Z747TR4'; 
-const key_id = 'ZN56MFKNYV'; 
-const token = jwt.sign({}, private_key, {
-  algorithm: 'ES256',
-  expiresIn: '180d',
-  issuer: team_id,
-  header: {
-    alg: 'ES256',
-    kid: key_id
-  }
+  const team_id = 'MU3Z747TR4'; 
+  const key_id = 'ZN56MFKNYV'; 
+  const token = jwt.sign({}, private_key, {
+    algorithm: 'ES256',
+    expiresIn: '180d',
+    issuer: team_id,
+    header: {
+      alg: 'ES256',
+      kid: key_id
+    }
 });
   // let uri = process.env.FRONTEND_URI || 'http://localhost:3000/playlists/apple'
   let uri = process.env.FRONTEND_URI || 'http://localhost:3000/transfer';
   // Send the JWT as an HttpOnly cookie
   res.cookie('dev_token', token, { httpOnly: true, sameSite: 'Strict' });
   //TODO why is it that we have to pass a space to the search param to get the apple music component to render?
-  res.redirect(uri + `?source=${sourcePlatform}`)
-  
+  if(sourcePlatform === 'Apple Music') {
+    res.redirect(uri + `?source=${sourcePlatform}&target=Apple Music`)
+  } else {
+    res.redirect(uri + `?source=${sourcePlatform}`) 
+  } 
 })
 
 app.get('/protected', (req, res) => {

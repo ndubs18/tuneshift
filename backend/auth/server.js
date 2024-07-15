@@ -18,14 +18,13 @@ app.get('/', function (req, res) {
     res.send("This is the home route");
 });
 app.get('/login/spotify', function (req, res) {
-    var sourcePlatform = req.query.source;
-    console.log(sourcePlatform);
+    var source = req.query.source;
     var queryString = querystring.stringify({
         response_type: 'code',
         redirect_uri: spotify_redirect_uri_login,
         scope: 'user-read-private user-read-email user-library-read playlist-read-private',
         client_id: spotify_client_id,
-        state: sourcePlatform
+        state: source
     });
     res.redirect('https://accounts.spotify.com/authorize?' + queryString);
 });
@@ -81,7 +80,12 @@ app.get('/login/apple', function (req, res) {
     // Send the JWT as an HttpOnly cookie
     res.cookie('dev_token', token, { httpOnly: true, sameSite: 'Strict' });
     //TODO why is it that we have to pass a space to the search param to get the apple music component to render?
-    res.redirect(uri + "?source=".concat(sourcePlatform));
+    if (sourcePlatform === 'Apple Music') {
+        res.redirect(uri + "?source=".concat(sourcePlatform, "&target=Apple Music"));
+    }
+    else {
+        res.redirect(uri + "?source=".concat(sourcePlatform));
+    }
 });
 app.get('/protected', function (req, res) {
     var token = req.cookies.dev_token;

@@ -32,7 +32,6 @@ let SpotifyPlaylists =  () => {
     let [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        console.log(source);
         setLoading(true);
         getCurrentUserProfile().then(profile => setProfile(profile))
         getCurrentUsersPlaylits().then(data => {
