@@ -2,6 +2,7 @@
 import {useState, useEffect} from 'react';
 import SpotifyPlaylists from '../components/SpotifyPlaylists/SpotifyPlaylists';
 import ApplePlaylists from '../components/ApplePlaylists/ApplePlaylists';
+import { PlaylistProps } from '../types/types';
 
 import '../components/PlaylistCard/PlaylistCard.module.css'
 import userEvent from '@testing-library/user-event';
@@ -9,15 +10,16 @@ import { useSource } from '../App';
  
 let Playlists = () => {
 
-    let [target, setTarget] = useState<null | string>('');
-    let [sourcePlaylist, setSourcePlaylist] = useState<string[] | void>([]);
+    let [target, setTarget] = useState<string | null>('');
+    //let [sourcePlaylist, setSourcePlaylist] = useState<string[] | void>([]);
     //grab the context value
     //TODO we should set the target and source as a global state variable (pass setState hook from app with useSource)
-    const source = useSource();
+    const {sourcePlatform, sourcePlaylist, setSourcePlaylist}  = useSource();
 
-    let setSourcePlaylistWrapper = (songs : string[] | void) => {
-        setSourcePlaylist(songs);
-    }
+    // ! we commented this out because this it originally passed sourcePlaylist setter
+    // let setSourcePlaylistWrapper = (songs : string[] | void) => {
+    //     setSourcePlaylist(songs);
+    // }
 
     let getSearchParams = () : URLSearchParams => {
         let urlSearch = window.location.search;
@@ -29,11 +31,11 @@ let Playlists = () => {
     let renderPlaylist = () => {
         if(!target) {
             return ( 
-                <>{source === 'Spotify' ? <SpotifyPlaylists setSourcePlaylist={setSourcePlaylistWrapper}/> : <ApplePlaylists setSourcePlaylist={setSourcePlaylistWrapper}/>}</>
+                <>{sourcePlatform === 'Spotify' ? <SpotifyPlaylists/> : <ApplePlaylists/>}</>
             )
         } else {
             return (
-                <>{target === 'Spotify' ? <SpotifyPlaylists setSourcePlaylist={setSourcePlaylistWrapper}/> : <ApplePlaylists setSourcePlaylist={setSourcePlaylistWrapper}/>}</>
+                <>{target === 'Spotify' ? <SpotifyPlaylists/> : <ApplePlaylists />}</>
             )
         }
     }
@@ -44,6 +46,7 @@ let Playlists = () => {
         if(target) {
             setTarget(target);
         }
+        console.log(sourcePlaylist)
     },[])
  
     return (

@@ -25,10 +25,10 @@ interface IPlaylist {
     }
 }
 
-let SpotifyPlaylists =  ({setSourcePlaylist} : PlaylistProps) => {
+let SpotifyPlaylists =  () => {
 
     //grab the context value
-    const source = useSource();
+    const {sourcePlatform, setSourcePlaylist} = useSource();
 
     let [profile, setProfile] = useState<Profile>();
     let [playlists, setPlaylists] = useState<IPlaylists | null>(null);
@@ -47,7 +47,7 @@ let SpotifyPlaylists =  ({setSourcePlaylist} : PlaylistProps) => {
     return (
         <div>
             <h1 style={{marginLeft: '2rem'}}>Spotify Playlists</h1>
-            {source === 'Spotify' ? 
+            {sourcePlatform === 'Spotify' ? 
             <>
                 <h2>Choose a playlist to transfer</h2>
                 <ul className={styles.playlists}>
@@ -57,8 +57,8 @@ let SpotifyPlaylists =  ({setSourcePlaylist} : PlaylistProps) => {
                          name={playlist.name ? playlist.name : 'null'} 
                          owner={playlist.owner.display_name} 
                          imgUrl={playlist.images[0].url} 
-                         sourcePlatform={source}
-                         setSourcePlaylist={setSourcePlaylist}/> 
+                         sourcePlatform={sourcePlatform}
+                        /> 
                         </li>
                         )
                     }
@@ -75,8 +75,8 @@ let SpotifyPlaylists =  ({setSourcePlaylist} : PlaylistProps) => {
                         name={playlist.name ? playlist.name : 'null'} 
                         owner={playlist.owner.display_name} 
                         imgUrl={playlist.images[0].url} 
-                        sourcePlatform = {source}
-                        setSourcePlaylist={setSourcePlaylist}/> 
+                        sourcePlatform = {sourcePlatform}
+                        /> 
                         </li>
                         }
                         else return null;

@@ -22,11 +22,11 @@ interface IPlaylist {
         canEdit : boolean;
     }
 } 
-let ApplePlaylists = ({setSourcePlaylist} : PlaylistProps) => {
+let ApplePlaylists = () => {
 
     //get the context value
 
-    const source = useSource();
+    const {sourcePlatform, setSourcePlaylist} = useSource();
     let [playlists, setPlaylists] = useState<IPlaylists | null>(null)
 
     let [loading, setLoading] = useState(false);
@@ -34,6 +34,7 @@ let ApplePlaylists = ({setSourcePlaylist} : PlaylistProps) => {
     useEffect(() => {
       handleMusicKitLoaded().then(() => {
       setLoading(true);
+      // TODO: let's clean this up by either defining function elsewhere or promise chaining
       // Fetch Apple Music playlist
       let getPlaylists = async () => {
         let data = await getApplePlaylists();
@@ -50,7 +51,7 @@ let ApplePlaylists = ({setSourcePlaylist} : PlaylistProps) => {
     return (
       <div>
         <h1 style={{marginLeft: '2rem'}}>Apple Music Playlists</h1>
-        {source === "Apple Music" ? <>
+        {sourcePlatform === "Apple Music" ? <>
           <h2>Choose a playlist to transfer</h2>
           <ul className={styles.playlists}>
             
@@ -60,9 +61,9 @@ let ApplePlaylists = ({setSourcePlaylist} : PlaylistProps) => {
                   <PlaylistCard 
                   playlistId={playlist.id} 
                   name={playlist.attributes.name ? playlist.attributes.name : 'null'} 
-                  sourcePlatform={source} 
+                  sourcePlatform={sourcePlatform} 
                   imgUrl={playlist.attributes.artwork?.url ? formatImgUrl(playlist.attributes.artwork?.url) : noArtImg}
-                  setSourcePlaylist={setSourcePlaylist} /> 
+                  /> 
                 </li>
               )      
               }
@@ -78,9 +79,9 @@ let ApplePlaylists = ({setSourcePlaylist} : PlaylistProps) => {
                   return <li key={playlist.id}>
                   <PlaylistCard playlistId={playlist.id} 
                   name={playlist.attributes.name ? playlist.attributes.name : 'null'} 
-                  sourcePlatform={source} 
+                  sourcePlatform={sourcePlatform} 
                   imgUrl={playlist.attributes.artwork?.url ? formatImgUrl(playlist.attributes.artwork?.url) : noArtImg} 
-                  setSourcePlaylist={setSourcePlaylist}/> 
+                  /> 
                 </li>
                 }
                 else return null;
