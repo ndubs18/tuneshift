@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import styles from './PlaylistCard.module.css';
 
-export default function PlaylistCard({playlistId, name, imgUrl, owner, sourcePlatform}
+import {getSpotifyPlaylistItems} from '../../spotify/spotify'
+
+export default function PlaylistCard({playlistId, name, imgUrl, owner, sourcePlatform, setSourcePlaylist}
     : {
     playlistId : string
     name : string,
@@ -12,6 +14,12 @@ export default function PlaylistCard({playlistId, name, imgUrl, owner, sourcePla
     }
 ){
     let [open, setOpen] = useState<boolean>(false);
+    let [playlistItems, setPlaylistItems] = useState([]);
+
+    let getPlaylisSongs = async (id : string) => {
+        let songs = await getSpotifyPlaylistItems(id);
+        return songs;
+    }
 
     if(open) {
         return (
@@ -24,13 +32,17 @@ export default function PlaylistCard({playlistId, name, imgUrl, owner, sourcePla
                     <div className={styles.playlistCardDropdown}>
                         <ul className={styles.metaData}>
                             {owner ? <li>owner: {owner}</li> : null }
-
                             <li>id: {playlistId}</li> 
                         </ul>
                         {
                         sourcePlatform === 'Spotify' ?
-                        <button onClick = {() => 
-                                window.location.replace(`http://localhost:8080/login/apple?source=${sourcePlatform}&target=Apple Music`)}>Transfer</button> 
+                        <button onClick = {async() => {
+                                // TODO we need to figure out how to maintain source and target playlists through redirects
+                                // let songs : string[] = await getPlaylisSongs(playlistId);
+                                // setSourcePlaylist(songs);
+                                window.location.replace(`http://localhost:8080/login/apple?source=${sourcePlatform}&target=Apple Music`)
+                        }
+                        }>Transfer</button> 
                             :
                             <button onClick = {() => 
                                 window.location.replace(`http://localhost:8080/login/spotify?source=${sourcePlatform}&target=Spotify`)}>Transfer</button>  

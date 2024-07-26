@@ -68,21 +68,20 @@ let SpotifyPlaylists =  ({setSourcePlaylist} : PlaylistProps) => {
            <h2>Where would you like to transfer this playlist?</h2>
            <ul className={styles.playlists}>
                {loading ? <h3>Loading...</h3> :
-               playlists?.items.map(playlist => {
-                if(playlist.owner.id === profile?.id) { 
-                return <li key={playlist.id}>
-                   <PlaylistCard playlistId={playlist.id} 
-                   name={playlist.name ? playlist.name : 'null'} 
-                   owner={playlist.owner.display_name} 
-                   imgUrl={playlist.images[0].url} 
-                   sourcePlatform = {source}
-                   setSourcePlaylist={setSourcePlaylist}/> 
-                </li>
+                    playlists?.items.map(playlist => {
+                        if(playlist.owner.id === profile?.id) { 
+                        return <li key={playlist.id}>
+                        <PlaylistCard playlistId={playlist.id} 
+                        name={playlist.name ? playlist.name : 'null'} 
+                        owner={playlist.owner.display_name} 
+                        imgUrl={playlist.images[0].url} 
+                        sourcePlatform = {source}
+                        setSourcePlaylist={setSourcePlaylist}/> 
+                        </li>
+                        }
+                        else return null;
+                    })
                 }
-                else return null;
-               }
-                )
-               }
            </ul> 
            </> 
             }   

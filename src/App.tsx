@@ -11,6 +11,7 @@ import BidirectionalArrow from './assets/images/double_arrow_icon.svg'
 function App() {
 
   let [sourcePlatform, setSourcePlatform] = useState<string|null>('');
+  let [sourcePlaylist, setSourcePlaylist] = useState<string[]|null>([])
  
   // TODO we need to manage state globally to handle re-authenticating
   // let [sourceLoggedIn, setSourceLoggedIn] = useState(false);
@@ -22,6 +23,10 @@ function App() {
   let setSourcePlatformWrapper = (platform : string) => {
     setSourcePlatform(platform)
   }
+  // ? Do we send setState hook down the hierarchy of our components or use context like with did with source?
+  // let setSourcePlaylistWrapper = (songs : string[] | void) => {
+  //   setSourcePlaylist(songs);
+  // }
 
   useEffect(() => {
     let source = searchParams.get('source');

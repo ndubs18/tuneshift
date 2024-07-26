@@ -2,6 +2,11 @@ import {Profile} from '../types/types';
 
 let baseSpotifyAPI = "https://api.spotify.com/v1";
 
+type spotifySong = {
+    name : string;
+    isrc : string;
+}
+
 export let parseAccessToken = () => {
     let cookie : string[] = document.cookie.split('=');
     let accessToken : string | undefined = cookie.at(1);
@@ -42,11 +47,23 @@ export let getCurrentUsersPlaylits = async () => {
 
 }
 
-export let getPlaylistItems = async (playlist_id = '') => {
-    let response = await fetch(`${baseSpotifyAPI}/${playlist_id}/tracks`)
-    let data = await response.json();
+export let getSpotifyPlaylistItems = async (playlist_id = '') => {
+    let songList : string[] = [];
 
-    return data.items;
+    let accessToken = parseAccessToken();
+    let response = await fetch(`${baseSpotifyAPI}/playlists/${playlist_id}/tracks`, {
+        headers : {
+            Authorization: `Bearer ${accessToken}`
+        }
+    })
+    let data = await response.json();
+    let songs = data.items;
+    
+    for (const song of songs) {
+        songList.push(song.track.external_ids.isrc)
+    }
+
+    return songList;
 }
 
 type Track = {

@@ -83,7 +83,7 @@ let ApplePlaylists = ({setSourcePlaylist} : PlaylistProps) => {
                   setSourcePlaylist={setSourcePlaylist}/> 
                 </li>
                 }
-                else return <></>
+                else return null;
               }
               )      
               }

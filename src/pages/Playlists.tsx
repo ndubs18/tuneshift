@@ -10,12 +10,12 @@ import { useSource } from '../App';
 let Playlists = () => {
 
     let [target, setTarget] = useState<null | string>('');
-    let [sourcePlaylist, setSourcePlaylist] = useState<string[]>([]);
+    let [sourcePlaylist, setSourcePlaylist] = useState<string[] | void>([]);
     //grab the context value
     //TODO we should set the target and source as a global state variable (pass setState hook from app with useSource)
     const source = useSource();
 
-    let setSourcePlaylistWrapper = (songs : string[]) => {
+    let setSourcePlaylistWrapper = (songs : string[] | void) => {
         setSourcePlaylist(songs);
     }
 
