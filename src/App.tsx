@@ -7,11 +7,12 @@ import LoginButton from './components/LoginButton/LoginButton';
 import SpotifyLogo from './assets/images/spotify_icon.svg';
 import AppleLogo from './assets/images/apple_music_icon.svg'
 import BidirectionalArrow from './assets/images/double_arrow_icon.svg'
+import { Song } from './types/types';
 
 type ContextType = {
   sourcePlatform : string | null,
-  sourcePlaylist : string[] | null;
-  setSourcePlaylist : (songs : string[]) => void
+  sourcePlaylist : Song[] | null;
+  setSourcePlaylist : (songs : Song[]) => void
 }
 
 function App() {
@@ -19,7 +20,7 @@ function App() {
   let [sourcePlatform, setSourcePlatform] = useState<string | null>('');
   let [targetPlatform, setTargetPlatform] = useState<string | null>('')
 
-  let [sourcePlaylist, setSourcePlaylist] = useState<string[]>([])
+  let [sourcePlaylist, setSourcePlaylist] = useState<Song[]>([])
  
   // TODO we need to manage state globally to handle re-authenticating
   // let [sourceLoggedIn, setSourceLoggedIn] = useState(false);
@@ -40,12 +41,17 @@ function App() {
     let source = searchParams.get('source');
     setSourcePlatform(source);
     //let songs = window.localStorage.getItem("songs");
-    setSourcePlaylist(JSON.parse(window.localStorage.getItem("songs")!));
-  },[])
+    console.log("sourcePlatform: " + sourcePlatform)
+    setSourcePlaylist(JSON.parse(window.localStorage.getItem("sourceSongs")!));
+    
+  },[sourcePlatform])
 
   return (
     <div className="App">
-      <Link to="/"><h1>TuneShift</h1></Link>
+      <Link to="/" onClick={() => {
+        setSourcePlatform("");
+      }}><h1 className='navTitle'>TuneShift</h1>
+      </Link>
       <header className="App-header"> 
         {sourcePlatform !== "Spotify" && sourcePlatform !== "Apple Music" ? 
         
@@ -62,7 +68,7 @@ function App() {
             <LoginButton name="Apple Music" setSourcePlatform={setSourcePlatformWrapper}/>
           </div>
         </div></>) : (
-          <Outlet context={{sourcePlatform, sourcePlaylist, setSourcePlaylist} satisfies ContextType}/>
+          <Outlet context={{sourcePlatform, sourcePlaylist, setSourcePlaylist} as ContextType}/>
         )
         }
       </header>

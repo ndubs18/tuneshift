@@ -28,7 +28,6 @@ let ApplePlaylists = () => {
 
     const {sourcePlatform, setSourcePlaylist} = useSource();
     let [playlists, setPlaylists] = useState<IPlaylists | null>(null)
-
     let [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -39,7 +38,6 @@ let ApplePlaylists = () => {
       let getPlaylists = async () => {
         let data = await getApplePlaylists();
         let playlists = data.data;
-        
         setPlaylists(playlists)
         setLoading(false);   
       }
@@ -90,8 +88,6 @@ let ApplePlaylists = () => {
               }
           </ul>
           </> 
-          
-
         }
       </div>
     )

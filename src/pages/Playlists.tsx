@@ -46,7 +46,6 @@ let Playlists = () => {
         if(target) {
             setTarget(target);
         }
-        console.log(sourcePlaylist)
     },[])
  
     return (

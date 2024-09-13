@@ -1,3 +1,4 @@
+import { Song, LibrarySong } from '../types/types'
 
 declare global {
   interface Window {
@@ -42,14 +43,41 @@ let getApplePlaylists = async () => {
   const music = window.MusicKit.getInstance(); 
   await music.authorize(); 
   const result = await music.api.music('v1/me/library/playlists');
-  let playlists = await result;
-  return playlists;
+  // let playlists = await result;
+  return result;
+}
+
+let getApplePlaylistItems = async (playlistId : string) => {
+  const music = window.MusicKit.getInstance();
+  await music.authorize();
+  const result = await music.api.music(`v1/me/library/playlists/${playlistId}/tracks`)
+  let libraryPlaylistSongs = result.data.data;
+  return libraryPlaylistSongs;
+}
+
+let getApplePlaylistSongIsrcs = async (libraryPlaylistSongs : LibrarySong[] ) => {
+  let catalogueSongs : Song[] = [];
+
+  const music = window.MusicKit.getInstance();
+  await music.authorize();
+      let catalogSong = await music.api.music(`v1/me/library/songs/${libraryPlaylistSongs[0].id}/catalog`);
+      console.log(catalogSong);
+  // for(const song of libraryPlaylistSongs) {
+  //   try {
+  //     let catalogueSong = await music.api.music(`v1/library/songs/${song.id}/catalogue`);
+  //     console.log(catalogueSong);
+  //   } catch(e) {
+  //     console.log(e);
+  //   }
+  // }
+
 }
 
 let logOut = async () => {
   const music = window.MusicKit.getInstance();
   await music.unauthorize();
 }
+
 
 //TODO there is a format artwork url function built into musickit
 let formatImgUrl = (url : string) => {
@@ -59,4 +87,4 @@ let formatImgUrl = (url : string) => {
   return url;
 }
 
-export { getApplePlaylists, handleMusicKitLoaded, parseAccessToken, formatImgUrl, logOut };
+export { getApplePlaylists, getApplePlaylistItems, getApplePlaylistSongIsrcs, handleMusicKitLoaded, parseAccessToken, formatImgUrl, logOut };

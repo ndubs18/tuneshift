@@ -3,6 +3,14 @@ export type Profile = {
     id : string
 }
 
+export type Song = {
+    name : string,
+    isrc : string
+}
+
+export type LibrarySong = {
+    id : string
+}
 //TODO we should add to this to share between playlist components
 //type used for Playlist components
 export type PlaylistProps = {

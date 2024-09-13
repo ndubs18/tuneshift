@@ -1,4 +1,4 @@
-import {Profile} from '../types/types';
+import {Profile, Song} from '../types/types';
 
 let baseSpotifyAPI = "https://api.spotify.com/v1";
 
@@ -47,11 +47,11 @@ export let getCurrentUsersPlaylits = async () => {
 
 }
 
-export let getSpotifyPlaylistItems = async (playlist_id = '') => {
-    let songList : string[] = [];
+export let getSpotifyPlaylistItems = async (playlistId : string) : Promise<Song[]>=> {
+    let songList : Song[] = [];
 
     let accessToken = parseAccessToken();
-    let response = await fetch(`${baseSpotifyAPI}/playlists/${playlist_id}/tracks`, {
+    let response = await fetch(`${baseSpotifyAPI}/playlists/${playlistId}/tracks`, {
         headers : {
             Authorization: `Bearer ${accessToken}`
         }
@@ -60,7 +60,11 @@ export let getSpotifyPlaylistItems = async (playlist_id = '') => {
     let songs = data.items;
     
     for (const song of songs) {
-        songList.push(song.track.external_ids.isrc)
+        let item : Song = {
+            name : song.track.name,
+            isrc : song.track.external_ids.isrc
+        }
+        songList.push(item)
     }
 
     return songList;
