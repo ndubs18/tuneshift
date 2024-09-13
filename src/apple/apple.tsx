@@ -60,8 +60,8 @@ let getApplePlaylistSongIsrcs = async (libraryPlaylistSongs : LibrarySong[] ) =>
 
   const music = window.MusicKit.getInstance();
   await music.authorize();
-      let catalogSong = await music.api.music(`v1/me/library/songs/${libraryPlaylistSongs[0].id}/catalog`);
-      console.log(catalogSong);
+      let catalogSong = await music.api.music(`v1/library/songs/${libraryPlaylistSongs[0].id}/catalogue`);
+      console.log(catalogSong)
   // for(const song of libraryPlaylistSongs) {
   //   try {
   //     let catalogueSong = await music.api.music(`v1/library/songs/${song.id}/catalogue`);
