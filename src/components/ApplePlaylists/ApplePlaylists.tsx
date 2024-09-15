@@ -9,6 +9,7 @@ import { PlaylistProps } from '../../types/types';
 import noArtImg from '../../assets/images/noArtwork.png'
 
 import {getApplePlaylists, handleMusicKitLoaded, formatImgUrl} from '../../apple/apple';
+
 interface IPlaylists {
     data : IPlaylist[];
 
@@ -27,6 +28,7 @@ let ApplePlaylists = () => {
     //get the context value
 
     const {sourcePlatform, setSourcePlaylist} = useSource();
+
     let [playlists, setPlaylists] = useState<IPlaylists | null>(null)
     let [loading, setLoading] = useState(false);
 

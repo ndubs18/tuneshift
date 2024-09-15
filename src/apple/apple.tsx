@@ -51,26 +51,40 @@ let getApplePlaylistItems = async (playlistId : string) => {
   const music = window.MusicKit.getInstance();
   await music.authorize();
   const result = await music.api.music(`v1/me/library/playlists/${playlistId}/tracks`)
+  
   let libraryPlaylistSongs = result.data.data;
+  
   return libraryPlaylistSongs;
 }
 
-let getApplePlaylistSongIsrcs = async (libraryPlaylistSongs : LibrarySong[] ) => {
-  let catalogueSongs : Song[] = [];
+let getApplePlaylistSongIsrcs = async (libraryPlaylistSongs : LibrarySong[]) => {
+  let catalogSongs : Song[] = [];
+  let songsNotFound : LibrarySong[] = [];
 
   const music = window.MusicKit.getInstance();
   await music.authorize();
-      let catalogSong = await music.api.music(`v1/library/songs/${libraryPlaylistSongs[0].id}/catalogue`);
-      console.log(catalogSong)
-  // for(const song of libraryPlaylistSongs) {
-  //   try {
-  //     let catalogueSong = await music.api.music(`v1/library/songs/${song.id}/catalogue`);
-  //     console.log(catalogueSong);
-  //   } catch(e) {
-  //     console.log(e);
-  //   }
-  // }
+  // let catalogSong = await music.api.music(`v1/me/library/songs/${libraryPlaylistSongs[0].id}/catalog`);
+ 
+  for(const playlistSong of libraryPlaylistSongs) {
+    try {
 
+      let catalogSong = await music.api.music(`v1/me/library/songs/${playlistSong.id}/catalog`);
+      console.log(catalogSong);
+
+      const name = catalogSong.data.data[0].attributes.name;
+      const isrc = catalogSong.data.data[0].attributes.isrc;
+
+      let song : Song = {
+        name: name,
+        isrc: isrc
+      }
+      catalogSongs.push(song);
+    } catch(e) { 
+      songsNotFound.push(playlistSong);
+      console.log(e);
+    }
+  }
+  return {catalogSongs: catalogSongs, songsNotFound: songsNotFound};
 }
 
 let logOut = async () => {

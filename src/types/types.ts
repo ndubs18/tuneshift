@@ -9,7 +9,8 @@ export type Song = {
 }
 
 export type LibrarySong = {
-    id : string
+    id : string;
+    attributes : {name : string}
 }
 //TODO we should add to this to share between playlist components
 //type used for Playlist components

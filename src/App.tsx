@@ -11,16 +11,16 @@ import { Song } from './types/types';
 
 type ContextType = {
   sourcePlatform : string | null,
-  sourcePlaylist : Song[] | null;
-  setSourcePlaylist : (songs : Song[]) => void
+  targetPlatform : string | null,
+  sourcePlaylist : Song[] | null,
+  setSourcePlaylist : (songs : Song[]) => void,
 }
 
 function App() {
 
   let [sourcePlatform, setSourcePlatform] = useState<string | null>('');
-  let [targetPlatform, setTargetPlatform] = useState<string | null>('')
 
-  let [sourcePlaylist, setSourcePlaylist] = useState<Song[]>([])
+  let [sourcePlaylist, setSourcePlaylist] = useState<Song[]>([]);
  
   // TODO we need to manage state globally to handle re-authenticating
   // let [sourceLoggedIn, setSourceLoggedIn] = useState(false);
@@ -33,6 +33,7 @@ function App() {
     setSourcePlatform(platform)
   }
   // ? Do we send setState hook down the hierarchy of our components or use context like with did with source?
+  // * We decided to use useContext to pass this down.
   // let setSourcePlaylistWrapper = (songs : string[] | null) => {
   //   setSourcePlaylist(songs);
   // }
@@ -43,7 +44,7 @@ function App() {
     //let songs = window.localStorage.getItem("songs");
     console.log("sourcePlatform: " + sourcePlatform)
     setSourcePlaylist(JSON.parse(window.localStorage.getItem("sourceSongs")!));
-    
+    console.log(sourcePlaylist);
   },[sourcePlatform])
 
   return (
