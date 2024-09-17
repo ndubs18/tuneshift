@@ -10,11 +10,11 @@ import { useSource } from '../App';
  
 let Playlists = () => {
 
-    let [target, setTarget] = useState<string | null>('');
+    let [target, setTarget] = useState('');
     //let [sourcePlaylist, setSourcePlaylist] = useState<string[] | void>([]);
     //grab the context value
     //TODO we should set the target and source as a global state variable (pass setState hook from app with useSource)
-    const {sourcePlatform, sourcePlaylist, setSourcePlaylist}  = useSource();
+    const {sourcePlatform, sourcePlaylist}  = useSource();
 
     // ! we commented this out because this it originally passed sourcePlaylist setter
     // let setSourcePlaylistWrapper = (songs : string[] | void) => {
@@ -31,11 +31,11 @@ let Playlists = () => {
     let renderPlaylist = () => {
         if(!target) {
             return ( 
-                <>{sourcePlatform === 'Spotify' ? <SpotifyPlaylists/> : <ApplePlaylists/>}</>
+                sourcePlatform === 'Spotify' ? <SpotifyPlaylists /> : <ApplePlaylists />
             )
         } else {
             return (
-                <>{target === 'Spotify' ? <SpotifyPlaylists/> : <ApplePlaylists />}</>
+                target === 'Spotify' ? <SpotifyPlaylists /> : <ApplePlaylists />
             )
         }
     }
@@ -50,6 +50,7 @@ let Playlists = () => {
  
     return (
        renderPlaylist()
+       
     )
 }
 

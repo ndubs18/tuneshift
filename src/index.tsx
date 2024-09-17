@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 
 import ErrorPage from "./pages/Error-page";
 import Playlists from "./pages/Playlists";
+import Transferring from "./pages/Transferring"
 
 import {createBrowserRouter, RouterProvider } from "react-router-dom";
 
@@ -18,7 +19,19 @@ const router = createBrowserRouter([
       {
         path: "transfer",
         element: <Playlists />,
-        errorElement: <ErrorPage />
+        errorElement: <ErrorPage />,
+        // children: [
+        //   {
+        //     path: "transferring",
+        //     element: <Transferring />,
+        //     errorElement: <ErrorPage />,
+        //   }
+        // ]
+      },
+      {
+        path: "transferring",
+        element: <Transferring />,
+        errorElement: <ErrorPage />,
       }
     ]
   }

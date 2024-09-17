@@ -13,7 +13,7 @@ var port = process.env.PORT || 8080;
 var spotify_redirect_uri_login = 'http://localhost:8080/spotify/callback';
 var spotify_client_id = process.env.SPOTIFY_CLIENT_ID;
 var spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET;
-var spofify_access_token = '';
+var spotify_access_token = '';
 app.get('/', function (req, res) {
     res.send("This is the home route");
 });
@@ -31,7 +31,6 @@ app.get('/login/spotify', function (req, res) {
 app.get('/spotify/callback', function (req, res) {
     var code = req.query.code || null;
     var source = req.query.state;
-    var target = req.query.target;
     var authOptions = {
         url: 'https://accounts.spotify.com/api/token',
         form: {
@@ -45,10 +44,10 @@ app.get('/spotify/callback', function (req, res) {
         json: true
     };
     request.post(authOptions, function (error, response, body) {
-        spofify_access_token = body.access_token;
+        spotify_access_token = body.access_token;
         // let uri = process.env.FRONTEND_URI || 'http://localhost:3000/playlists/spotify'
         var uri = process.env.FRONTEND_URI || 'http://localhost:3000/transfer';
-        res.cookie('access_token', body.access_token);
+        res.cookie('access_token', spotify_access_token);
         if (source === "Apple Music") {
             res.redirect("".concat(uri, "?source=").concat(source, "&target=Spotify"));
         }
@@ -60,6 +59,7 @@ app.get('/spotify/callback', function (req, res) {
 //apple music authentication
 app.get('/login/apple', function (req, res) {
     var source = req.query.source;
+    var target = req.query.target;
     //logic for creating jwt known as developer token
     var fs = require('fs');
     var path = require('path');
@@ -76,13 +76,11 @@ app.get('/login/apple', function (req, res) {
             kid: key_id
         }
     });
-    // let uri = process.env.FRONTEND_URI || 'http://localhost:3000/playlists/apple'
     var uri = process.env.FRONTEND_URI || 'http://localhost:3000/transfer';
     // Send the JWT as an HttpOnly cookie
     res.cookie('dev_token', token, { httpOnly: true, sameSite: 'Strict' });
-    //TODO why is it that we have to pass a space to the search param to get the apple music component to render?
     if (source === 'Spotify') {
-        res.redirect(uri + "?source=".concat(source, "&target=Apple Music"));
+        res.redirect(uri + "?source=".concat(source, "&target=").concat(target));
     }
     else {
         res.redirect(uri + "?source=".concat(source));

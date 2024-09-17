@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import styles from './PlaylistCard.module.css';
+import styles from '../PlaylistCard/PlaylistCard.module.css'
 
 import { Song } from '../../types/types';
 
@@ -7,7 +7,7 @@ import { getSpotifyPlaylistItems } from '../../spotify/spotify'
 import { getApplePlaylistItems, getApplePlaylistSongIsrcs } from '../../apple/apple'
 import { useSource } from '../../App';
 
-export default function PlaylistCard({playlistId, name, imgUrl, owner}
+export default function ApplePlaylistCard({playlistId, name, imgUrl, owner}
 : {
 playlistId : string
 name : string,
@@ -35,15 +35,13 @@ sourcePlatform: string | null,
                         {owner ? <li>owner: {owner}</li> : null }
                         <li>id: {playlistId}</li> 
                     </ul>
-                        {
+                        {// Selecting the target apple music playlist 
+                        //! We're alread logged after the redirect to the current page so we don't need to login again!!!
                         sourcePlatform === 'Spotify' ?
                         <button onClick = { async () => {
-                                // TODO we need to figure out how to maintain source and target playlists through redirects
+                                // TODO can we use link for this instead so we don't send another http request?
                                 console.log(playlistId);
-                                let songs : Song[] = await getSpotifyPlaylistItems(playlistId);
-                                let stringSongs = JSON.stringify(songs);
-                                localStorage.setItem('sourceSongs', stringSongs)
-                                window.location.replace(`http://localhost:8080/login/apple?source=${sourcePlatform}&target=Apple Music`)
+                                window.location.replace(`http://localhost:3000/transferring?source=${sourcePlatform}&target=Apple Music&playlistId=${playlistId}`);
                         }
                         }>Transfer</button> 
                             :
@@ -51,14 +49,12 @@ sourcePlatform: string | null,
                                 let librarySongs = await getApplePlaylistItems(playlistId);  
                                 let {catalogSongs, songsNotFound} = await getApplePlaylistSongIsrcs(librarySongs);
                                 let stringCatalogSongs = JSON.stringify(catalogSongs);
-                                //TODO: We need to find away to add the songs that could not be found and remove from local storage
-                                //TODO when user restarts process ? maybe it does it automatically when there is an empty array for songs
-                                //TODO not found?
+                            
                                 let stringSongsNotFound = JSON.stringify(songsNotFound);
                                 
                                 localStorage.setItem('sourceSongs', stringCatalogSongs);
             
-                                window.location.replace(`http://localhost:8080/login/spotify?source=${sourcePlatform}&target=Spotify`)
+                                window.location.replace(`http://localhost:8080/login/spotify?source=${sourcePlatform}`)
                             }}>Transfer</button>  
                         }
                     </div>      
@@ -75,3 +71,5 @@ sourcePlatform: string | null,
         )
     }
 }
+
+export {ApplePlaylistCard}

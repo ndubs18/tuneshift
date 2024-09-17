@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import PlaylistCard from "../PlaylistCard/PlaylistCard";
 import { useSource } from "../../App";
 
+import { SpotifyPlaylistCard } from '../SpotifyPlaylistCard/SpotifyPlaylistCard'
 
 import { PlaylistProps } from '../../types/types';
 
@@ -53,7 +54,7 @@ let SpotifyPlaylists =  () => {
                 <ul className={styles.playlists}>
                     {loading ? <h3>Loading...</h3> :
                     playlists?.items.map(playlist => <li key={playlist.id}>
-                        <PlaylistCard playlistId={playlist.id}
+                        <SpotifyPlaylistCard playlistId={playlist.id}
                          name={playlist.name ? playlist.name : 'null'} 
                          owner={playlist.owner.display_name} 
                          imgUrl={playlist.images[0].url} 
@@ -71,7 +72,7 @@ let SpotifyPlaylists =  () => {
                     playlists?.items.map(playlist => {
                         if(playlist.owner.id === profile?.id) { 
                         return <li key={playlist.id}>
-                        <PlaylistCard playlistId={playlist.id} 
+                        <SpotifyPlaylistCard playlistId={playlist.id} 
                         name={playlist.name ? playlist.name : 'null'} 
                         owner={playlist.owner.display_name} 
                         imgUrl={playlist.images[0].url} 

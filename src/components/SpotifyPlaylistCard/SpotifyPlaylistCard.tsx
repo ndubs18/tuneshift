@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import styles from './PlaylistCard.module.css';
+import styles from '../PlaylistCard/PlaylistCard.module.css'
 
 import { Song } from '../../types/types';
 
@@ -7,7 +7,7 @@ import { getSpotifyPlaylistItems } from '../../spotify/spotify'
 import { getApplePlaylistItems, getApplePlaylistSongIsrcs } from '../../apple/apple'
 import { useSource } from '../../App';
 
-export default function PlaylistCard({playlistId, name, imgUrl, owner}
+export default function SpotifyPlaylistCard({playlistId, name, imgUrl, owner}
 : {
 playlistId : string
 name : string,
@@ -35,30 +35,22 @@ sourcePlatform: string | null,
                         {owner ? <li>owner: {owner}</li> : null }
                         <li>id: {playlistId}</li> 
                     </ul>
-                        {
-                        sourcePlatform === 'Spotify' ?
+                        {//select the target spotify playlist
+                        sourcePlatform === 'Apple Music' ?
                         <button onClick = { async () => {
                                 // TODO we need to figure out how to maintain source and target playlists through redirects
-                                console.log(playlistId);
-                                let songs : Song[] = await getSpotifyPlaylistItems(playlistId);
-                                let stringSongs = JSON.stringify(songs);
-                                localStorage.setItem('sourceSongs', stringSongs)
-                                window.location.replace(`http://localhost:8080/login/apple?source=${sourcePlatform}&target=Apple Music`)
-                        }
+                                // window.location.replace(`http://localhost:8080/login/Spotify?source=${sourcePlatform}&playlistId=${playlistId}`)
+                                window.location.replace(`http://localhost:3000/transferring?source=${sourcePlatform}&target=Spotify&playlistId=${playlistId}`)
+                         }
                         }>Transfer</button> 
                             :
                             <button onClick = { async () => { 
-                                let librarySongs = await getApplePlaylistItems(playlistId);  
-                                let {catalogSongs, songsNotFound} = await getApplePlaylistSongIsrcs(librarySongs);
-                                let stringCatalogSongs = JSON.stringify(catalogSongs);
-                                //TODO: We need to find away to add the songs that could not be found and remove from local storage
-                                //TODO when user restarts process ? maybe it does it automatically when there is an empty array for songs
-                                //TODO not found?
-                                let stringSongsNotFound = JSON.stringify(songsNotFound);
-                                
-                                localStorage.setItem('sourceSongs', stringCatalogSongs);
-            
-                                window.location.replace(`http://localhost:8080/login/spotify?source=${sourcePlatform}&target=Spotify`)
+                                let librarySongs = await getSpotifyPlaylistItems(playlistId);  
+                                let songs : Song[] = await getSpotifyPlaylistItems(playlistId);
+                                let stringSongs = JSON.stringify(songs);
+                                localStorage.setItem('sourceSongs', stringSongs)
+
+                                window.location.replace(`http://localhost:8080/login/Apple?source=${sourcePlatform}&target=Apple Music`)
                             }}>Transfer</button>  
                         }
                     </div>      
@@ -75,3 +67,5 @@ sourcePlatform: string | null,
         )
     }
 }
+
+export {SpotifyPlaylistCard}

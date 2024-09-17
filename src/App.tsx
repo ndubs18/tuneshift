@@ -11,14 +11,13 @@ import { Song } from './types/types';
 
 type ContextType = {
   sourcePlatform : string | null,
-  targetPlatform : string | null,
   sourcePlaylist : Song[] | null,
   setSourcePlaylist : (songs : Song[]) => void,
 }
 
 function App() {
 
-  let [sourcePlatform, setSourcePlatform] = useState<string | null>('');
+  let [sourcePlatform, setSourcePlatform] = useState<string | null>("");
 
   let [sourcePlaylist, setSourcePlaylist] = useState<Song[]>([]);
  
@@ -42,9 +41,8 @@ function App() {
     let source = searchParams.get('source');
     setSourcePlatform(source);
     //let songs = window.localStorage.getItem("songs");
-    console.log("sourcePlatform: " + sourcePlatform)
     setSourcePlaylist(JSON.parse(window.localStorage.getItem("sourceSongs")!));
-    console.log(sourcePlaylist);
+
   },[sourcePlatform])
 
   return (
@@ -54,21 +52,21 @@ function App() {
       }}><h1 className='navTitle'>TuneShift</h1>
       </Link>
       <header className="App-header"> 
-        {sourcePlatform !== "Spotify" && sourcePlatform !== "Apple Music" ? 
-        
-        (<>
-        <h4>Select the source platform</h4>
-       <div className='sourceSelection'>
-          <div className='sourceCard'>
-            <img src={SpotifyLogo} alt="spotify" />
-            <LoginButton name="Spotify" setSourcePlatform={setSourcePlatformWrapper}/>
+        {sourcePlatform == null ? ( 
+        <>
+          <h4>Select the source platform</h4>
+          <div className='sourceSelection'>
+            <div className='sourceCard'>
+              <img src={SpotifyLogo} alt="spotify" />
+              <LoginButton name="Spotify" setSourcePlatform={setSourcePlatformWrapper}/>
+            </div>
+            <span><img src={BidirectionalArrow} alt="arrow"/></span>  
+            <div className='sourceCard'>
+              <img src={AppleLogo} alt="apple music" />
+              <LoginButton name="Apple Music" setSourcePlatform={setSourcePlatformWrapper}/>
+            </div>
           </div>
-          <span><img src={BidirectionalArrow} alt="arrow"/></span>  
-          <div className='sourceCard'>
-            <img src={AppleLogo} alt="apple music" />
-            <LoginButton name="Apple Music" setSourcePlatform={setSourcePlatformWrapper}/>
-          </div>
-        </div></>) : (
+        </>) : (
           <Outlet context={{sourcePlatform, sourcePlaylist, setSourcePlaylist} as ContextType}/>
         )
         }

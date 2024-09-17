@@ -4,6 +4,8 @@ import styles from '../../pages/Playlists.module.css';
 import PlaylistCard from '../PlaylistCard/PlaylistCard';
 import {useSource} from '../../App';
 
+import {ApplePlaylistCard} from '../ApplePlaylistCard/ApplePlaylistCard'
+
 import { PlaylistProps } from '../../types/types';
 
 import noArtImg from '../../assets/images/noArtwork.png'
@@ -27,7 +29,7 @@ let ApplePlaylists = () => {
 
     //get the context value
 
-    const {sourcePlatform, setSourcePlaylist} = useSource();
+    const {sourcePlatform} = useSource();
 
     let [playlists, setPlaylists] = useState<IPlaylists | null>(null)
     let [loading, setLoading] = useState(false);
@@ -58,7 +60,7 @@ let ApplePlaylists = () => {
               {loading ? <h3>Loading...</h3> : 
               playlists?.data.map(playlist => 
                 <li key={playlist.id}>
-                  <PlaylistCard 
+                  <ApplePlaylistCard 
                   playlistId={playlist.id} 
                   name={playlist.attributes.name ? playlist.attributes.name : 'null'} 
                   sourcePlatform={sourcePlatform} 
@@ -77,7 +79,7 @@ let ApplePlaylists = () => {
               playlists?.data.map(playlist => {
                 if(playlist.attributes.canEdit) {
                   return <li key={playlist.id}>
-                  <PlaylistCard playlistId={playlist.id} 
+                  <ApplePlaylistCard playlistId={playlist.id} 
                   name={playlist.attributes.name ? playlist.attributes.name : 'null'} 
                   sourcePlatform={sourcePlatform} 
                   imgUrl={playlist.attributes.artwork?.url ? formatImgUrl(playlist.attributes.artwork?.url) : noArtImg} 
