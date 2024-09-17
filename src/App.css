@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  background-color: #e9e5e1;
 }
 a {
   text-decoration: none;
@@ -9,9 +10,13 @@ a {
   color: white;
   margin: 0;
   padding: 1rem 0;
+  position: absolute;
+  width: 100%;
 }
 
 .App-header {
+  width: 80%;
+  margin: 0 auto;
   background-color: #e9e5e1;
   min-height: 100vh;
   display: flex;
@@ -20,6 +25,8 @@ a {
   /* justify-content: center; */
   font-size: calc(10px + 2vmin);
   color: #282c34;
+  padding-top: 5rem;
+  
 }
 
 /* .App-header h4 {
@@ -30,6 +37,7 @@ a {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  
 }
 
 .sourceSelection button {

@@ -47,7 +47,7 @@ let SpotifyPlaylists =  () => {
 
     return (
         <div>
-            <h1 style={{marginLeft: '2rem'}}>Spotify Playlists</h1>
+            <h1>Spotify Playlists</h1>
             {sourcePlatform === 'Spotify' ? 
             <>
                 <h2>Choose a playlist to transfer</h2>

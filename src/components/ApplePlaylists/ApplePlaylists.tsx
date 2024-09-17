@@ -52,7 +52,7 @@ let ApplePlaylists = () => {
     
     return (
       <div>
-        <h1 style={{marginLeft: '2rem'}}>Apple Music Playlists</h1>
+       <h1>Apple Music Playlists</h1>
         {sourcePlatform === "Apple Music" ? <>
           <h2>Choose a playlist to transfer</h2>
           <ul className={styles.playlists}>

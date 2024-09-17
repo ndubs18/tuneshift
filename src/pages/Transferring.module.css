@@ -1,0 +1,32 @@
+.status {
+    width: 60%;
+    padding: 0rem;
+}
+
+.center {
+    text-align: center;
+}
+
+.m0 {
+    margin: 0;
+}
+.p0 {
+    padding: 0;
+}
+
+.fs1rem {
+    font-size: 1rem;
+}
+
+.songList {
+    overflow: scroll;
+    height: 65vh;
+    width: 100%;
+    scrollbar-color: grey #e9e5e1;
+    margin-top: 3rem;
+
+}
+
+.overflow {
+    overflow: scroll;
+}

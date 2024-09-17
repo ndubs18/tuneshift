@@ -4,15 +4,15 @@ h2 {
 }
 
 .playlists {
-    width: 100%;
+    width: 50rem;
     height: 60vh;
-    margin: 0 auto;
-    padding: 0;
+    margin: 2.5rem auto 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     flex-wrap: none;
     overflow: auto;
+    scrollbar-color: grey #e9e5e1;
     
 }
 
