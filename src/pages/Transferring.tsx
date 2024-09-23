@@ -4,7 +4,7 @@ import { useSource } from "../App"
 import styles from './Transferring.module.css'
 import { addToSpotifyPlaylist, getSpotifyCatalogSongIds, getSpotifyPlaylist } from '../spotify/spotify'
 import { Song } from "../types/types";
-import { getApplePlaylistItems, getApplePlaylistSongIsrcs } from "../apple/apple";
+import { getApplePlaylistItems, getApplePlaylistSongIsrcs, handleMusicKitLoaded } from "../apple/apple";
 
 let Transferring = () => {
 
@@ -44,7 +44,7 @@ let Transferring = () => {
         let {appleCatalogSongs, songsNotFound} = await getApplePlaylistSongIsrcs(librarySongs);
          
         let spotifyCatalogSongIds = await getSpotifyCatalogSongIds(appleCatalogSongs)
-
+        
         let transferred = await addToSpotifyPlaylist(spotifyCatalogSongIds,targetPlaylistId);
         console.log(transferred);
 
@@ -56,7 +56,7 @@ let Transferring = () => {
       let searchParams = getSearchParams();
       let sourcePlaylistId = searchParams.get("sourcePlaylistId");
       //TODO Lets change the query param to targetPlaylistId
-      let targertPlaylistId = searchParams.get("playlistId");
+      let targetPlaylistId = searchParams.get("playlistId");
       
       if(targetPlaylistId) {
         setTargetPlaylistId(targetPlaylistId);
@@ -66,10 +66,9 @@ let Transferring = () => {
         setSourcePlaylistId(sourcePlaylistId)
       }
       //transferSongs(sourcePlatform!,targetPlaylistId,sourcePlaylist!);
+
       //3. update error songs
       //4. display songs that could be transferred
-
-    
 
     }, [])
 
@@ -85,7 +84,10 @@ let Transferring = () => {
             //if source playlist is apple music -> transfer apple songs
 
             if(sourcePlatform === "Apple Music") {
-                TransferAppleSongs(sourcePlatform,sourcePlaylistId,targetPlaylistId)
+                handleMusicKitLoaded().then(()=>{
+                    if(sourcePlatform)
+                    TransferAppleSongs(sourcePlatform,sourcePlaylistId,targetPlaylistId)
+                })
             }
             else if(sourcePlatform === "Spotify") {
 
