@@ -3,7 +3,9 @@ import styles from '../PlaylistCard/PlaylistCard.module.css'
 
 import { Song } from '../../types/types';
 
-import { getSpotifyPlaylistItems } from '../../spotify/spotify'
+import { useSearchParams } from 'react-router-dom';
+
+import { getSpotifyPlaylistSongs } from '../../spotify/spotify'
 import { getApplePlaylistItems, getApplePlaylistSongIsrcs } from '../../apple/apple'
 import { useSource } from '../../App';
 
@@ -19,6 +21,8 @@ sourcePlatform: string | null,
     let [open, setOpen] = useState<boolean>(false);
     
     let [playlistItems, setPlaylistItems] = useState([]);
+
+    const [searchParams] = useSearchParams();
 
     let {sourcePlatform} = useSource();
 
@@ -40,17 +44,18 @@ sourcePlatform: string | null,
                         <button onClick = { async () => {
                                 // TODO we need to figure out how to maintain source and target playlists through redirects
                                 // window.location.replace(`http://localhost:8080/login/Spotify?source=${sourcePlatform}&playlistId=${playlistId}`)
-                                window.location.replace(`http://localhost:3000/transferring?source=${sourcePlatform}&target=Spotify&playlistId=${playlistId}`)
+
+                                let sourcePlaylistId = searchParams.get('sourcePlaylistId');
+                                window.location.replace(`http://localhost:3000/transferring?source=${sourcePlatform}&sourcePlaylistId=${sourcePlaylistId}&target=Spotify&playlistId=${playlistId}`)
                          }
                         }>Transfer</button> 
                             :
-                            <button onClick = { async () => { 
-                                let librarySongs = await getSpotifyPlaylistItems(playlistId);  
-                                let songs : Song[] = await getSpotifyPlaylistItems(playlistId);
-                                let stringSongs = JSON.stringify(songs);
-                                localStorage.setItem('sourceSongs', stringSongs)
+                            <button onClick = { async () => {  
+                                // let songs : Song[] = await getSpotifyPlaylistSongs(playlistId);
+                                // let stringSongs = JSON.stringify(songs);
+                                // localStorage.setItem('sourceSongs', stringSongs)
 
-                                window.location.replace(`http://localhost:8080/login/Apple?source=${sourcePlatform}&target=Apple Music`)
+                                window.location.replace(`http://localhost:8080/login/Apple?source=${sourcePlatform}&sourcePlaylistId=${playlistId}&target=Apple Music`)
                             }}>Transfer</button>  
                         }
                     </div>      

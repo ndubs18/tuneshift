@@ -3,7 +3,7 @@ import styles from './PlaylistCard.module.css';
 
 import { Song } from '../../types/types';
 
-import { getSpotifyPlaylistItems } from '../../spotify/spotify'
+import { getSpotifyPlaylistSongs } from '../../spotify/spotify'
 import { getApplePlaylistItems, getApplePlaylistSongIsrcs } from '../../apple/apple'
 import { useSource } from '../../App';
 
@@ -40,7 +40,7 @@ sourcePlatform: string | null,
                         <button onClick = { async () => {
                                 // TODO we need to figure out how to maintain source and target playlists through redirects
                                 console.log(playlistId);
-                                let songs : Song[] = await getSpotifyPlaylistItems(playlistId);
+                                let songs : Song[] = await getSpotifyPlaylistSongs(playlistId);
                                 let stringSongs = JSON.stringify(songs);
                                 localStorage.setItem('sourceSongs', stringSongs)
                                 window.location.replace(`http://localhost:8080/login/apple?source=${sourcePlatform}&target=Apple Music`)
@@ -49,8 +49,8 @@ sourcePlatform: string | null,
                             :
                             <button onClick = { async () => { 
                                 let librarySongs = await getApplePlaylistItems(playlistId);  
-                                let {catalogSongs, songsNotFound} = await getApplePlaylistSongIsrcs(librarySongs);
-                                let stringCatalogSongs = JSON.stringify(catalogSongs);
+                                let {appleCatalogSongs, songsNotFound} = await getApplePlaylistSongIsrcs(librarySongs);
+                                let stringCatalogSongs = JSON.stringify(appleCatalogSongs);
                                 //TODO: We need to find away to add the songs that could not be found and remove from local storage
                                 //TODO when user restarts process ? maybe it does it automatically when there is an empty array for songs
                                 //TODO not found?

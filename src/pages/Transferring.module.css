@@ -1,6 +1,7 @@
 .status {
-    width: 60%;
+    width: 70%;
     padding: 0rem;
+
 }
 
 .center {
@@ -24,6 +25,7 @@
     width: 100%;
     scrollbar-color: grey #e9e5e1;
     margin-top: 3rem;
+    text-align: start
 
 }
 

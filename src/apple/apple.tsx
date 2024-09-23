@@ -2,7 +2,7 @@ import { Song, LibrarySong } from '../types/types'
 
 declare global {
   interface Window {
-    MusicKit?: any;
+    MusicKit: any;
   }
 }
 //get httpOnly access token from server
@@ -63,20 +63,21 @@ let getApplePlaylistSongIsrcs = async (libraryPlaylistSongs : LibrarySong[]) => 
 
   const music = window.MusicKit.getInstance();
   await music.authorize();
-  // let catalogSong = await music.api.music(`v1/me/library/songs/${libraryPlaylistSongs[0].id}/catalog`);
+  let catalogSong = await music.api.music(`v1/me/library/songs/${libraryPlaylistSongs[0].id}/catalog`);
  
   for(const playlistSong of libraryPlaylistSongs) {
     try {
 
       let catalogSong = await music.api.music(`v1/me/library/songs/${playlistSong.id}/catalog`);
       console.log(catalogSong);
-
       const name = catalogSong.data.data[0].attributes.name;
+      const artists = catalogSong.data.data[0].attributes.artistName;
       const isrc = catalogSong.data.data[0].attributes.isrc;
 
       let song : Song = {
         name: name,
-        isrc: isrc
+        artists : artists, 
+        isrc: isrc,
       }
       catalogSongs.push(song);
     } catch(e) { 
@@ -84,7 +85,7 @@ let getApplePlaylistSongIsrcs = async (libraryPlaylistSongs : LibrarySong[]) => 
       console.log(e);
     }
   }
-  return {catalogSongs: catalogSongs, songsNotFound: songsNotFound};
+  return {appleCatalogSongs: catalogSongs, songsNotFound: songsNotFound};
 }
 
 let logOut = async () => {

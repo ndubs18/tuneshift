@@ -5,7 +5,9 @@ export type Profile = {
 
 export type Song = {
     name : string,
-    isrc : string
+    artists : string;
+    isrc? : string,
+    id? : string
 }
 
 export type LibrarySong = {

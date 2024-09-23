@@ -9,6 +9,7 @@ import { PlaylistProps } from '../../types/types';
 
 import styles from '../../pages/Playlists.module.css';
 import '../PlaylistCard/PlaylistCard.module.css'
+import noArtImg from '../../assets/images/noArtwork.png'
 import { getCurrentUserProfile, getCurrentUsersPlaylits, parseAccessToken } from '../../spotify/spotify';
 
 interface IPlaylists {
@@ -19,7 +20,7 @@ interface IPlaylist {
     name : string,
     snapshot_id : string,
     images : {url : string}[],
-    id : string
+    id : string,
     owner: {
         display_name : string,
         id: string
@@ -57,7 +58,7 @@ let SpotifyPlaylists =  () => {
                         <SpotifyPlaylistCard playlistId={playlist.id}
                          name={playlist.name ? playlist.name : 'null'} 
                          owner={playlist.owner.display_name} 
-                         imgUrl={playlist.images[0].url} 
+                        //  imgUrl={playlist.images[0].url ? playlist.images[0].url : noArtImg } 
                          sourcePlatform={sourcePlatform}
                         /> 
                         </li>
@@ -75,7 +76,7 @@ let SpotifyPlaylists =  () => {
                         <SpotifyPlaylistCard playlistId={playlist.id} 
                         name={playlist.name ? playlist.name : 'null'} 
                         owner={playlist.owner.display_name} 
-                        imgUrl={playlist.images[0].url} 
+                        // imgUrl={playlist.images[0].url ? playlist.images[0].url : noArtImg } 
                         sourcePlatform = {sourcePlatform}
                         /> 
                         </li>

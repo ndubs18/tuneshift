@@ -19,18 +19,20 @@ app.get('/', function (req, res) {
 });
 app.get('/login/spotify', function (req, res) {
     var source = req.query.source;
+    var sourcePlaylistId = req.query.sourcePlaylistId;
     var queryString = querystring.stringify({
         response_type: 'code',
         redirect_uri: spotify_redirect_uri_login,
-        scope: 'user-read-private user-read-email user-library-read playlist-read-private',
+        scope: 'user-read-private user-read-email user-library-read playlist-read-private playlist-modify-public playlist-modify-private',
         client_id: spotify_client_id,
-        state: source
+        state: source + '&' + sourcePlaylistId
     });
     res.redirect('https://accounts.spotify.com/authorize?' + queryString);
 });
 app.get('/spotify/callback', function (req, res) {
     var code = req.query.code || null;
-    var source = req.query.state;
+    var state = req.query.state;
+    var _a = state.split("&"), source = _a[0], sourcePlaylistId = _a[1];
     var authOptions = {
         url: 'https://accounts.spotify.com/api/token',
         form: {
@@ -49,16 +51,17 @@ app.get('/spotify/callback', function (req, res) {
         var uri = process.env.FRONTEND_URI || 'http://localhost:3000/transfer';
         res.cookie('access_token', spotify_access_token);
         if (source === "Apple Music") {
-            res.redirect("".concat(uri, "?source=").concat(source, "&target=Spotify"));
+            res.redirect("".concat(uri, "?source=").concat(source, "&sourcePlaylistId=").concat(sourcePlaylistId, "&target=Spotify"));
         }
         else {
-            res.redirect(uri + '?source=' + source);
+            res.redirect("".concat(uri, "?source=").concat(source));
         }
     });
 });
 //apple music authentication
 app.get('/login/apple', function (req, res) {
     var source = req.query.source;
+    var sourcePlaylistId = req.query.sourcePlaylistId;
     var target = req.query.target;
     //logic for creating jwt known as developer token
     var fs = require('fs');
@@ -80,7 +83,7 @@ app.get('/login/apple', function (req, res) {
     // Send the JWT as an HttpOnly cookie
     res.cookie('dev_token', token, { httpOnly: true, sameSite: 'Strict' });
     if (source === 'Spotify') {
-        res.redirect(uri + "?source=".concat(source, "&target=").concat(target));
+        res.redirect(uri + "?source=".concat(source, "&sourcePlaylistId=").concat(sourcePlaylistId, "&target=").concat(target));
     }
     else {
         res.redirect(uri + "?source=".concat(source));

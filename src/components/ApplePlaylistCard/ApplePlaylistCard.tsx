@@ -2,8 +2,8 @@ import { useState } from 'react';
 import styles from '../PlaylistCard/PlaylistCard.module.css'
 
 import { Song } from '../../types/types';
-
-import { getSpotifyPlaylistItems } from '../../spotify/spotify'
+import { useSearchParams } from 'react-router-dom';
+import { getSpotifyPlaylistSongs } from '../../spotify/spotify'
 import { getApplePlaylistItems, getApplePlaylistSongIsrcs } from '../../apple/apple'
 import { useSource } from '../../App';
 
@@ -21,6 +21,8 @@ sourcePlatform: string | null,
     let [playlistItems, setPlaylistItems] = useState([]);
 
     let {sourcePlatform} = useSource();
+
+    const [searchParams] = useSearchParams();
 
     if(open) {
         return (
@@ -40,21 +42,25 @@ sourcePlatform: string | null,
                         sourcePlatform === 'Spotify' ?
                         <button onClick = { async () => {
                                 // TODO can we use link for this instead so we don't send another http request?
-                                console.log(playlistId);
-                                window.location.replace(`http://localhost:3000/transferring?source=${sourcePlatform}&target=Apple Music&playlistId=${playlistId}`);
+
+                                let sourcePlaylistId = searchParams.get('sourcePlaylistId');
+
+                                window.location.replace(`http://localhost:3000/transferring?source=${sourcePlatform}&sourcePlaylistId=${sourcePlaylistId}&target=Apple Music&playlistId=${playlistId}`);
                         }
                         }>Transfer</button> 
                             :
                             <button onClick = { async () => { 
-                                let librarySongs = await getApplePlaylistItems(playlistId);  
-                                let {catalogSongs, songsNotFound} = await getApplePlaylistSongIsrcs(librarySongs);
-                                let stringCatalogSongs = JSON.stringify(catalogSongs);
+                                // let librarySongs = await getApplePlaylistItems(playlistId);  
+                                // let {catalogSongs, songsNotFound} = await getApplePlaylistSongIsrcs(librarySongs);
+                                // let stringCatalogSongs = JSON.stringify(catalogSongs);
                             
-                                let stringSongsNotFound = JSON.stringify(songsNotFound);
+                                // let stringSongsNotFound = JSON.stringify(songsNotFound);
                                 
-                                localStorage.setItem('sourceSongs', stringCatalogSongs);
+                                // localStorage.setItem('sourceSongs', stringCatalogSongs);
+                                // localStorage.setItem('errorSongs', stringSongsNotFound);
             
-                                window.location.replace(`http://localhost:8080/login/spotify?source=${sourcePlatform}`)
+                                // window.location.replace(`http://localhost:8080/login/spotify?source=${sourcePlatform}`)
+                                window.location.replace(`http://localhost:8080/login/spotify?source=${sourcePlatform}&sourcePlaylistId=${playlistId}`)
                             }}>Transfer</button>  
                         }
                     </div>      

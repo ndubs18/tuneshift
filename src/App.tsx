@@ -12,14 +12,15 @@ import { Song } from './types/types';
 type ContextType = {
   sourcePlatform : string | null,
   sourcePlaylist : Song[] | null,
+  errorSongs : Song[] | null;
   setSourcePlaylist : (songs : Song[]) => void,
 }
 
 function App() {
 
   let [sourcePlatform, setSourcePlatform] = useState<string | null>("");
-
   let [sourcePlaylist, setSourcePlaylist] = useState<Song[]>([]);
+  let [errorSongs, setErrorSongs] = useState<Song[] | null>([]);
  
   // TODO we need to manage state globally to handle re-authenticating
   // let [sourceLoggedIn, setSourceLoggedIn] = useState(false);
@@ -40,8 +41,11 @@ function App() {
   useEffect(() => {
     let source = searchParams.get('source');
     setSourcePlatform(source);
-    //let songs = window.localStorage.getItem("songs");
+   
+    //! We need to find an alternative to using the non-null assertion operator '!'
+    //* We can probably just check if the value is null before passing it to JSON parse?
     setSourcePlaylist(JSON.parse(window.localStorage.getItem("sourceSongs")!));
+    setErrorSongs(JSON.parse(window.localStorage.getItem("errorSongs")!))
 
   },[sourcePlatform])
 
@@ -67,7 +71,7 @@ function App() {
             </div>
           </div>
         </>) : (
-          <Outlet context={{sourcePlatform, sourcePlaylist, setSourcePlaylist} as ContextType}/>
+          <Outlet context={{sourcePlatform, sourcePlaylist, errorSongs, setSourcePlaylist} as ContextType}/>
         )
         }
       </header>

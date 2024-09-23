@@ -23,13 +23,14 @@ app.get('/', (req : any, res: any) => {
 
 app.get('/login/spotify', (req : any, res : any) => {
     let source = req.query.source;
+    let sourcePlaylistId = req.query.sourcePlaylistId;
 
     let queryString = querystring.stringify({
         response_type: 'code',
         redirect_uri: spotify_redirect_uri_login,
-        scope: 'user-read-private user-read-email user-library-read playlist-read-private',
+        scope: 'user-read-private user-read-email user-library-read playlist-read-private playlist-modify-public playlist-modify-private',
         client_id: spotify_client_id,
-        state: source
+        state: source+'&'+ sourcePlaylistId
     })
     res.redirect('https://accounts.spotify.com/authorize?' + queryString);
 })
@@ -37,7 +38,11 @@ app.get('/login/spotify', (req : any, res : any) => {
 app.get('/spotify/callback', (req, res) => {
 
     let code = req.query.code || null;
-    let source = req.query.state;
+    let state = req.query.state;
+
+    let [source,sourcePlaylistId] = state.split("&");
+
+    
 
     let authOptions = {
       url: 'https://accounts.spotify.com/api/token',
@@ -62,9 +67,9 @@ app.get('/spotify/callback', (req, res) => {
       res.cookie('access_token', spotify_access_token);
       
       if(source === "Apple Music") {
-        res.redirect(`${uri}?source=${source}&target=Spotify`);
+        res.redirect(`${uri}?source=${source}&sourcePlaylistId=${sourcePlaylistId}&target=Spotify`);
       } else {
-        res.redirect(uri + '?source=' + source);
+        res.redirect(`${uri}?source=${source}`);
       }
     })
 })
@@ -72,6 +77,7 @@ app.get('/spotify/callback', (req, res) => {
 //apple music authentication
 app.get('/login/apple', (req, res) => {
   let source = req.query.source;
+  let sourcePlaylistId = req.query.sourcePlaylistId;
   let target = req.query.target;
 
   //logic for creating jwt known as developer token
@@ -98,7 +104,7 @@ app.get('/login/apple', (req, res) => {
   res.cookie('dev_token', token, { httpOnly: true, sameSite: 'Strict' });
   
   if(source === 'Spotify') {
-    res.redirect(uri + `?source=${source}&target=${target}`)
+    res.redirect(uri + `?source=${source}&sourcePlaylistId=${sourcePlaylistId}&target=${target}`)
   } else {
     res.redirect(uri + `?source=${source}`) 
   } 
