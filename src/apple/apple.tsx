@@ -19,7 +19,6 @@ let parseAccessToken = async () => {
   } catch (error) {
     console.error('Error fetching protected data:', error);
   }
-
 }
 
 const handleMusicKitLoaded = async () : Promise<void> => {
@@ -43,17 +42,15 @@ let getApplePlaylists = async () => {
   const music = window.MusicKit.getInstance(); 
   await music.authorize(); 
   const result = await music.api.music('v1/me/library/playlists');
-  // let playlists = await result;
   return result;
 }
 
 let getApplePlaylistItems = async (playlistId : string) => {
   const music = window.MusicKit.getInstance();
   await music.authorize();
-  const result = await music.api.music(`v1/me/library/playlists/${playlistId}/tracks`)
   
+  const result = await music.api.music(`v1/me/library/playlists/${playlistId}/tracks`) 
   let libraryPlaylistSongs = result.data.data;
-  
   return libraryPlaylistSongs;
 }
 
@@ -63,7 +60,6 @@ let getApplePlaylistSongIsrcs = async (libraryPlaylistSongs : LibrarySong[]) => 
 
   const music = window.MusicKit.getInstance();
   await music.authorize();
-  let catalogSong = await music.api.music(`v1/me/library/songs/${libraryPlaylistSongs[0].id}/catalog`);
  
   for(const playlistSong of libraryPlaylistSongs) {
     try {
@@ -86,6 +82,57 @@ let getApplePlaylistSongIsrcs = async (libraryPlaylistSongs : LibrarySong[]) => 
     }
   }
   return {appleCatalogSongs: catalogSongs, songsNotFound: songsNotFound};
+}
+
+let getSongIsrcListString = (songs : Song[]) => {
+  let isrcList = [];
+  for(const song of songs) {
+    isrcList.push(song.isrc);
+  }
+
+  let isrcString = isrcList.join(',')
+  return isrcString;
+}
+
+let formatSongsProperty = (catalogSongs : {id : string, type : string}[]) => {
+  let songsToAdd = [];
+
+  for(const song of catalogSongs) {
+    let songToAdd = Object.create(null);
+    songToAdd.id = song.id;
+    songToAdd.type = song.type
+    songsToAdd.push(songToAdd)
+  }
+
+  return songsToAdd;
+}
+export let addToApplePlaylist = async (targetPlaylistId: string, songs : Song[]) => {
+  const music = window.MusicKit.getInstance();
+  await music.authorize();
+
+  let accessToken = await parseAccessToken();
+
+  let isrcString = getSongIsrcListString(songs);
+  
+  let songsResponseByIsrc = await music.api.music(`/v1/catalog/us/songs?filter[isrc]=${isrcString}`)
+  
+  let songsProp = formatSongsProperty(songsResponseByIsrc.data.data);
+
+  try {
+  let userToken = await music.authorize();
+  let response = await fetch(`https://api.music.apple.com/v1/me/library/playlists/${targetPlaylistId}/tracks`, {
+      method: "POST",
+      body: JSON.stringify({data: songsProp}),
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Music-User-Token': userToken,
+        'Content-Type': 'application/json',
+      }
+    })
+  }
+  catch(error) {
+    console.log(error);
+  }
 }
 
 let logOut = async () => {

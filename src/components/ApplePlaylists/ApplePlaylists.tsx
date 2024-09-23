@@ -1,15 +1,9 @@
 
 import {useState, useEffect} from 'react';
 import styles from '../../pages/Playlists.module.css';
-import PlaylistCard from '../PlaylistCard/PlaylistCard';
 import {useSource} from '../../App';
-
 import {ApplePlaylistCard} from '../ApplePlaylistCard/ApplePlaylistCard'
-
-import { PlaylistProps } from '../../types/types';
-
 import noArtImg from '../../assets/images/noArtwork.png'
-
 import {getApplePlaylists, handleMusicKitLoaded, formatImgUrl} from '../../apple/apple';
 
 interface IPlaylists {

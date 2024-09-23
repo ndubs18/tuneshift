@@ -1,10 +1,6 @@
 import { useState } from 'react';
 import styles from '../PlaylistCard/PlaylistCard.module.css'
-
-import { Song } from '../../types/types';
 import { useSearchParams } from 'react-router-dom';
-import { getSpotifyPlaylistSongs } from '../../spotify/spotify'
-import { getApplePlaylistItems, getApplePlaylistSongIsrcs } from '../../apple/apple'
 import { useSource } from '../../App';
 
 export default function ApplePlaylistCard({playlistId, name, imgUrl, owner}

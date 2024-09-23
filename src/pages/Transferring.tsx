@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { useSource } from "../App"
 
 import styles from './Transferring.module.css'
-import { addToSpotifyPlaylist, getSpotifyCatalogSongIds, getSpotifyPlaylist } from '../spotify/spotify'
+import { addToSpotifyPlaylist, getSpotifyCatalogSongIds, getSpotifyPlaylist, getSpotifyPlaylistSongs } from '../spotify/spotify'
 import { Song } from "../types/types";
-import { getApplePlaylistItems, getApplePlaylistSongIsrcs, handleMusicKitLoaded } from "../apple/apple";
+import { addToApplePlaylist, getApplePlaylistItems, getApplePlaylistSongIsrcs, handleMusicKitLoaded } from "../apple/apple";
 
 let Transferring = () => {
 
@@ -26,15 +26,13 @@ let Transferring = () => {
 
     }
 
-    let transferSpotifySongs = async (sourcePlatform : string, sourcePlaylistId : string, targetPlaylistId : string, songs : Song[] ) => {
-        if(sourcePlatform === "Apple Music") {
+    let transferSpotifySongs = async (sourcePlatform : string, sourcePlaylistId : string, targetPlaylistId : string ) => {
             
-            let songsWithIds = await getSpotifyCatalogSongIds(songs)
-            
-            let response = await addToSpotifyPlaylist(songsWithIds, targetPlaylistId);
-
-    
-        }
+        let spotifySongs = await getSpotifyPlaylistSongs(sourcePlaylistId)
+            handleMusicKitLoaded().then(()=> {    
+            let added = addToApplePlaylist(targetPlaylistId,spotifySongs);
+            })
+            console.log(spotifySongs);
     }
 
     let TransferAppleSongs = async (sourcePlatform : string, sourcePlaylistId : string, targetPlaylistId : string ) => {
@@ -47,12 +45,9 @@ let Transferring = () => {
         
         let transferred = await addToSpotifyPlaylist(spotifyCatalogSongIds,targetPlaylistId);
         console.log(transferred);
-
     }
     
     useEffect(() => {
-      //1. set transferring to true
-      //2. initiate transfer
       let searchParams = getSearchParams();
       let sourcePlaylistId = searchParams.get("sourcePlaylistId");
       //TODO Lets change the query param to targetPlaylistId
@@ -65,11 +60,6 @@ let Transferring = () => {
       if(sourcePlaylistId) {
         setSourcePlaylistId(sourcePlaylistId)
       }
-      //transferSongs(sourcePlatform!,targetPlaylistId,sourcePlaylist!);
-
-      //3. update error songs
-      //4. display songs that could be transferred
-
     }, [])
 
     return (
@@ -81,18 +71,17 @@ let Transferring = () => {
             })}
         </ul> */}
         <button onClick={() => {
-            //if source playlist is apple music -> transfer apple songs
-
             if(sourcePlatform === "Apple Music") {
                 handleMusicKitLoaded().then(()=>{
-                    if(sourcePlatform)
+                    if(sourcePlatform && sourcePlaylistId && targetPlaylistId)
                     TransferAppleSongs(sourcePlatform,sourcePlaylistId,targetPlaylistId)
                 })
             }
             else if(sourcePlatform === "Spotify") {
-
+                if(sourcePlatform && sourcePlaylistId && targetPlaylistId) {
+                    transferSpotifySongs(sourcePlatform, sourcePlaylistId, targetPlaylistId)
+                }
             }
-            //else if source playlist is spotify -> transfer spotify songs
         }}></button>
     </div>
     )

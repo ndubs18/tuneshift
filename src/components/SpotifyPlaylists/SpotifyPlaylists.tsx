@@ -1,15 +1,9 @@
 import {Profile} from '../../types/types';
 import { useState, useEffect } from 'react';
-import PlaylistCard from "../PlaylistCard/PlaylistCard";
 import { useSource } from "../../App";
-
 import { SpotifyPlaylistCard } from '../SpotifyPlaylistCard/SpotifyPlaylistCard'
-
-import { PlaylistProps } from '../../types/types';
-
 import styles from '../../pages/Playlists.module.css';
 import '../PlaylistCard/PlaylistCard.module.css'
-import noArtImg from '../../assets/images/noArtwork.png'
 import { getCurrentUserProfile, getCurrentUsersPlaylits, parseAccessToken } from '../../spotify/spotify';
 
 interface IPlaylists {
