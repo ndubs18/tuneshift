@@ -155,28 +155,7 @@ export let addToApplePlaylist = async (targetPlaylistId: string, songs : Song[])
   catch(error) {
     console.log(error);
   }
-  }
-  
-  //let songsResponseByIsrc = await music.api.music(`/v1/catalog/us/songs?filter[isrc]=${isrcString}`)
-  
-  // let songsProp = await formatSongsProperty(songsResponseByIsrc.data.data);
-  // console.log(songsProp);
-
-  // try {
-  // let userToken = await music.authorize();
-  // let response = await fetch(`https://api.music.apple.com/v1/me/library/playlists/${targetPlaylistId}/tracks`, {
-  //     method: "POST",
-  //     body: JSON.stringify({data: songsProp}),
-  //     headers: {
-  //       Authorization: `Bearer ${accessToken}`,
-  //       'Music-User-Token': userToken,
-  //       'Content-Type': 'application/json',
-  //     }
-  //   })
-  // }
-  // catch(error) {
-  //   console.log(error);
-  // }
+  }  
 }
 
 let logOut = async () => {
