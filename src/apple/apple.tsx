@@ -85,26 +85,46 @@ let getApplePlaylistSongIsrcs = async (libraryPlaylistSongs : LibrarySong[]) => 
 }
 
 let getSongIsrcListString = (songs : Song[]) => {
-  let isrcList = [];
-  for(const song of songs) {
-    isrcList.push(song.isrc);
+  let isrcList =[];
+  let stringOfList = ''
+  if(songs.length >= 25) {
+  let numPages = Math.ceil(songs.length / 25);
+  for(let i = 0; i < numPages; i++) {
+    let songsPage = []
+    for(let j = i * 25; j < (i*25) + 25; ++j) {
+  
+      songsPage.push(songs[j].isrc)
+      if(j == ((i * 25) + 25) - 1 ) {
+        stringOfList = songsPage.join(',');
+      }
+    }
+    isrcList.push(stringOfList);
   }
-
-  let isrcString = isrcList.join(',')
-  return isrcString;
+} else {
+    for(const song of songs){ 
+      isrcList.push(song.isrc);
+    }
+    let isrcString = isrcList.join(',')
+    return isrcList;
+  }
+  return isrcList;
 }
 
-let formatSongsProperty = (catalogSongs : {id : string, type : string}[]) => {
-  let songsToAdd = [];
+let formatSongsProperty = (catalogSongs : any)=> {
+  let songsToAdd = []; 
 
-  for(const song of catalogSongs) {
+
+//one that couldn't be found on Bass24 playlist : US39N2204823
+ for(const song in catalogSongs) {
+    if(catalogSongs[song].length !== 0) {
     let songToAdd = Object.create(null);
-    songToAdd.id = song.id;
-    songToAdd.type = song.type
+    songToAdd.id = catalogSongs[song][0].id
+    songToAdd.type = catalogSongs[song][0].type
     songsToAdd.push(songToAdd)
+    }
   }
-
   return songsToAdd;
+
 }
 export let addToApplePlaylist = async (targetPlaylistId: string, songs : Song[]) => {
   const music = window.MusicKit.getInstance();
@@ -112,15 +132,17 @@ export let addToApplePlaylist = async (targetPlaylistId: string, songs : Song[])
 
   let accessToken = await parseAccessToken();
 
-  let isrcString = getSongIsrcListString(songs);
+  let formattedIsrcStringList = getSongIsrcListString(songs);
   
-  let songsResponseByIsrc = await music.api.music(`/v1/catalog/us/songs?filter[isrc]=${isrcString}`)
-  
-  let songsProp = formatSongsProperty(songsResponseByIsrc.data.data);
-
-  try {
-  let userToken = await music.authorize();
-  let response = await fetch(`https://api.music.apple.com/v1/me/library/playlists/${targetPlaylistId}/tracks`, {
+  for(const isrcString of formattedIsrcStringList) {
+    
+    let songsResponseByIsrc = await music.api.music(`/v1/catalog/us/songs?filter[isrc]=${isrcString}`)
+    let songsFilterObject = songsResponseByIsrc.data.meta.filters.isrc;
+    let songsProp = await formatSongsProperty(songsFilterObject);
+    console.log(songsProp)
+      try {
+      let userToken = await music.authorize();
+      let response = await fetch(`https://api.music.apple.com/v1/me/library/playlists/${targetPlaylistId}/tracks`, {
       method: "POST",
       body: JSON.stringify({data: songsProp}),
       headers: {
@@ -133,6 +155,28 @@ export let addToApplePlaylist = async (targetPlaylistId: string, songs : Song[])
   catch(error) {
     console.log(error);
   }
+  }
+  
+  //let songsResponseByIsrc = await music.api.music(`/v1/catalog/us/songs?filter[isrc]=${isrcString}`)
+  
+  // let songsProp = await formatSongsProperty(songsResponseByIsrc.data.data);
+  // console.log(songsProp);
+
+  // try {
+  // let userToken = await music.authorize();
+  // let response = await fetch(`https://api.music.apple.com/v1/me/library/playlists/${targetPlaylistId}/tracks`, {
+  //     method: "POST",
+  //     body: JSON.stringify({data: songsProp}),
+  //     headers: {
+  //       Authorization: `Bearer ${accessToken}`,
+  //       'Music-User-Token': userToken,
+  //       'Content-Type': 'application/json',
+  //     }
+  //   })
+  // }
+  // catch(error) {
+  //   console.log(error);
+  // }
 }
 
 let logOut = async () => {

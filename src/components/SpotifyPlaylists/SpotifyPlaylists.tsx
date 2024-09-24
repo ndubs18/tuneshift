@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react';
 import { useSource } from "../../App";
 import { SpotifyPlaylistCard } from '../SpotifyPlaylistCard/SpotifyPlaylistCard'
 import styles from '../../pages/Playlists.module.css';
-import '../PlaylistCard/PlaylistCard.module.css'
+import '../PlaylistCard/PlaylistCard.module.css';
+import noArtImg from '../../assets/images/noArtwork.png'
 import { getCurrentUserProfile, getCurrentUsersPlaylits, parseAccessToken } from '../../spotify/spotify';
 
 interface IPlaylists {
@@ -52,7 +53,7 @@ let SpotifyPlaylists =  () => {
                         <SpotifyPlaylistCard playlistId={playlist.id}
                          name={playlist.name ? playlist.name : 'null'} 
                          owner={playlist.owner.display_name} 
-                        //  imgUrl={playlist.images[0].url ? playlist.images[0].url : noArtImg } 
+                         imgUrl={playlist.images[0].url ? playlist.images[0].url : noArtImg } 
                          sourcePlatform={sourcePlatform}
                         /> 
                         </li>
@@ -70,7 +71,7 @@ let SpotifyPlaylists =  () => {
                         <SpotifyPlaylistCard playlistId={playlist.id} 
                         name={playlist.name ? playlist.name : 'null'} 
                         owner={playlist.owner.display_name} 
-                        // imgUrl={playlist.images[0].url ? playlist.images[0].url : noArtImg } 
+                        imgUrl={playlist.images[0].url ? playlist.images[0].url : noArtImg } 
                         sourcePlatform = {sourcePlatform}
                         /> 
                         </li>

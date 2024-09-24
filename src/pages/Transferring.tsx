@@ -29,10 +29,10 @@ let Transferring = () => {
     let transferSpotifySongs = async (sourcePlatform : string, sourcePlaylistId : string, targetPlaylistId : string ) => {
             
         let spotifySongs = await getSpotifyPlaylistSongs(sourcePlaylistId)
+        console.log(spotifySongs);
             handleMusicKitLoaded().then(()=> {    
             let added = addToApplePlaylist(targetPlaylistId,spotifySongs);
             })
-            console.log(spotifySongs);
     }
 
     let TransferAppleSongs = async (sourcePlatform : string, sourcePlaylistId : string, targetPlaylistId : string ) => {
