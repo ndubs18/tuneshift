@@ -88,18 +88,18 @@ let getSongIsrcListString = (songs : Song[]) => {
   let isrcList =[];
   let stringOfList = ''
   if(songs.length >= 25) {
-  let numPages = Math.ceil(songs.length / 25);
-  for(let i = 0; i < numPages; i++) {
-    let songsPage = []
-    for(let j = i * 25; j < (i*25) + 25; ++j) {
-  
-      songsPage.push(songs[j].isrc)
-      if(j == ((i * 25) + 25) - 1 ) {
-        stringOfList = songsPage.join(',');
+    let numPages = Math.ceil(songs.length / 25);
+    for(let i = 0; i < numPages; i++) {
+      let songsPage = []
+      for(let j = i * 25; j < (i*25) + 25 && j<songs.length; ++j) {
+        // console.log(`page = ${i} song = ${j}`)
+        songsPage.push(songs[j].isrc)
+        if(j == ((i * 25) + 25) - 1 || j == songs.length - 1) {
+          stringOfList = songsPage.join(',');
+        }
       }
+      isrcList.push(stringOfList);
     }
-    isrcList.push(stringOfList);
-  }
 } else {
     for(const song of songs){ 
       isrcList.push(song.isrc);
@@ -109,14 +109,14 @@ let getSongIsrcListString = (songs : Song[]) => {
   }
   return isrcList;
 }
-
+//TODO let's create a type for the filter.isrc object returned from songResponseByIsrc
 let formatSongsProperty = (catalogSongs : any)=> {
   let songsToAdd = []; 
 
 
 //one that couldn't be found on Bass24 playlist : US39N2204823
  for(const song in catalogSongs) {
-    if(catalogSongs[song].length !== 0) {
+    if(catalogSongs[song][0]) {
     let songToAdd = Object.create(null);
     songToAdd.id = catalogSongs[song][0].id
     songToAdd.type = catalogSongs[song][0].type
@@ -132,12 +132,13 @@ export let addToApplePlaylist = async (targetPlaylistId: string, songs : Song[])
 
   let accessToken = await parseAccessToken();
 
-  let formattedIsrcStringList = getSongIsrcListString(songs);
+  let formattedIsrcStringList = await getSongIsrcListString(songs);
   
   for(const isrcString of formattedIsrcStringList) {
     
     let songsResponseByIsrc = await music.api.music(`/v1/catalog/us/songs?filter[isrc]=${isrcString}`)
     let songsFilterObject = songsResponseByIsrc.data.meta.filters.isrc;
+    console.log(songsFilterObject);
     let songsProp = await formatSongsProperty(songsFilterObject);
     console.log(songsProp)
       try {
