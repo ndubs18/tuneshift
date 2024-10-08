@@ -54,7 +54,6 @@ let SpotifyPlaylists =  () => {
                          name={playlist.name ? playlist.name : 'null'} 
                          owner={playlist.owner.display_name} 
                          imgUrl={playlist.images[0].url ? playlist.images[0].url : noArtImg } 
-                         sourcePlatform={sourcePlatform}
                         /> 
                         </li>
                         )
@@ -72,7 +71,6 @@ let SpotifyPlaylists =  () => {
                         name={playlist.name ? playlist.name : 'null'} 
                         owner={playlist.owner.display_name} 
                         imgUrl={playlist.images[0].url ? playlist.images[0].url : noArtImg } 
-                        sourcePlatform = {sourcePlatform}
                         /> 
                         </li>
                         }

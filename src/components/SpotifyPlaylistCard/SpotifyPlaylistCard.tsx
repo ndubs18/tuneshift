@@ -9,7 +9,6 @@ playlistId : string
 name : string,
 imgUrl? : string, 
 owner? : string, 
-sourcePlatform: string | null,
 }) 
     {
     let [open, setOpen] = useState<boolean>(false);
