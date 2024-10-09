@@ -22,7 +22,7 @@ interface IPlaylist {
     }
 }
 
-let SpotifyPlaylists =  () => {
+let SpotifyPlaylists = () => {
 
     //grab the context value
     const {sourcePlatform, setSourcePlaylist} = useSource();
@@ -36,6 +36,7 @@ let SpotifyPlaylists =  () => {
         getCurrentUserProfile().then(profile => setProfile(profile))
         getCurrentUsersPlaylits().then(data => {
             let playlists = data;
+            console.log(playlists);
             setPlaylists(playlists)
             setLoading(false);
         });
@@ -53,7 +54,7 @@ let SpotifyPlaylists =  () => {
                         <SpotifyPlaylistCard playlistId={playlist.id}
                          name={playlist.name ? playlist.name : 'null'} 
                          owner={playlist.owner.display_name} 
-                         imgUrl={playlist.images[0].url ? playlist.images[0].url : noArtImg } 
+                         imgUrl={playlist.images ? playlist.images[0].url : noArtImg } 
                         /> 
                         </li>
                         )
@@ -70,10 +71,11 @@ let SpotifyPlaylists =  () => {
                         <SpotifyPlaylistCard playlistId={playlist.id} 
                         name={playlist.name ? playlist.name : 'null'} 
                         owner={playlist.owner.display_name} 
-                        imgUrl={playlist.images[0].url ? playlist.images[0].url : noArtImg } 
+                        imgUrl={playlist.images ? playlist.images[0].url : noArtImg } 
                         /> 
                         </li>
                         }
+
                         else return null;
                     })
                 }

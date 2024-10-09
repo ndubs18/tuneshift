@@ -49,8 +49,8 @@ export let getSpotifyPlaylist = async (playlistId : string) => {
     
     return response.json();
 }
-export let getSpotifyPlaylistSongs = async (playlistId : string) : Promise<Song[]>=> {
-    let songList : Song[] = [];
+export let getSpotifyPlaylistSongs = async (playlistId : string) : Promise<Song[][]>=> {
+    let songList : Song[][] = [];
 
     let accessToken = parseAccessToken();
     
@@ -60,11 +60,11 @@ export let getSpotifyPlaylistSongs = async (playlistId : string) : Promise<Song[
         }
     })
     let data = await response.json();
-    let next = data.next;
-    
-    let songs = data.items;
-    console.log(data);
-    
+    //is there more than 100 songs
+    let next = data.next;    
+    let songs = data.items;   
+    let songPage = []
+
     for (const song of songs) {
 
         let artists = [];
@@ -80,10 +80,14 @@ export let getSpotifyPlaylistSongs = async (playlistId : string) : Promise<Song[
             artists : artistsString,
             isrc : song.track.external_ids.isrc
         }
-        songList.push(item)
+        songPage.push(item)
     }
 
-    while(next != null) {
+    songList.push(songPage);
+
+    //while there is more than one page (100 songs)
+    while(next) {
+        songPage = []
         let response = await fetch(`${next}`, {
             headers : {
                 Authorization: `Bearer ${accessToken}`
@@ -111,8 +115,9 @@ export let getSpotifyPlaylistSongs = async (playlistId : string) : Promise<Song[
                 artists : artistsString,
                 isrc : song.track.external_ids.isrc
             }
-            songList.push(item)
+            songPage.push(item)
         }
+        songList.push(songPage);
     }
 
     return songList;
@@ -129,54 +134,53 @@ export let getSongIdList = ((song : Song[]) => {
     
 })
 
-export let getSpotifyCatalogSongIds = async (songs : Song[]) => {
-    let songsWithIds : Song[] = [];
+export let getSpotifyCatalogSongIds = async (songs : Song[][]) => {
+    let songsWithIds : Song[][] = [];
     let accessToken = parseAccessToken();
  
-    for(const song of songs) {
-        let q = `q=track: ${song.name} artist: ${song.artists} isrc: ${song.isrc} track`
-     
-        try {
-        let response = await fetch(`${baseSpotifyAPI}/search?${q}&type=track`, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`
-            }})
-            let data = await response.json();
-            let songWithId : Song = Object.create(song);
-            console.log(data)
-            songWithId.id = data.tracks.items[0].uri
-            songsWithIds.push(songWithId);
-        } catch (error) {
-            console.log(error);
-        }
+    for(const page of songs) {
+        let pageOfSongs = [];
+        for(const song of page) {
+            let q = `q=track: ${song.name} artist: ${song.artists} isrc: ${song.isrc} track`
         
+            try {
+            let response = await fetch(`${baseSpotifyAPI}/search?${q}&type=track`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }})
+                let data = await response.json();
+                let songWithId : Song = Object.create(song);
+                songWithId.id = data.tracks.items[0].uri
+                pageOfSongs.push(songWithId);
+            } catch (error) {
+                console.log(error);
+            }
+            
+        }
+        songsWithIds.push(pageOfSongs);
     }
 
     return songsWithIds;
 }
 
-export let addToSpotifyPlaylist = async (songs : Song[], playlistId : string) => {
-   let accessToken = parseAccessToken();
-   let idList = getSongIdList(songs);
+export let addToSpotifyPlaylist = async (songs : Song[][], playlistId : string) => {
+    let response;
+    let accessToken = parseAccessToken();
 
-   try {
-        let response = await fetch(`${baseSpotifyAPI}/playlists/${playlistId}/tracks`, {
-            method: "POST",
-            body: JSON.stringify({uris: idList}),
-            headers: {
-                Authorization: `Bearer  ${accessToken}`
-            }
-        })
-        return response;
+   for(const page of songs) {
+    let idList = getSongIdList(page);
+    try {
+            response = await fetch(`${baseSpotifyAPI}/playlists/${playlistId}/tracks`, {
+                method: "POST",
+                body: JSON.stringify({uris: idList}),
+                headers: {
+                    Authorization: `Bearer  ${accessToken}`
+                }
+            })
 
-    } catch(error) {
-        console.log(error);
+        } catch(error) {
+            console.log(error);
+        }
     }
-}
-
-
-type Track = {
-    external_ids: {
-        isrc: string;
-    }
+    return response;
 }

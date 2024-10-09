@@ -40,23 +40,23 @@ sourcePlatform: string | null,
                         <button onClick = { async () => {
                                 // TODO we need to figure out how to maintain source and target playlists through redirects
                                 console.log(playlistId);
-                                let songs : Song[] = await getSpotifyPlaylistSongs(playlistId);
-                                let stringSongs = JSON.stringify(songs);
-                                localStorage.setItem('sourceSongs', stringSongs)
+                                // let songs : Song[] = await getSpotifyPlaylistSongs(playlistId);
+                                // let stringSongs = JSON.stringify(songs);
+                                // localStorage.setItem('sourceSongs', stringSongs)
                                 window.location.replace(`http://localhost:8080/login/apple?source=${sourcePlatform}&target=Apple Music`)
                         }
                         }>Transfer</button> 
                             :
                             <button onClick = { async () => { 
-                                let librarySongs = await getApplePlaylistItems(playlistId);  
-                                let {appleCatalogSongs, songsNotFound} = await getApplePlaylistSongIsrcs(librarySongs);
-                                let stringCatalogSongs = JSON.stringify(appleCatalogSongs);
+                                // let librarySongs = await getApplePlaylistItems(playlistId);  
+                                // let {appleCatalogSongs, songsNotFound} = await getApplePlaylistSongIsrcs(librarySongs);
+                                // let stringCatalogSongs = JSON.stringify(appleCatalogSongs);
                                 //TODO: We need to find away to add the songs that could not be found and remove from local storage
                                 //TODO when user restarts process ? maybe it does it automatically when there is an empty array for songs
                                 //TODO not found?
-                                let stringSongsNotFound = JSON.stringify(songsNotFound);
+                                // let stringSongsNotFound = JSON.stringify(songsNotFound);
                                 
-                                localStorage.setItem('sourceSongs', stringCatalogSongs);
+                                // localStorage.setItem('sourceSongs', stringCatalogSongs);
             
                                 window.location.replace(`http://localhost:8080/login/spotify?source=${sourcePlatform}&target=Spotify`)
                             }}>Transfer</button>  

@@ -6,10 +6,6 @@ import {ApplePlaylistCard} from '../ApplePlaylistCard/ApplePlaylistCard'
 import noArtImg from '../../assets/images/noArtwork.png'
 import {getApplePlaylists, handleMusicKitLoaded, formatImgUrl} from '../../apple/apple';
 
-interface IPlaylists {
-    data : IPlaylist[];
-
-}
 interface IPlaylist {
     name : string,
     id : string;
@@ -25,7 +21,7 @@ let ApplePlaylists = () => {
 
     const {sourcePlatform} = useSource();
 
-    let [playlists, setPlaylists] = useState<IPlaylists | null>(null)
+    let [playlists, setPlaylists] = useState<IPlaylist[] | null>(null)
     let [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -34,8 +30,8 @@ let ApplePlaylists = () => {
       // TODO: let's clean this up by either defining function elsewhere or promise chaining
       // Fetch Apple Music playlist
       let getPlaylists = async () => {
-        let data = await getApplePlaylists();
-        let playlists = data.data;
+        let playlists = await getApplePlaylists();
+        console.log(playlists)
         setPlaylists(playlists)
         setLoading(false);   
       }
@@ -52,7 +48,7 @@ let ApplePlaylists = () => {
           <ul className={styles.playlists}>
             
               {loading ? <h3>Loading...</h3> : 
-              playlists?.data.map(playlist => 
+              playlists?.map(playlist => 
                 <li key={playlist.id}>
                   <ApplePlaylistCard 
                   playlistId={playlist.id} 
@@ -70,7 +66,7 @@ let ApplePlaylists = () => {
           <ul className={styles.playlists}>
             
               {loading ? <h3>Loading...</h3> : 
-              playlists?.data.map(playlist => {
+              playlists?.map(playlist => {
                 if(playlist.attributes.canEdit) {
                   return <li key={playlist.id}>
                   <ApplePlaylistCard playlistId={playlist.id} 

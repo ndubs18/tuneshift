@@ -39,80 +39,117 @@ const handleMusicKitLoaded = async () : Promise<void> => {
 };
 
 let getApplePlaylists = async () => {
+
+  let playlistsToReturn;
   const music = window.MusicKit.getInstance(); 
   await music.authorize(); 
   const result = await music.api.music('v1/me/library/playlists');
-  return result;
+  playlistsToReturn = result.data.data;
+  let next = result.data.next
+  while(next) {
+    const music = window.MusicKit.getInstance(); 
+    await music.authorize(); 
+    const result = await music.api.music(`${next}`);
+    playlistsToReturn.push(...result.data.data)
+    next = result.data.next;
+  }
+  return playlistsToReturn;
 }
 
 let getApplePlaylistItems = async (playlistId : string) => {
+
+  let playlistItems = [];
   const music = window.MusicKit.getInstance();
   await music.authorize();
   
   const result = await music.api.music(`v1/me/library/playlists/${playlistId}/tracks`) 
-  let libraryPlaylistSongs = result.data.data;
-  return libraryPlaylistSongs;
+  playlistItems.push(result.data.data)
+  let next = result.data.next;
+  
+  while(next) { 
+      let page = [];
+      const music = window.MusicKit.getInstance();
+      await music.authorize(); 
+      const result = await music.api.music(`${next}`);
+      playlistItems.push(result.data.data)
+      next = result.data.next; 
+  }
+  return playlistItems;
 }
 
-let getApplePlaylistSongIsrcs = async (libraryPlaylistSongs : LibrarySong[]) => {
-  let catalogSongs : Song[] = [];
+let curatePlaylistItemsIds = (librarySongs : LibrarySong[][]) => {
+  let songIds = [];
+  let pageOfIds = []
+  for(const page of librarySongs) {
+    // console.log(page)
+    pageOfIds = []
+    for(const song of page) {
+      
+      pageOfIds.push(song.attributes.playParams.catalogId);
+    }
+    songIds.push(pageOfIds);
+  }
+  return songIds;
+}
+
+let getApplePlaylistSongIsrcs = async (songs : LibrarySong[][]) => {
+
+  let isrcList : Song[][] = [];
   let songsNotFound : LibrarySong[] = [];
+  console.log(songs);
+  let curatedIdList = curatePlaylistItemsIds(songs)
 
-  const music = window.MusicKit.getInstance();
-  await music.authorize();
- 
-  for(const playlistSong of libraryPlaylistSongs) {
-    try {
+  for(const curatedPage of curatedIdList) {
+    let pageOfSongsWithIsrc = [];
+    const music = window.MusicKit.getInstance();
+    await music.authorize();
+    let result = await music.api.music(`/v1/catalog/US?ids[songs]=${curatedPage}`)
+    let catalogSongs = result.data.data;
 
-      let catalogSong = await music.api.music(`v1/me/library/songs/${playlistSong.id}/catalog`);
-      console.log(catalogSong);
-      const name = catalogSong.data.data[0].attributes.name;
-      const artists = catalogSong.data.data[0].attributes.artistName;
-      const isrc = catalogSong.data.data[0].attributes.isrc;
-
-      let song : Song = {
-        name: name,
-        artists : artists, 
-        isrc: isrc,
-      }
-      catalogSongs.push(song);
-    } catch(e) { 
-      songsNotFound.push(playlistSong);
-      console.log(e);
+  for(const catalogSong of catalogSongs) {
+    let song : Song = {
+      name: catalogSong.attributes.name,
+      artists : catalogSong.attributes.artistName, 
+      isrc: catalogSong.attributes.isrc,
     }
+    pageOfSongsWithIsrc.push(song);
   }
-  return {appleCatalogSongs: catalogSongs, songsNotFound: songsNotFound};
-}
-
-let getSongIsrcListString = (songs : Song[]) => {
-  let isrcList =[];
-  let stringOfList = ''
-  if(songs.length >= 25) {
-    let numPages = Math.ceil(songs.length / 25);
-    for(let i = 0; i < numPages; i++) {
-      let songsPage = []
-      for(let j = i * 25; j < (i*25) + 25 && j<songs.length; ++j) {
-        // console.log(`page = ${i} song = ${j}`)
-        songsPage.push(songs[j].isrc)
-        if(j == ((i * 25) + 25) - 1 || j == songs.length - 1) {
-          stringOfList = songsPage.join(',');
-        }
-      }
-      isrcList.push(stringOfList);
-    }
-} else {
-    for(const song of songs){ 
-      isrcList.push(song.isrc);
-    }
-    let isrcString = isrcList.join(',')
-    return isrcList;
+  isrcList.push(pageOfSongsWithIsrc);
   }
+  
   return isrcList;
 }
+
+//functions below this line are for transferring from spotify -> apple music
+let getSongIsrcListString = (songs : Song[][]) => {
+  let isrcStringList =[];
+  let stringOfPage = ''
+  for(const page of songs) {
+    if(page.length > 25) {
+      let numSubPages = Math.ceil(page.length/25)
+      for(let i = 0; i < numSubPages; i++) {
+        let subPage = [];
+        for(let j = i * 25; j < (i*25)+25 && j < page.length; j++) { 
+          subPage.push(page[j].isrc)
+        }
+        isrcStringList.push(subPage.join(','))
+      }
+    }
+    else {
+      let subPage = []
+      for(const song of page) {
+        subPage.push(song.isrc)
+      }
+      isrcStringList.push(subPage.join(','))
+    }
+  }
+return isrcStringList;
+    
+}
+
 //TODO let's create a type for the filter.isrc object returned from songResponseByIsrc
 let formatSongsProperty = (catalogSongs : any)=> {
   let songsToAdd = []; 
-
 
 //one that couldn't be found on Bass24 playlist : US39N2204823
  for(const song in catalogSongs) {
@@ -126,7 +163,7 @@ let formatSongsProperty = (catalogSongs : any)=> {
   return songsToAdd;
 
 }
-export let addToApplePlaylist = async (targetPlaylistId: string, songs : Song[]) => {
+export let addToApplePlaylist = async (targetPlaylistId: string, songs : Song[][]) => {
   const music = window.MusicKit.getInstance();
   await music.authorize();
 
@@ -138,9 +175,8 @@ export let addToApplePlaylist = async (targetPlaylistId: string, songs : Song[])
     
     let songsResponseByIsrc = await music.api.music(`/v1/catalog/us/songs?filter[isrc]=${isrcString}`)
     let songsFilterObject = songsResponseByIsrc.data.meta.filters.isrc;
-    console.log(songsFilterObject);
     let songsProp = await formatSongsProperty(songsFilterObject);
-    console.log(songsProp)
+
       try {
       let userToken = await music.authorize();
       let response = await fetch(`https://api.music.apple.com/v1/me/library/playlists/${targetPlaylistId}/tracks`, {

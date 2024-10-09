@@ -38,13 +38,20 @@ let Transferring = () => {
     let TransferAppleSongs = async (sourcePlatform : string, sourcePlaylistId : string, targetPlaylistId : string ) => {
         //get apple library songs
         let librarySongs = await getApplePlaylistItems(sourcePlaylistId); 
-        //get apple catalog songs 
-        let {appleCatalogSongs, songsNotFound} = await getApplePlaylistSongIsrcs(librarySongs);
-         
-        let spotifyCatalogSongIds = await getSpotifyCatalogSongIds(appleCatalogSongs)
-        
+
+        // console.log(librarySongs)
+
+        // let result = await getSongsList(librarySongs);
+        console.log(librarySongs);
+
+        let applePlaylistSongIsrcs = await getApplePlaylistSongIsrcs(librarySongs)
+
+
+        let spotifyCatalogSongIds = await getSpotifyCatalogSongIds(applePlaylistSongIsrcs);
+
         let transferred = await addToSpotifyPlaylist(spotifyCatalogSongIds,targetPlaylistId);
         console.log(transferred);
+        // console.log(transferred);
     }
     
     useEffect(() => {
