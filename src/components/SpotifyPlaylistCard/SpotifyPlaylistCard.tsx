@@ -36,19 +36,14 @@ owner? : string,
                         sourcePlatform === 'Apple Music' ?
                         <button onClick = { async () => {
                                 // TODO we need to figure out how to maintain source and target playlists through redirects
-                                // window.location.replace(`http://localhost:8080/login/Spotify?source=${sourcePlatform}&playlistId=${playlistId}`)
-
                                 let sourcePlaylistId = searchParams.get('sourcePlaylistId');
-                                window.location.replace(`http://localhost:3000/transferring?source=${sourcePlatform}&sourcePlaylistId=${sourcePlaylistId}&target=Spotify&playlistId=${playlistId}`)
+                                let sourcePlaylistName = searchParams.get('sourcePlaylistName');
+                                window.location.replace(`http://localhost:3000/transferring?source=${sourcePlatform}&sourcePlaylistId=${sourcePlaylistId}&sourcePlaylistName=${sourcePlaylistName}&target=Spotify&targetPlaylistId=${playlistId}&targetPlaylistName=${name}`)
                          }
                         }>Transfer</button> 
                             :
                             <button onClick = { async () => {  
-                                // let songs : Song[] = await getSpotifyPlaylistSongs(playlistId);
-                                // let stringSongs = JSON.stringify(songs);
-                                // localStorage.setItem('sourceSongs', stringSongs)
-
-                                window.location.replace(`http://localhost:8080/login/Apple?source=${sourcePlatform}&sourcePlaylistId=${playlistId}&target=Apple Music`)
+                                window.location.replace(`http://localhost:8080/login/Apple?source=${sourcePlatform}&sourcePlaylistId=${playlistId}&sourcePlaylistName=${name}&target=Apple Music`)
                             }}>Transfer</button>  
                         }
                     </div>      

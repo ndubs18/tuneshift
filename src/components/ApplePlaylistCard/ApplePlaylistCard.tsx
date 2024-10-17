@@ -4,13 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useSource } from '../../App';
 
 export default function ApplePlaylistCard({playlistId, name, imgUrl, owner}
-: {
-playlistId : string
-name : string,
-imgUrl? : string, 
-owner? : string, 
-sourcePlatform: string | null,
-}) 
+: {playlistId : string, name : string, imgUrl? : string, owner? : string, sourcePlatform: string | null}) 
     {
     let [open, setOpen] = useState<boolean>(false);
     
@@ -38,25 +32,14 @@ sourcePlatform: string | null,
                         sourcePlatform === 'Spotify' ?
                         <button onClick = { async () => {
                                 // TODO can we use link for this instead so we don't send another http request?
-
                                 let sourcePlaylistId = searchParams.get('sourcePlaylistId');
-
-                                window.location.replace(`http://localhost:3000/transferring?source=${sourcePlatform}&sourcePlaylistId=${sourcePlaylistId}&target=Apple Music&playlistId=${playlistId}`);
+                                let sourcePlaylistName = searchParams.get('sourcePlaylistName')
+                                window.location.replace(`http://localhost:3000/transferring?source=${sourcePlatform}&sourcePlaylistId=${sourcePlaylistId}&sourcePlaylistName=${sourcePlaylistName}&target=Apple Music&targetPlaylistId=${playlistId}&targetPlaylistName=${name}`);
                         }
                         }>Transfer</button> 
                             :
                             <button onClick = { async () => { 
-                                // let librarySongs = await getApplePlaylistItems(playlistId);  
-                                // let {catalogSongs, songsNotFound} = await getApplePlaylistSongIsrcs(librarySongs);
-                                // let stringCatalogSongs = JSON.stringify(catalogSongs);
-                            
-                                // let stringSongsNotFound = JSON.stringify(songsNotFound);
-                                
-                                // localStorage.setItem('sourceSongs', stringCatalogSongs);
-                                // localStorage.setItem('errorSongs', stringSongsNotFound);
-            
-                                // window.location.replace(`http://localhost:8080/login/spotify?source=${sourcePlatform}`)
-                                window.location.replace(`http://localhost:8080/login/spotify?source=${sourcePlatform}&sourcePlaylistId=${playlistId}`)
+                                window.location.replace(`http://localhost:8080/login/spotify?source=${sourcePlatform}&sourcePlaylistId=${playlistId}&sourcePlaylistName=${name}`)
                             }}>Transfer</button>  
                         }
                     </div>      

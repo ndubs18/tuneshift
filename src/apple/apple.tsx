@@ -40,7 +40,7 @@ const handleMusicKitLoaded = async () : Promise<void> => {
 
 let getApplePlaylists = async () => {
 
-  let playlistsToReturn;
+  let playlistsToReturn = [];
   const music = window.MusicKit.getInstance(); 
   await music.authorize(); 
   const result = await music.api.music('v1/me/library/playlists');
@@ -53,6 +53,7 @@ let getApplePlaylists = async () => {
     playlistsToReturn.push(...result.data.data)
     next = result.data.next;
   }
+  
   return playlistsToReturn;
 }
 
@@ -81,7 +82,6 @@ let curatePlaylistItemsIds = (librarySongs : LibrarySong[][]) => {
   let songIds = [];
   let pageOfIds = []
   for(const page of librarySongs) {
-    // console.log(page)
     pageOfIds = []
     for(const song of page) {
       
@@ -96,7 +96,6 @@ let getApplePlaylistSongIsrcs = async (songs : LibrarySong[][]) => {
 
   let isrcList : Song[][] = [];
   let songsNotFound : LibrarySong[] = [];
-  console.log(songs);
   let curatedIdList = curatePlaylistItemsIds(songs)
 
   for(const curatedPage of curatedIdList) {
@@ -195,6 +194,24 @@ export let addToApplePlaylist = async (targetPlaylistId: string, songs : Song[][
   }  
 }
 
+let getApplePlaylistInfo = (playlist : LibrarySong[][]) => {
+  let numSongs = 0;
+  let songs : Song[] = [];
+
+  for(const page of playlist) {
+    numSongs += page.length;
+    for(const song of page) {
+      let songToAdd : Song = {
+        name: song.attributes.name,
+        artists: song.attributes.artistName
+      }
+      songs.push(songToAdd)
+    }
+  }
+
+  return {numSongs : numSongs, songsToTransfer : songs}
+}
+
 let logOut = async () => {
   const music = window.MusicKit.getInstance();
   await music.unauthorize();
@@ -209,4 +226,5 @@ let formatImgUrl = (url : string) => {
   return url;
 }
 
-export { getApplePlaylists, getApplePlaylistItems, getApplePlaylistSongIsrcs, handleMusicKitLoaded, parseAccessToken, formatImgUrl, logOut };
+
+export { getApplePlaylists, getApplePlaylistItems, getApplePlaylistSongIsrcs, getApplePlaylistInfo, handleMusicKitLoaded, parseAccessToken, formatImgUrl, logOut };

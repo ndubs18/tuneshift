@@ -34,7 +34,6 @@ export let getCurrentUsersPlaylits = async () => {
     })
 
     let data = await response.json()
-    console.log(data);
     return data;
 
 }
@@ -161,6 +160,24 @@ export let getSpotifyCatalogSongIds = async (songs : Song[][]) => {
     }
 
     return songsWithIds;
+}
+
+export let getSpotifyPlaylistInfo = (playlist : Song[][]) => {
+    let numSongs = 0;
+    let songs : Song[] = [];
+    for(const page of playlist) {
+        numSongs += page.length;
+        for(const song of page) {
+            let songToAdd : Song = {
+                name : song.name,
+                artists : song.artists
+            }
+
+            songs.push(songToAdd)
+        }
+    }
+
+    return {numSongs: numSongs, songsToTransfer : songs}
 }
 
 export let addToSpotifyPlaylist = async (songs : Song[][], playlistId : string) => {

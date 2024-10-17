@@ -14,6 +14,7 @@ export type LibrarySong = {
     id : string;
     attributes : {
         name : string,
+        artistName: string,
         playParams : {
             catalogId : string
         }         

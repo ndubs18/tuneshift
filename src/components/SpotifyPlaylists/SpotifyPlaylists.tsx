@@ -36,7 +36,6 @@ let SpotifyPlaylists = () => {
         getCurrentUserProfile().then(profile => setProfile(profile))
         getCurrentUsersPlaylits().then(data => {
             let playlists = data;
-            console.log(playlists);
             setPlaylists(playlists)
             setLoading(false);
         });

@@ -24,13 +24,14 @@ app.get('/', (req : any, res: any) => {
 app.get('/login/spotify', (req : any, res : any) => {
     let source = req.query.source;
     let sourcePlaylistId = req.query.sourcePlaylistId;
+    let sourcePlaylistName = req.query.sourcePlaylistName;
 
     let queryString = querystring.stringify({
         response_type: 'code',
         redirect_uri: spotify_redirect_uri_login,
         scope: 'user-read-private user-read-email user-library-read playlist-read-private playlist-modify-public playlist-modify-private',
         client_id: spotify_client_id,
-        state: source+'&'+ sourcePlaylistId
+        state: source+ '&' + sourcePlaylistId + '&' + sourcePlaylistName
     })
     res.redirect('https://accounts.spotify.com/authorize?' + queryString);
 })
@@ -40,7 +41,7 @@ app.get('/spotify/callback', (req, res) => {
     let code = req.query.code || null;
     let state = req.query.state;
 
-    let [source,sourcePlaylistId] = state.split("&");
+    let [source,sourcePlaylistId, sourcePlaylistName] = state.split("&");
 
     
 
@@ -67,7 +68,7 @@ app.get('/spotify/callback', (req, res) => {
       res.cookie('access_token', spotify_access_token);
       
       if(source === "Apple Music") {
-        res.redirect(`${uri}?source=${source}&sourcePlaylistId=${sourcePlaylistId}&target=Spotify`);
+        res.redirect(`${uri}?source=${source}&sourcePlaylistId=${sourcePlaylistId}&sourcePlaylistName=${sourcePlaylistName}&target=Spotify`);
       } else {
         res.redirect(`${uri}?source=${source}`);
       }
@@ -78,6 +79,7 @@ app.get('/spotify/callback', (req, res) => {
 app.get('/login/apple', (req, res) => {
   let source = req.query.source;
   let sourcePlaylistId = req.query.sourcePlaylistId;
+  let sourcePlaylistName = req.query.sourcePlaylistName;
   let target = req.query.target;
 
   //logic for creating jwt known as developer token
@@ -104,7 +106,7 @@ app.get('/login/apple', (req, res) => {
   res.cookie('dev_token', token, { httpOnly: true, sameSite: 'Strict' });
   
   if(source === 'Spotify') {
-    res.redirect(uri + `?source=${source}&sourcePlaylistId=${sourcePlaylistId}&target=${target}`)
+    res.redirect(uri + `?source=${source}&sourcePlaylistId=${sourcePlaylistId}&sourcePlaylistName=${sourcePlaylistName}&target=${target}`)
   } else {
     res.redirect(uri + `?source=${source}`) 
   } 

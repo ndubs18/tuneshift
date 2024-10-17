@@ -1,7 +1,7 @@
 .status {
     width: 70%;
     padding: 0rem;
-
+    text-align: none;
 }
 
 .center {
@@ -19,16 +19,48 @@
     font-size: 1rem;
 }
 
+.mb {
+    margin-bottom: 0.5rem
+}
+
+.displayBlock {
+    display: block;
+}
+
+.textAlignStart {
+    text-align: start;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.metaLi {
+    margin-bottom: 0.5rem;
+    display: block;
+    font-size: 1.4rem
+}
 .songList {
     overflow: scroll;
-    height: 65vh;
-    width: 100%;
+    height: 50vh;
+    width: 60%;
     scrollbar-color: grey #e9e5e1;
-    margin-top: 3rem;
-    text-align: start
+    margin-top: 1.5;
+    text-align: start;
+}
 
+.song {
+    margin: .3rem 0;
 }
 
 .overflow {
     overflow: scroll;
+}
+
+.transferButton {
+    height: 3rem;
+    padding: 1rem 2rem;
+    align-self: center;
+    border: 1px solid black;
+    border-radius: 5%;
 }

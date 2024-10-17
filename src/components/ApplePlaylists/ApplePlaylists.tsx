@@ -31,7 +31,6 @@ let ApplePlaylists = () => {
       // Fetch Apple Music playlist
       let getPlaylists = async () => {
         let playlists = await getApplePlaylists();
-        console.log(playlists)
         setPlaylists(playlists)
         setLoading(false);   
       }
