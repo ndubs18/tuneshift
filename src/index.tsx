@@ -6,9 +6,9 @@ import reportWebVitals from './reportWebVitals';
 
 import ErrorPage from "./pages/Error-page";
 import Playlists from "./pages/Playlists";
-import Transferring from "./pages/Transferring"
-
-import {createBrowserRouter, RouterProvider } from "react-router-dom";
+import Transferring from "./pages/Transferring";
+import Results from "./pages/Results";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 const router = createBrowserRouter([
   {
@@ -20,25 +20,23 @@ const router = createBrowserRouter([
         path: "transfer",
         element: <Playlists />,
         errorElement: <ErrorPage />,
-        // children: [
-        //   {
-        //     path: "transferring",
-        //     element: <Transferring />,
-        //     errorElement: <ErrorPage />,
-        //   }
-        // ]
       },
       {
         path: "transferring",
         element: <Transferring />,
         errorElement: <ErrorPage />,
+      },
+      {
+        path: "results",
+        element: <Results />,
+        errorElement: <ErrorPage />
       }
     ]
   }
 ])
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
-).render(<RouterProvider router={router}/>);
+).render(<RouterProvider router={router} />);
 
 
 // If you want to start measuring performance in your app, pass a function

@@ -84,7 +84,6 @@ let curatePlaylistItemsIds = (librarySongs : LibrarySong[][]) => {
   for(const page of librarySongs) {
     pageOfIds = []
     for(const song of page) {
-      
       pageOfIds.push(song.attributes.playParams.catalogId);
     }
     songIds.push(pageOfIds);
@@ -225,6 +224,5 @@ let formatImgUrl = (url : string) => {
   url = url.replace('{h}', '1200');
   return url;
 }
-
 
 export { getApplePlaylists, getApplePlaylistItems, getApplePlaylistSongIsrcs, getApplePlaylistInfo, handleMusicKitLoaded, parseAccessToken, formatImgUrl, logOut };
