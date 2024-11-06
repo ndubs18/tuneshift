@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { useSource } from "../App";
 import { useNavigate } from "react-router-dom";
 import styles from './Transferring.module.css';
-import { addToSpotifyPlaylist, getSpotifyCatalogSongIds, getSpotifyPlaylist, getSpotifyPlaylistInfo, getSpotifyPlaylistSongs } from '../spotify/spotify';
+import { addToSpotifyPlaylist, getSpotifyCatalogSongIds, getSpotifyPlaylistInfo, getSpotifyPlaylistSongs } from '../spotify/spotify';
 import { Song } from "../types/types";
 import { addToApplePlaylist, getApplePlaylistInfo, getApplePlaylistItems, getApplePlaylistSongIsrcs, handleMusicKitLoaded } from "../apple/apple";
 
@@ -43,13 +42,15 @@ let Transferring = () => {
         //get apple library songs
         let librarySongs = await getApplePlaylistItems(sourcePlaylistId);
         let applePlaylistSongIsrcs = await getApplePlaylistSongIsrcs(librarySongs)
-        let spotifyCatalogSongIds = await getSpotifyCatalogSongIds(applePlaylistSongIsrcs);
-        let transferred = await addToSpotifyPlaylist(spotifyCatalogSongIds, targetPlaylistId);
+        let [spotifyCatalogSongIds, songsNotFound] = await getSpotifyCatalogSongIds(applePlaylistSongIsrcs);
+        console.log(songsNotFound);
+        if (spotifyCatalogSongIds[0].length !== 0) {
+            await addToSpotifyPlaylist(spotifyCatalogSongIds, targetPlaylistId);
+        }
     }
 
     let getPreTransferData = async (sourcePlaylistId: string, sourcePlatform: string) => {
         if (sourcePlatform == "Apple Music") {
-
             handleMusicKitLoaded().then(async () => {
                 let librarySongs = await getApplePlaylistItems(sourcePlaylistId);
                 let preTransferData = getApplePlaylistInfo(librarySongs);
