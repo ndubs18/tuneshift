@@ -153,7 +153,9 @@ export let getSpotifyCatalogSongIds = async (songs: Song[][]): Promise<[Song[][]
             if (song.releaseDate) {
                 year = parseYear(song.releaseDate);
             }
-            let q = `q=track:${song.name} artist:${song.artists} album:${song.album} year:${year} isrc:${song.isrc}`
+
+            let q = `q=isrc:${song.isrc}`
+
             try {
                 let response = await fetch(`${baseSpotifyAPI}/search?${q}&type=track`, {
                     headers: {
@@ -161,7 +163,7 @@ export let getSpotifyCatalogSongIds = async (songs: Song[][]): Promise<[Song[][]
                     }
                 })
                 let data = await response.json();
-                //if the song we want is the first result
+                //if the song we want is the first resultA
                 if (data.tracks.items[0].external_ids.isrc === song.isrc) {
                     let songWithId: Song = Object.create(song);
                     songWithId.id = data.tracks.items[0].uri
