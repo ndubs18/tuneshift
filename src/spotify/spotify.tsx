@@ -77,6 +77,8 @@ export let getSpotifyPlaylistSongs = async (playlistId: string): Promise<Song[][
         let item: Song = {
             name: song.track.name,
             artists: artistsString,
+            album: song.track.album.name,
+            releaseDate: song.track.album.release_date,
             isrc: song.track.external_ids.isrc
         }
         songPage.push(item)
@@ -92,7 +94,6 @@ export let getSpotifyPlaylistSongs = async (playlistId: string): Promise<Song[][
                 Authorization: `Bearer ${accessToken}`
             }
         })
-
 
         data = await response.json();
         next = data.next;
@@ -112,6 +113,7 @@ export let getSpotifyPlaylistSongs = async (playlistId: string): Promise<Song[][
             let item: Song = {
                 name: song.track.name,
                 artists: artistsString,
+                album: song.track.album,
                 isrc: song.track.external_ids.isrc
             }
             songPage.push(item)
@@ -133,6 +135,11 @@ export let getSongIdList = ((song: Song[]) => {
 
 })
 
+let parseYear = (date: string): string => {
+    let expandedYear = date.split('-');
+    return expandedYear[0];
+}
+
 export let getSpotifyCatalogSongIds = async (songs: Song[][]): Promise<[Song[][], Song[]]> => {
     let songsWithIds: Song[][] = [];
     let accessToken = parseAccessToken();
@@ -140,9 +147,13 @@ export let getSpotifyCatalogSongIds = async (songs: Song[][]): Promise<[Song[][]
     for (const page of songs) {
         let pageOfSongs = [];
         for (const song of page) {
-            //let q = `q=track: ${song.name} isrc: ${song.isrc}`
-            let q = `q=track: ${song.name} artist: ${song.artists} isrc: ${song.isrc}`
-            //let q = `q=isrc: ${song.isrc} track`
+
+            let year;
+
+            if (song.releaseDate) {
+                year = parseYear(song.releaseDate);
+            }
+            let q = `q=track:${song.name} artist:${song.artists} album:${song.album} year:${year} isrc:${song.isrc}`
             try {
                 let response = await fetch(`${baseSpotifyAPI}/search?${q}&type=track`, {
                     headers: {
@@ -180,7 +191,6 @@ export let getSpotifyCatalogSongIds = async (songs: Song[][]): Promise<[Song[][]
                             }
                         })
                         data = await response.json();
-                        console.log(data);
                         let songResults = data.tracks.items;
                         next = data.tracks.next
                         for (const resultSong of songResults) {
@@ -216,7 +226,8 @@ export let getSpotifyPlaylistInfo = (playlist: Song[][]) => {
         for (const song of page) {
             let songToAdd: Song = {
                 name: song.name,
-                artists: song.artists
+                artists: song.artists,
+                album: song.album
             }
 
             songs.push(songToAdd)

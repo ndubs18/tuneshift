@@ -14,14 +14,14 @@ let parseAccessToken = async () => {
     });
 
     const data = await response.json();
-    const token : string = data.token;
+    const token: string = data.token;
     return token;
   } catch (error) {
     console.error('Error fetching protected data:', error);
   }
 }
 
-const handleMusicKitLoaded = async () : Promise<void> => {
+const handleMusicKitLoaded = async (): Promise<void> => {
   let key = await parseAccessToken();
   try {
     await window.MusicKit.configure({
@@ -41,49 +41,48 @@ const handleMusicKitLoaded = async () : Promise<void> => {
 let getApplePlaylists = async () => {
 
   let playlistsToReturn = [];
-  const music = window.MusicKit.getInstance(); 
-  await music.authorize(); 
+  const music = window.MusicKit.getInstance();
+  await music.authorize();
   const result = await music.api.music('v1/me/library/playlists');
   playlistsToReturn = result.data.data;
   let next = result.data.next
-  while(next) {
-    const music = window.MusicKit.getInstance(); 
-    await music.authorize(); 
+  while (next) {
+    const music = window.MusicKit.getInstance();
+    await music.authorize();
     const result = await music.api.music(`${next}`);
     playlistsToReturn.push(...result.data.data)
     next = result.data.next;
   }
-  
+
   return playlistsToReturn;
 }
 
-let getApplePlaylistItems = async (playlistId : string) => {
+let getApplePlaylistItems = async (playlistId: string) => {
 
   let playlistItems = [];
   const music = window.MusicKit.getInstance();
   await music.authorize();
-  
-  const result = await music.api.music(`v1/me/library/playlists/${playlistId}/tracks`) 
+
+  const result = await music.api.music(`v1/me/library/playlists/${playlistId}/tracks`)
   playlistItems.push(result.data.data)
   let next = result.data.next;
-  
-  while(next) { 
-      let page = [];
-      const music = window.MusicKit.getInstance();
-      await music.authorize(); 
-      const result = await music.api.music(`${next}`);
-      playlistItems.push(result.data.data)
-      next = result.data.next; 
+
+  while (next) {
+    const music = window.MusicKit.getInstance();
+    await music.authorize();
+    const result = await music.api.music(`${next}`);
+    playlistItems.push(result.data.data)
+    next = result.data.next;
   }
   return playlistItems;
 }
 
-let curatePlaylistItemsIds = (librarySongs : LibrarySong[][]) => {
+let curatePlaylistItemsIds = (librarySongs: LibrarySong[][]) => {
   let songIds = [];
   let pageOfIds = []
-  for(const page of librarySongs) {
+  for (const page of librarySongs) {
     pageOfIds = []
-    for(const song of page) {
+    for (const song of page) {
       pageOfIds.push(song.attributes.playParams.catalogId);
     }
     songIds.push(pageOfIds);
@@ -91,43 +90,42 @@ let curatePlaylistItemsIds = (librarySongs : LibrarySong[][]) => {
   return songIds;
 }
 
-let getApplePlaylistSongIsrcs = async (songs : LibrarySong[][]) => {
+let getApplePlaylistSongIsrcs = async (songs: LibrarySong[][]) => {
 
-  let isrcList : Song[][] = [];
-  let songsNotFound : LibrarySong[] = [];
+  let isrcList: Song[][] = [];
   let curatedIdList = curatePlaylistItemsIds(songs)
 
-  for(const curatedPage of curatedIdList) {
+  for (const curatedPage of curatedIdList) {
     let pageOfSongsWithIsrc = [];
     const music = window.MusicKit.getInstance();
     await music.authorize();
     let result = await music.api.music(`/v1/catalog/US?ids[songs]=${curatedPage}`)
     let catalogSongs = result.data.data;
-
-  for(const catalogSong of catalogSongs) {
-    let song : Song = {
-      name: catalogSong.attributes.name,
-      artists : catalogSong.attributes.artistName, 
-      isrc: catalogSong.attributes.isrc,
+    for (const catalogSong of catalogSongs) {
+      let song: Song = {
+        name: catalogSong.attributes.name,
+        artists: catalogSong.attributes.artistName,
+        album: catalogSong.attributes.albumName,
+        releaseDate: catalogSong.attributes.releaseDate,
+        isrc: catalogSong.attributes.isrc,
+      }
+      pageOfSongsWithIsrc.push(song);
     }
-    pageOfSongsWithIsrc.push(song);
+    isrcList.push(pageOfSongsWithIsrc);
   }
-  isrcList.push(pageOfSongsWithIsrc);
-  }
-  
+
   return isrcList;
 }
 
 //functions below this line are for transferring from spotify -> apple music
-let getSongIsrcListString = (songs : Song[][]) => {
-  let isrcStringList =[];
-  let stringOfPage = ''
-  for(const page of songs) {
-    if(page.length > 25) {
-      let numSubPages = Math.ceil(page.length/25)
-      for(let i = 0; i < numSubPages; i++) {
+let getSongIsrcListString = (songs: Song[][]) => {
+  let isrcStringList = [];
+  for (const page of songs) {
+    if (page.length > 25) {
+      let numSubPages = Math.ceil(page.length / 25)
+      for (let i = 0; i < numSubPages; i++) {
         let subPage = [];
-        for(let j = i * 25; j < (i*25)+25 && j < page.length; j++) { 
+        for (let j = i * 25; j < (i * 25) + 25 && j < page.length; j++) {
           subPage.push(page[j].isrc)
         }
         isrcStringList.push(subPage.join(','))
@@ -135,80 +133,83 @@ let getSongIsrcListString = (songs : Song[][]) => {
     }
     else {
       let subPage = []
-      for(const song of page) {
+      for (const song of page) {
         subPage.push(song.isrc)
       }
       isrcStringList.push(subPage.join(','))
     }
   }
-return isrcStringList;
-    
+  return isrcStringList;
+
 }
 
 //TODO let's create a type for the filter.isrc object returned from songResponseByIsrc
-let formatSongsProperty = (catalogSongs : any)=> {
-  let songsToAdd = []; 
+let formatSongsProperty = (catalogSongs: any) => {
+  let songsToAdd = [];
 
-//one that couldn't be found on Bass24 playlist : US39N2204823
- for(const song in catalogSongs) {
-    if(catalogSongs[song][0]) {
-    let songToAdd = Object.create(null);
-    songToAdd.id = catalogSongs[song][0].id
-    songToAdd.type = catalogSongs[song][0].type
-    songsToAdd.push(songToAdd)
+  for (const song in catalogSongs) {
+    if (catalogSongs[song][0]) {
+      let songToAdd = Object.create(null);
+      songToAdd.id = catalogSongs[song][0].id
+      songToAdd.type = catalogSongs[song][0].type
+      songsToAdd.push(songToAdd)
     }
   }
   return songsToAdd;
 
 }
-export let addToApplePlaylist = async (targetPlaylistId: string, songs : Song[][]) => {
+export let addToApplePlaylist = async (targetPlaylistId: string, songs: Song[][]) => {
   const music = window.MusicKit.getInstance();
   await music.authorize();
 
   let accessToken = await parseAccessToken();
-
+  //USLZJ1613311 -> apple music -> spotify
+  //USLZJ1613311
+  //USLZJ1613311
   let formattedIsrcStringList = await getSongIsrcListString(songs);
-  
-  for(const isrcString of formattedIsrcStringList) {
-    
+  console.log(formattedIsrcStringList)
+  for (const isrcString of formattedIsrcStringList) {
+
     let songsResponseByIsrc = await music.api.music(`/v1/catalog/us/songs?filter[isrc]=${isrcString}`)
+    console.log(songsResponseByIsrc);
     let songsFilterObject = songsResponseByIsrc.data.meta.filters.isrc;
     let songsProp = await formatSongsProperty(songsFilterObject);
 
-      try {
+    try {
       let userToken = await music.authorize();
       let response = await fetch(`https://api.music.apple.com/v1/me/library/playlists/${targetPlaylistId}/tracks`, {
-      method: "POST",
-      body: JSON.stringify({data: songsProp}),
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Music-User-Token': userToken,
-        'Content-Type': 'application/json',
-      }
-    })
+        method: "POST",
+        body: JSON.stringify({ data: songsProp }),
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Music-User-Token': userToken,
+          'Content-Type': 'application/json',
+        }
+      })
+    }
+    catch (error) {
+      console.log(error);
+    }
   }
-  catch(error) {
-    console.log(error);
-  }
-  }  
 }
 
-let getApplePlaylistInfo = (playlist : LibrarySong[][]) => {
+let getApplePlaylistInfo = (playlist: LibrarySong[][]) => {
   let numSongs = 0;
-  let songs : Song[] = [];
+  let songs: Song[] = [];
 
-  for(const page of playlist) {
+  for (const page of playlist) {
     numSongs += page.length;
-    for(const song of page) {
-      let songToAdd : Song = {
+    for (const song of page) {
+      let songToAdd: Song = {
         name: song.attributes.name,
-        artists: song.attributes.artistName
+        artists: song.attributes.artistName,
+        album: song.attributes.album
       }
       songs.push(songToAdd)
     }
   }
 
-  return {numSongs : numSongs, songsToTransfer : songs}
+  return { numSongs: numSongs, songsToTransfer: songs }
 }
 
 let logOut = async () => {
@@ -218,7 +219,7 @@ let logOut = async () => {
 
 
 //TODO there is a format artwork url function built into musickit
-let formatImgUrl = (url : string) => {
+let formatImgUrl = (url: string) => {
 
   url = url.replace('{w}', '1200');
   url = url.replace('{h}', '1200');
