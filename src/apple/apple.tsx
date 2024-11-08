@@ -144,36 +144,35 @@ let getSongIsrcListString = (songs: Song[][]) => {
 }
 
 //TODO let's create a type for the filter.isrc object returned from songResponseByIsrc
-let formatSongsProperty = (catalogSongs: any) => {
+let formatSongsProperty = (catalogSongs: any, songsNotFound: string[]) => {
   let songsToAdd = [];
 
   for (const song in catalogSongs) {
     if (catalogSongs[song][0]) {
       let songToAdd = Object.create(null);
-      songToAdd.id = catalogSongs[song][0].id
-      songToAdd.type = catalogSongs[song][0].type
-      songsToAdd.push(songToAdd)
+      songToAdd.id = catalogSongs[song][0].id;
+      songToAdd.type = catalogSongs[song][0].type;
+      songsToAdd.push(songToAdd);
+    }
+    else {
+      songsNotFound.push(song);
     }
   }
   return songsToAdd;
 
 }
-export let addToApplePlaylist = async (targetPlaylistId: string, songs: Song[][]) => {
+
+export let addToApplePlaylist = async (targetPlaylistId: string, songs: Song[][]): Promise<string[]> => {
   const music = window.MusicKit.getInstance();
   await music.authorize();
 
   let accessToken = await parseAccessToken();
-  //USLZJ1613311 -> apple music -> spotify
-  //USLZJ1613311
-  //USLZJ1613311
-  let formattedIsrcStringList = await getSongIsrcListString(songs);
-  console.log(formattedIsrcStringList)
+  let formattedIsrcStringList = getSongIsrcListString(songs);
+  let songsNotFound: string[] = [];
   for (const isrcString of formattedIsrcStringList) {
-
     let songsResponseByIsrc = await music.api.music(`/v1/catalog/us/songs?filter[isrc]=${isrcString}`)
-    console.log(songsResponseByIsrc);
     let songsFilterObject = songsResponseByIsrc.data.meta.filters.isrc;
-    let songsProp = await formatSongsProperty(songsFilterObject);
+    let songsProp = formatSongsProperty(songsFilterObject, songsNotFound);
 
     try {
       let userToken = await music.authorize();
@@ -191,6 +190,7 @@ export let addToApplePlaylist = async (targetPlaylistId: string, songs: Song[][]
       console.log(error);
     }
   }
+  return songsNotFound;
 }
 
 let getApplePlaylistInfo = (playlist: LibrarySong[][]) => {
@@ -217,7 +217,9 @@ let logOut = async () => {
   await music.unauthorize();
 }
 
+let getSongsNotFoundData = () => {
 
+}
 //TODO there is a format artwork url function built into musickit
 let formatImgUrl = (url: string) => {
 

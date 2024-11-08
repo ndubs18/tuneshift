@@ -8,7 +8,7 @@ import { addToApplePlaylist, getApplePlaylistInfo, getApplePlaylistItems, getApp
 let Transferring = () => {
     let [loading, setLoading] = useState(true);
     let [transferData, setTransferData] = useState<{ numSongs: number, songsToTransfer: Song[] } | null | undefined>();
-    let [transferredSongs, setTransferredSongs] = useState("")
+    let [songsNotFound, setSongsNotFound] = useState<Song[] | null>(null)
 
     let [sourcePlaylistName, setSourcePlaylistName] = useState("");
     let [targetPlaylistName, setTargetPlaylistName] = useState("");
@@ -30,24 +30,50 @@ let Transferring = () => {
 
     }
 
-    let transferSpotifySongs = async (sourcePlatform: string, sourcePlaylistId: string, targetPlaylistId: string) => {
+    let transferSpotifySongs = async (sourcePlaylistId: string, targetPlaylistId: string): Promise<Song[] | null> => {
 
         let spotifySongs = await getSpotifyPlaylistSongs(sourcePlaylistId);
-        console.log(spotifySongs);
         handleMusicKitLoaded().then(async () => {
-            let added = await addToApplePlaylist(targetPlaylistId, spotifySongs);
+            let result = await addToApplePlaylist(targetPlaylistId, spotifySongs);
+            //if there are some songs not found
+            if (result.length) {
+                let songsNotFound: Song[] = [];
+                //call helper to get song info to display to client
+                for (const isrc of result) {
+                    for (const page of spotifySongs) {
+                        for (const song of page) {
+                            if (isrc === song.isrc) {
+                                songsNotFound.push(song);
+                            }
+                        }
+                    }
+                }
+                setSongsNotFound(songsNotFound)
+                navigate('/results', {
+                    state: {
+                        songsNotFound: songsNotFound
+                    }
+                });
+                return songsNotFound;
+            }
         })
+        return null;
     }
 
-    let TransferAppleSongs = async (sourcePlatform: string, sourcePlaylistId: string, targetPlaylistId: string) => {
+    let TransferAppleSongs = async (sourcePlaylistId: string, targetPlaylistId: string) => {
         //get apple library songs
         let librarySongs = await getApplePlaylistItems(sourcePlaylistId);
         let applePlaylistSongIsrcs = await getApplePlaylistSongIsrcs(librarySongs)
         let [spotifyCatalogSongIds, songsNotFound] = await getSpotifyCatalogSongIds(applePlaylistSongIsrcs);
-        console.log(songsNotFound);
         if (spotifyCatalogSongIds[0].length !== 0) {
             await addToSpotifyPlaylist(spotifyCatalogSongIds, targetPlaylistId);
         }
+
+        navigate('/results', {
+            state: {
+                songsNotFound: songsNotFound
+            }
+        });
     }
 
     let getPreTransferData = async (sourcePlaylistId: string, sourcePlatform: string) => {
@@ -117,16 +143,15 @@ let Transferring = () => {
                     <button className={styles.transferButton} onClick={() => {
                         if (sourcePlatform === "Apple Music") {
                             handleMusicKitLoaded().then(() => {
-                                if (sourcePlatform && sourcePlaylistId && targetPlaylistId)
-                                    TransferAppleSongs(sourcePlatform, sourcePlaylistId, targetPlaylistId).then(() => {
-                                        navigate('/results')
+                                if (sourcePlatform && sourcePlaylistId && targetPlaylistId) {
+                                    TransferAppleSongs(sourcePlaylistId, targetPlaylistId).then(() => {
                                     })
+                                }
                             })
                         }
                         else if (sourcePlatform === "Spotify") {
                             if (sourcePlatform && sourcePlaylistId && targetPlaylistId) {
-                                transferSpotifySongs(sourcePlatform, sourcePlaylistId, targetPlaylistId).then(() => {
-                                    navigate('/results');
+                                transferSpotifySongs(sourcePlaylistId, targetPlaylistId).then(() => {
                                 })
                             }
                         }
