@@ -19,7 +19,7 @@ let Results = () => {
   return (
     <>
       <h2>Transfer complete!</h2>
-      {songsNotFound ? <h4>Songs not found: </h4> : null}
+      {songsNotFound !== null ? <h4>Songs not found: </h4> : null}
       {songsNotFound ?
         <ul>
           {songsNotFound?.map((song, i) => {

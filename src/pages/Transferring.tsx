@@ -30,7 +30,7 @@ let Transferring = () => {
 
     }
 
-    let transferSpotifySongs = async (sourcePlaylistId: string, targetPlaylistId: string): Promise<Song[] | null> => {
+    let transferSpotifySongs = async (sourcePlaylistId: string, targetPlaylistId: string) => {
 
         let spotifySongs = await getSpotifyPlaylistSongs(sourcePlaylistId);
         handleMusicKitLoaded().then(async () => {
@@ -49,15 +49,14 @@ let Transferring = () => {
                     }
                 }
                 setSongsNotFound(songsNotFound)
-                navigate('/results', {
-                    state: {
-                        songsNotFound: songsNotFound
-                    }
-                });
-                return songsNotFound;
             }
         })
-        return null;
+
+        navigate('/results', {
+            state: {
+                songsNotFound: songsNotFound
+            }
+        });
     }
 
     let TransferAppleSongs = async (sourcePlaylistId: string, targetPlaylistId: string) => {
@@ -69,6 +68,7 @@ let Transferring = () => {
             await addToSpotifyPlaylist(spotifyCatalogSongIds, targetPlaylistId);
         }
 
+        setSongsNotFound(songsNotFound)
         navigate('/results', {
             state: {
                 songsNotFound: songsNotFound
