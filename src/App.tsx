@@ -64,7 +64,7 @@ function App() {
       <header className="App-header">
         {sourcePlatform == null ? (
           <>
-            <h4>Select the source platform</h4>
+            <h3 className='selectSourceHeader'>Select the source platform</h3>
             <div className='sourceSelection'>
               <div className='sourceCard'>
                 <img src={SpotifyLogo} alt="spotify" />

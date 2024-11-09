@@ -1,0 +1,34 @@
+.results {
+    text-align: left;
+    width: 70%;
+}
+
+.resultsNotFoundContainer {
+    width: 60%;
+}
+
+.notFoundHeader {
+    margin: 0.75rem 0;
+}
+.resultsNotFoundContainer ul {
+    overflow: scroll;
+    height: 50vh;
+    scrollbar-color: grey #e9e5e1;
+    text-align: start;
+    margin: 0;
+    padding: 0;
+}
+
+.resultsNotFoundContainer ul li {
+    width: auto;
+    display: block;
+}
+.resultsNotFoundContainer ul li p {
+    font-size: 1rem;
+}
+
+@media (max-width: 769px) {
+    .resultsNotFoundContainer {
+    width: 100%;
+    }
+}

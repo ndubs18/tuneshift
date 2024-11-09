@@ -42,7 +42,7 @@
 }
 .songList {
     overflow: scroll;
-    height: 50vh;
+    height: 45vh;
     width: 60%;
     scrollbar-color: grey #e9e5e1;
     margin-top: 1.5;
@@ -58,9 +58,29 @@
 }
 
 .transferButton {
-    height: 3rem;
-    padding: 1rem 2rem;
-    align-self: center;
-    border: 1px solid black;
-    border-radius: 5%;
+    width: 8rem;
+}
+
+@media (max-width: 725px) {
+    
+    .status {
+        width: 100%;
+    }
+    .transferringHeader {
+        font-size: 1.5rem;
+    }
+}
+@media (max-width: 656px) {
+    .songList {
+        width: 100%;
+    }
+
+    .metaLi {
+        font-size: 1.15rem;
+    }
+
+    .transferringHeader {
+        font-size: 1.5rem;
+    }
+
 }

@@ -8,8 +8,6 @@ import { addToApplePlaylist, getApplePlaylistInfo, getApplePlaylistItems, getApp
 let Transferring = () => {
     let [loading, setLoading] = useState(true);
     let [transferData, setTransferData] = useState<{ numSongs: number, songsToTransfer: Song[] } | null | undefined>();
-    let [songsNotFound, setSongsNotFound] = useState<Song[] | null>(null)
-
     let [sourcePlaylistName, setSourcePlaylistName] = useState("");
     let [targetPlaylistName, setTargetPlaylistName] = useState("");
     let [sourcePlaylistId, setSourcePlaylistId] = useState("");
@@ -35,9 +33,9 @@ let Transferring = () => {
         let spotifySongs = await getSpotifyPlaylistSongs(sourcePlaylistId);
         handleMusicKitLoaded().then(async () => {
             let result = await addToApplePlaylist(targetPlaylistId, spotifySongs);
+            let songsNotFound: Song[] = [];
             //if there are some songs not found
             if (result.length) {
-                let songsNotFound: Song[] = [];
                 //call helper to get song info to display to client
                 for (const isrc of result) {
                     for (const page of spotifySongs) {
@@ -48,14 +46,12 @@ let Transferring = () => {
                         }
                     }
                 }
-                setSongsNotFound(songsNotFound)
             }
-        })
-
-        navigate('/results', {
-            state: {
-                songsNotFound: songsNotFound
-            }
+            navigate('/results', {
+                state: {
+                    songsNotFound: songsNotFound
+                }
+            })
         });
     }
 
@@ -68,7 +64,6 @@ let Transferring = () => {
             await addToSpotifyPlaylist(spotifyCatalogSongIds, targetPlaylistId);
         }
 
-        setSongsNotFound(songsNotFound)
         navigate('/results', {
             state: {
                 songsNotFound: songsNotFound
@@ -127,7 +122,7 @@ let Transferring = () => {
 
     return (
         <div className={styles.status}>
-            <h2 className={styles.center}>Songs to be Transferred</h2>
+            <h2 className={styles.transferringHeader}>Songs to be Transferred</h2>
             {!loading ?
                 <div className={styles.transferContainer}>
                     <ul className={`${styles.p0} ${styles.textAlignStart} ${styles.mb}`}>

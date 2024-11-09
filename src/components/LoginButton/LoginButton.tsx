@@ -1,16 +1,16 @@
-
+import './LoginButton.modules.css'
 interface Props {
     name: string;
-    setSourcePlatform: (platform : string) => void
- }
+    setSourcePlatform: (platform: string) => void
+}
 
-let LoginButton = ({name, setSourcePlatform } : Props) => {
+let LoginButton = ({ name, setSourcePlatform }: Props) => {
     return (
         <button onClick={() => {
             setSourcePlatform(name);
             window.location.replace(`http://localhost:8080/login/${name === 'Spotify' ? 'spotify' : 'apple'}?source=${name}`)
         }}>{name}</button>
- 
+
     )
 }
 
