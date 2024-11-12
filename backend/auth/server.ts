@@ -66,7 +66,8 @@ app.get('/spotify/callback', (req, res) => {
     spotify_access_token = body.access_token;
 
     let uri = `${process.env.FRONTEND_URI}/transfer` || 'http://localhost:3000/transfer'
-
+    // TODO:
+    console.log(spotify_access_token);
     res.cookie('access_token', spotify_access_token);
 
     if (source === "Apple Music") {
@@ -88,7 +89,7 @@ app.get('/login/apple', (req, res) => {
   const fs = require('fs');
   const path = require('path');
   let fullPath = path.resolve(__dirname, "AuthKey_ZN56MFKNYV.p8")
-  console.log(`FULLPATH: ${fullPath}`
+  console.log(`FULLPATH: ${fullPath}`);
 
   //const private_key = fs.readFileSync(fullPath).toString();
   const private_key = fs.readFileSync('/etc/secrets/AuthKey_ZN56MFKNYV.p8');

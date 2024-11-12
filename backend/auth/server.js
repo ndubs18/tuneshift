@@ -50,6 +50,8 @@ app.get('/spotify/callback', function (req, res) {
     request.post(authOptions, function (error, response, body) {
         spotify_access_token = body.access_token;
         var uri = "".concat(process.env.FRONTEND_URI, "/transfer") || 'http://localhost:3000/transfer';
+        // TODO:
+        console.log(spotify_access_token);
         res.cookie('access_token', spotify_access_token);
         if (source === "Apple Music") {
             res.redirect("".concat(uri, "?source=").concat(source, "&sourcePlaylistId=").concat(sourcePlaylistId, "&sourcePlaylistName=").concat(sourcePlaylistName, "&target=Spotify"));
