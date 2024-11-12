@@ -7,7 +7,7 @@ const querystring = require('querystring');
 const request = require('request');
 const cors = require('cors')
 
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+app.use(cors({ credentials: true, origin: process.env.FRONTEND_URI || 'http://localhost:3000' }));
 app.use(cookieParser());
 
 const port: any = process.env.PORT || 8080;

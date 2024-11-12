@@ -7,7 +7,7 @@ var app = express();
 var querystring = require('querystring');
 var request = require('request');
 var cors = require('cors');
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+app.use(cors({ credentials: true, origin: process.env.FRONTEND_URI || 'http://localhost:3000' }));
 app.use(cookieParser());
 var port = process.env.PORT || 8080;
 var spotify_redirect_uri_login = 'http://localhost:8080/spotify/callback';
