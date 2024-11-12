@@ -8,7 +8,7 @@ let LoginButton = ({ name, setSourcePlatform }: Props) => {
     return (
         <button onClick={() => {
             setSourcePlatform(name);
-            window.location.replace(`${process.env.AUTH_SERVICE_BASE_URL}/login/${name === 'Spotify' ? 'spotify' : 'apple'}?source=${name}`)
+            window.location.replace(`${process.env.REACT_APP_AUTH_SERVICE_BASE_URL}/login/${name === 'Spotify' ? 'spotify' : 'apple'}?source=${name}`)
         }}>{name}</button>
 
     )

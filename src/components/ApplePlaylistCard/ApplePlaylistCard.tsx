@@ -42,7 +42,7 @@ export default function ApplePlaylistCard({ playlistId, name, imgUrl, owner }
                             }>Transfer</button>
                             :
                             <button onClick={async () => {
-                                window.location.replace(`${process.env.AUTH_SERVICE_BASE_URL}/login/spotify?source=${sourcePlatform}&sourcePlaylistId=${playlistId}&sourcePlaylistName=${name}`)
+                                window.location.replace(`${process.env.REACT_APP_AUTH_SERVICE_BASE_URL}/login/spotify?source=${sourcePlatform}&sourcePlaylistId=${playlistId}&sourcePlaylistName=${name}`)
                             }}>Transfer</button>
                     }
                 </div>
