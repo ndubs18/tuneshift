@@ -7,18 +7,18 @@ const querystring = require('querystring');
 const request = require('request');
 const cors = require('cors')
 
-app.use(cors({ credentials: true, origin: process.env.FRONTEND_URI || 'http://localhost:3000' }));
+app.use(cors({ credentials: true, origin: process.env.FRONTEND_URI }));
 app.use(cookieParser());
 
 const port: any = process.env.PORT || 8080;
 
-let spotify_redirect_uri_login: string = 'http://localhost:8080/spotify/callback'
+let spotify_redirect_uri_login: string = `${process.env.AUTH_SERVICE_BASE_URL}/spotify/callback`
 let spotify_client_id: string | undefined = process.env.SPOTIFY_CLIENT_ID;
 let spotify_client_secret: string | undefined = process.env.SPOTIFY_CLIENT_SECRET;
 let spotify_access_token: string = '';
 
 app.get('/', (req: any, res: any) => {
-  res.send("This is the home route");
+  res.send("This is not a valid route");
 })
 
 app.get('/login/spotify', (req: any, res: any) => {
