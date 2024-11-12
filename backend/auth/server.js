@@ -48,7 +48,7 @@ app.get('/spotify/callback', function (req, res) {
     };
     request.post(authOptions, function (error, response, body) {
         spotify_access_token = body.access_token;
-        var uri = process.env.FRONTEND_URI || 'http://localhost:3000/transfer';
+        var uri = "".concat(process.env.FRONTEND_URI, "/transfer") || 'http://localhost:3000/transfer';
         res.cookie('access_token', spotify_access_token);
         if (source === "Apple Music") {
             res.redirect("".concat(uri, "?source=").concat(source, "&sourcePlaylistId=").concat(sourcePlaylistId, "&sourcePlaylistName=").concat(sourcePlaylistName, "&target=Spotify"));
@@ -80,7 +80,7 @@ app.get('/login/apple', function (req, res) {
             kid: key_id
         }
     });
-    var uri = process.env.FRONTEND_URI || 'http://localhost:3000/transfer';
+    var uri = "".concat(process.env.FRONTEND_URI, "/transfer") || 'http://localhost:3000/transfer';
     // Send the JWT as an HttpOnly cookie
     res.cookie('dev_token', token, { httpOnly: true, sameSite: 'Strict' });
     if (source === 'Spotify') {

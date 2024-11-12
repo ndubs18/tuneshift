@@ -63,7 +63,7 @@ app.get('/spotify/callback', (req, res) => {
   request.post(authOptions, (error, response, body) => {
     spotify_access_token = body.access_token;
 
-    let uri = process.env.FRONTEND_URI || 'http://localhost:3000/transfer'
+    let uri = `${process.env.FRONTEND_URI}/transfer` || 'http://localhost:3000/transfer'
 
     res.cookie('access_token', spotify_access_token);
 
@@ -100,7 +100,7 @@ app.get('/login/apple', (req, res) => {
       kid: key_id
     }
   });
-  let uri = process.env.FRONTEND_URI || 'http://localhost:3000/transfer';
+  let uri = `${process.env.FRONTEND_URI}/transfer` || 'http://localhost:3000/transfer';
 
   // Send the JWT as an HttpOnly cookie
   res.cookie('dev_token', token, { httpOnly: true, sameSite: 'Strict' });
