@@ -48,7 +48,7 @@ app.get('/spotify/callback', function (req, res) {
     };
     request.post(authOptions, function (error, response, body) {
         spotify_access_token = body.access_token;
-        var uri = "".concat(process.env.FRONTEND_URI, "/transfer") || 'http://localhost:3000/transfer';
+        var uri = "".concat(process.env.FRONTEND_URI) || 'http://localhost:3000';
         // TODO:
         res.cookie('access_token', spotify_access_token, {
             SameSite: 'Lax'
@@ -56,9 +56,8 @@ app.get('/spotify/callback', function (req, res) {
         console.log("Access token: ".concat(spotify_access_token));
         console.log("completed post request");
         console.log(uri + '\n\n');
-        console.log(res);
         if (source === "Apple Music") {
-            res.redirect("".concat(uri, "?source=").concat(source, "&sourcePlaylistId=").concat(sourcePlaylistId, "&sourcePlaylistName=").concat(sourcePlaylistName, "&target=Spotify"));
+            res.redirect("".concat(uri, "/transfer?source=").concat(source, "&sourcePlaylistId=").concat(sourcePlaylistId, "&sourcePlaylistName=").concat(sourcePlaylistName, "&target=Spotify"));
         }
         else {
             res.redirect("".concat(uri, "?source=").concat(source));
@@ -89,14 +88,14 @@ app.get('/login/apple', function (req, res) {
             kid: key_id
         }
     });
-    var uri = "".concat(process.env.FRONTEND_URI, "/transfer") || 'http://localhost:3000/transfer';
+    var uri = "".concat(process.env.FRONTEND_URI) || 'http://localhost:3000';
     // Send the JWT as an HttpOnly cookie
     res.cookie('dev_token', token, { httpOnly: true, sameSite: 'Strict' });
     if (source === 'Spotify') {
-        res.redirect(uri + "?source=".concat(source, "&sourcePlaylistId=").concat(sourcePlaylistId, "&sourcePlaylistName=").concat(sourcePlaylistName, "&target=").concat(target));
+        res.redirect(uri + "/transfer?source=".concat(source, "&sourcePlaylistId=").concat(sourcePlaylistId, "&sourcePlaylistName=").concat(sourcePlaylistName, "&target=").concat(target));
     }
     else {
-        res.redirect(uri + "?source=".concat(source));
+        res.redirect(uri + "/transer?source=".concat(source));
     }
 });
 app.get('/protected', function (req, res) {
@@ -107,8 +106,9 @@ app.get('/protected', function (req, res) {
     try {
         var fs = require('fs');
         var path = require('path');
-        var fullPath = path.resolve(__dirname, "AuthKey_ZN56MFKNYV.p8");
-        var private_key = fs.readFileSync(fullPath).toString();
+        //let fullPath = path.resolve(__dirname, "AuthKey_ZN56MFKNYV.p8")
+        //const private_key = fs.readFileSync(fullPath).toString();
+        var private_key = fs.readFileSync('/etc/secrets/AuthKey_ZN56MFKNYV.p8');
         var decoded = jwt.verify(token, private_key);
         res.json({ message: 'Protected data', token: token });
     }

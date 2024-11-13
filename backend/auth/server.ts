@@ -61,7 +61,7 @@ app.get('/spotify/callback', (req, res) => {
   request.post(authOptions, (error, response, body) => {
     spotify_access_token = body.access_token;
 
-    let uri = `${process.env.FRONTEND_URI}/transfer` || 'http://localhost:3000/transfer'
+    let uri = `${process.env.FRONTEND_URI}` || 'http://localhost:3000'
     // TODO:
     res.cookie('access_token', spotify_access_token, {
       SameSite: 'Lax'
@@ -70,9 +70,8 @@ app.get('/spotify/callback', (req, res) => {
     console.log(`Access token: ${spotify_access_token}`);
     console.log("completed post request");
     console.log(uri + '\n\n');
-    console.log(res);
     if (source === "Apple Music") {
-      res.redirect(`${uri}?source=${source}&sourcePlaylistId=${sourcePlaylistId}&sourcePlaylistName=${sourcePlaylistName}&target=Spotify`);
+      res.redirect(`${uri}/transfer?source=${source}&sourcePlaylistId=${sourcePlaylistId}&sourcePlaylistName=${sourcePlaylistName}&target=Spotify`);
     } else {
       res.redirect(`${uri}?source=${source}`);
     }
@@ -105,15 +104,15 @@ app.get('/login/apple', (req, res) => {
       kid: key_id
     }
   });
-  let uri = `${process.env.FRONTEND_URI}/transfer` || 'http://localhost:3000/transfer';
+  let uri = `${process.env.FRONTEND_URI}` || 'http://localhost:3000';
 
   // Send the JWT as an HttpOnly cookie
   res.cookie('dev_token', token, { httpOnly: true, sameSite: 'Strict' });
 
   if (source === 'Spotify') {
-    res.redirect(uri + `?source=${source}&sourcePlaylistId=${sourcePlaylistId}&sourcePlaylistName=${sourcePlaylistName}&target=${target}`)
+    res.redirect(uri + `/transfer?source=${source}&sourcePlaylistId=${sourcePlaylistId}&sourcePlaylistName=${sourcePlaylistName}&target=${target}`)
   } else {
-    res.redirect(uri + `?source=${source}`)
+    res.redirect(uri + `/transer?source=${source}`)
   }
 })
 
@@ -127,9 +126,9 @@ app.get('/protected', (req, res) => {
   try {
     const fs = require('fs');
     const path = require('path');
-    let fullPath = path.resolve(__dirname, "AuthKey_ZN56MFKNYV.p8")
-
-    const private_key = fs.readFileSync(fullPath).toString();
+    //let fullPath = path.resolve(__dirname, "AuthKey_ZN56MFKNYV.p8")
+    //const private_key = fs.readFileSync(fullPath).toString();
+    const private_key = fs.readFileSync('/etc/secrets/AuthKey_ZN56MFKNYV.p8');
     const decoded = jwt.verify(token, private_key);
     res.json({ message: 'Protected data', token: token });
   } catch (err) {
