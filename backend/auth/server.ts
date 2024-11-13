@@ -7,7 +7,7 @@ const querystring = require('querystring');
 const request = require('request');
 const cors = require('cors')
 
-app.use(cors({ credentials: true, origin: true, exposedHeaders: ["set-cookie"] }));
+app.use(cors({ credentials: true, origin: `${process.env.FRONTEND_URI}`, exposedHeaders: ["set-cookie"] }));
 app.use(cookieParser());
 
 const port: any = process.env.PORT || 8080;
@@ -64,7 +64,7 @@ app.get('/spotify/callback', (req, res) => {
     let uri = `${process.env.FRONTEND_URI}/transfer` || 'http://localhost:3000/transfer'
     // TODO:
     res.cookie('access_token', spotify_access_token, {
-      SameSite: 'lax'
+      SameSite: 'Lax'
     });
 
     console.log(`Access token: ${spotify_access_token}`);

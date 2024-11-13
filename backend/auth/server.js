@@ -7,7 +7,7 @@ var app = express();
 var querystring = require('querystring');
 var request = require('request');
 var cors = require('cors');
-app.use(cors({ credentials: true, origin: true, exposedHeaders: ["set-cookie"] }));
+app.use(cors({ credentials: true, origin: "".concat(process.env.FRONTEND_URI), exposedHeaders: ["set-cookie"] }));
 app.use(cookieParser());
 var port = process.env.PORT || 8080;
 var spotify_redirect_uri_login = "".concat(process.env.AUTH_SERVICE_BASE_URL, "/spotify/callback");
@@ -51,7 +51,7 @@ app.get('/spotify/callback', function (req, res) {
         var uri = "".concat(process.env.FRONTEND_URI, "/transfer") || 'http://localhost:3000/transfer';
         // TODO:
         res.cookie('access_token', spotify_access_token, {
-            SameSite: 'lax'
+            SameSite: 'Lax'
         });
         console.log("Access token: ".concat(spotify_access_token));
         console.log("completed post request");
