@@ -8,8 +8,6 @@ const request = require('request');
 const cors = require('cors')
 
 app.use(cors({ credentials: true, origin: process.env.FRONTEND_URI }));
-
-//app.use(cors());
 app.use(cookieParser());
 
 const port: any = process.env.PORT || 8080;
@@ -69,6 +67,8 @@ app.get('/spotify/callback', (req, res) => {
     res.cookie('access_token', spotify_access_token, {
       httpOnly: true
     });
+
+    console.log(uri);
 
     if (source === "Apple Music") {
       res.redirect(`${uri}?source=${source}&sourcePlaylistId=${sourcePlaylistId}&sourcePlaylistName=${sourcePlaylistName}&target=Spotify`);
