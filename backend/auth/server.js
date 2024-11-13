@@ -51,7 +51,7 @@ app.get('/spotify/callback', function (req, res) {
         var uri = "".concat(process.env.FRONTEND_URI, "/transfer") || 'http://localhost:3000/transfer';
         // TODO:
         res.cookie('access_token', spotify_access_token, {
-            httpOnly: true
+            SameSite: 'lax'
         });
         console.log("Access token: ".concat(spotify_access_token));
         console.log("completed post request");

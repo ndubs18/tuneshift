@@ -64,7 +64,7 @@ app.get('/spotify/callback', (req, res) => {
     let uri = `${process.env.FRONTEND_URI}/transfer` || 'http://localhost:3000/transfer'
     // TODO:
     res.cookie('access_token', spotify_access_token, {
-      httpOnly: true
+      SameSite: 'lax'
     });
 
     console.log(`Access token: ${spotify_access_token}`);
