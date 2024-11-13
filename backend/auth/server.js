@@ -60,7 +60,7 @@ app.get('/spotify/callback', function (req, res) {
             res.redirect("".concat(uri, "/transfer?source=").concat(source, "&sourcePlaylistId=").concat(sourcePlaylistId, "&sourcePlaylistName=").concat(sourcePlaylistName, "&target=Spotify"));
         }
         else {
-            res.redirect("".concat(uri, "?source=").concat(source));
+            res.redirect("".concat(uri, "/transfer?source=").concat(source));
         }
     });
 });
