@@ -8,7 +8,6 @@ var querystring = require('querystring');
 var request = require('request');
 var cors = require('cors');
 app.use(cors({ credentials: true, origin: process.env.FRONTEND_URI }));
-//app.use(cors());
 app.use(cookieParser());
 var port = process.env.PORT || 8080;
 var spotify_redirect_uri_login = "".concat(process.env.AUTH_SERVICE_BASE_URL, "/spotify/callback");
@@ -51,10 +50,13 @@ app.get('/spotify/callback', function (req, res) {
         spotify_access_token = body.access_token;
         var uri = "".concat(process.env.FRONTEND_URI, "/transfer") || 'http://localhost:3000/transfer';
         // TODO:
-        console.log("Access token: ".concat(spotify_access_token));
         res.cookie('access_token', spotify_access_token, {
             httpOnly: true
         });
+        console.log("Access token: ".concat(spotify_access_token));
+        console.log("completed post request");
+        console.log(uri + '\n\n');
+        console.log(res);
         if (source === "Apple Music") {
             res.redirect("".concat(uri, "?source=").concat(source, "&sourcePlaylistId=").concat(sourcePlaylistId, "&sourcePlaylistName=").concat(sourcePlaylistName, "&target=Spotify"));
         }
