@@ -7,7 +7,7 @@ var app = express();
 var querystring = require('querystring');
 var request = require('request');
 var cors = require('cors');
-app.use(cors({ credentials: true, origin: process.env.FRONTEND_URI }));
+app.use(cors({ credentials: true, origin: true, exposedHeaders: ["set-cookie"] }));
 app.use(cookieParser());
 var port = process.env.PORT || 8080;
 var spotify_redirect_uri_login = "".concat(process.env.AUTH_SERVICE_BASE_URL, "/spotify/callback");
