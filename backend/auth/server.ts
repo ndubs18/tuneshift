@@ -65,8 +65,10 @@ app.get('/spotify/callback', (req, res) => {
 
     let uri = `${process.env.FRONTEND_URI}/transfer` || 'http://localhost:3000/transfer'
     // TODO:
-    console.log(spotify_access_token);
-    res.cookie('access_token', spotify_access_token);
+    console.log(`Access token: ${spotify_access_token}`);
+    res.cookie('access_token', spotify_access_token, {
+      httpOnly: true
+    });
 
     if (source === "Apple Music") {
       res.redirect(`${uri}?source=${source}&sourcePlaylistId=${sourcePlaylistId}&sourcePlaylistName=${sourcePlaylistName}&target=Spotify`);
