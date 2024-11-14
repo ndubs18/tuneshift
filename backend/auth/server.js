@@ -9,10 +9,11 @@ var querystring = require('querystring');
 var request = require('request');
 var cors = require('cors');
 var sessionOptions = {
-    sercret: process.env.SECRET,
+    secret: process.env.SECRET,
     resave: true,
     saveUninitialized: true,
     cookie: {
+        secure: true,
         expires: 360000
     }
 };
