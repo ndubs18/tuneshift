@@ -1,14 +1,24 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
+var session = require("express-session");
 var jwt = require("jsonwebtoken");
 var cookieParser = require('cookie-parser');
 var app = express();
 var querystring = require('querystring');
 var request = require('request');
 var cors = require('cors');
-app.use(cors({ credentials: true, origin: "".concat(process.env.FRONTEND_URI), exposedHeaders: ["set-cookie"] }));
+var sessionOptions = {
+    sercret: process.env.SECRET,
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+        expires: 360000
+    }
+};
+app.use(cors({ credentials: true, origin: "".concat(process.env.FRONTEND_URI), allowedHeaders: 'set-cookie' }));
 app.use(cookieParser());
+app.use(session(sessionOptions));
 var port = process.env.PORT || 8080;
 var spotify_redirect_uri_login = "".concat(process.env.AUTH_SERVICE_BASE_URL, "/spotify/callback");
 var spotify_client_id = process.env.SPOTIFY_CLIENT_ID;
@@ -48,19 +58,26 @@ app.get('/spotify/callback', function (req, res) {
     };
     request.post(authOptions, function (error, response, body) {
         spotify_access_token = body.access_token;
+        if (spotify_access_token) {
+            req.session.save(function () {
+                req.session.accessToken = spotify_access_token;
+            });
+        }
         var uri = "".concat(process.env.FRONTEND_URI) || 'http://localhost:3000';
         // TODO:
-        res.cookie('access_token', spotify_access_token, {
-            SameSite: 'Lax'
+        res.cookie('access_tokenTest', spotify_access_token, {
+            sameSite: 'none',
+            httpOnly: false,
+            secure: true,
+            path: '/'
         });
         console.log("Access token: ".concat(spotify_access_token));
-        console.log("completed post request");
         console.log(uri + '\n\n');
         if (source === "Apple Music") {
             res.redirect("".concat(uri, "/transfer?source=").concat(source, "&sourcePlaylistId=").concat(sourcePlaylistId, "&sourcePlaylistName=").concat(sourcePlaylistName, "&target=Spotify"));
         }
         else {
-            res.redirect("".concat(uri, "/transfer?source=").concat(source));
+            res.redirect("".concat(uri, "/transfer?source=").concat(source, "&accessToken=").concat(spotify_access_token));
         }
     });
 });

@@ -1,4 +1,5 @@
 const express = require("express");
+const session = require("express-session")
 const jwt = require("jsonwebtoken");
 const cookieParser = require('cookie-parser');
 const app = express();
@@ -7,9 +8,20 @@ const querystring = require('querystring');
 const request = require('request');
 const cors = require('cors')
 
+const sessionOptions = {
+  sercret: process.env.SECRET,
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+    expires: 360000
+  }
+}
+
 app.use(cors({ credentials: true, origin: `${process.env.FRONTEND_URI}`, allowedHeaders: 'set-cookie' }));
 
 app.use(cookieParser());
+
+app.use(session(sessionOptions));
 
 const port: any = process.env.PORT || 8080;
 
@@ -62,6 +74,11 @@ app.get('/spotify/callback', (req, res) => {
   request.post(authOptions, (error, response, body) => {
     spotify_access_token = body.access_token;
 
+    if (spotify_access_token) {
+      req.session.save(() => {
+        req.session.accessToken = spotify_access_token;
+      })
+    }
     let uri = `${process.env.FRONTEND_URI}` || 'http://localhost:3000'
     // TODO:
     res.cookie('access_tokenTest', spotify_access_token, {
@@ -76,7 +93,7 @@ app.get('/spotify/callback', (req, res) => {
     if (source === "Apple Music") {
       res.redirect(`${uri}/transfer?source=${source}&sourcePlaylistId=${sourcePlaylistId}&sourcePlaylistName=${sourcePlaylistName}&target=Spotify`);
     } else {
-      res.redirect(`${uri}/transfer?source=${source}`);
+      res.redirect(`${uri}/transfer?source=${source}&accessToken=${spotify_access_token}`);
     }
   })
 })
