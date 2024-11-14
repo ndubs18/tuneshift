@@ -7,7 +7,8 @@ const querystring = require('querystring');
 const request = require('request');
 const cors = require('cors')
 
-app.use(cors({ credentials: true, origin: `${process.env.FRONTEND_URI}`, exposedHeaders: ["set-cookie"] }));
+app.use(cors({ credentials: true, origin: `${process.env.FRONTEND_URI}`, allowedHeaders: 'set-cookie' }));
+
 app.use(cookieParser());
 
 const port: any = process.env.PORT || 8080;
@@ -63,13 +64,15 @@ app.get('/spotify/callback', (req, res) => {
 
     let uri = `${process.env.FRONTEND_URI}` || 'http://localhost:3000'
     // TODO:
-    res.cookie('access_token', spotify_access_token, {
-      SameSite: 'Lax'
+    res.cookie('access_tokenTest', spotify_access_token, {
+      sameSite: 'none',
+      httpOnly: false,
+      secure: true,
+      path: '/'
     });
-
     console.log(`Access token: ${spotify_access_token}`);
-    console.log("completed post request");
     console.log(uri + '\n\n');
+
     if (source === "Apple Music") {
       res.redirect(`${uri}/transfer?source=${source}&sourcePlaylistId=${sourcePlaylistId}&sourcePlaylistName=${sourcePlaylistName}&target=Spotify`);
     } else {
