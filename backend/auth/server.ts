@@ -9,10 +9,11 @@ const request = require('request');
 const cors = require('cors')
 
 const sessionOptions = {
-  sercret: process.env.SECRET,
+  sercret: 'my name is nick',
   resave: true,
   saveUninitialized: true,
   cookie: {
+    secure: true,
     expires: 360000
   }
 }
