@@ -1,1 +1,3 @@
 node_modules/
+!build/
+backend/auth/AuthKey_ZN56MFKNYV.p8
