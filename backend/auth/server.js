@@ -59,12 +59,14 @@ app.get('/spotify/callback', function (req, res) {
             res.redirect("".concat(uri, "/transfer?source=").concat(source, "&sourcePlaylistId=").concat(sourcePlaylistId, "&sourcePlaylistName=").concat(sourcePlaylistName, "&target=Spotify"));
         }
         else {
-            //res.redirect(`${uri}/transfer?source=${source}`); }
-            res.send(JSON.stringify({
-                access_token: spotify_access_token,
-                refresh_token: spotify_refresh_token
-            }));
+            res.redirect("".concat(uri, "/transfer?source=").concat(source));
         }
+        /*res.send(JSON.stringify(
+          {
+            access_token: spotify_access_token,
+            refresh_token: spotify_refresh_token
+          }))
+      }*/
     });
 });
 //apple music authentication
