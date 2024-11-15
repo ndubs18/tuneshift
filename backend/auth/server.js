@@ -89,12 +89,16 @@ app.get('/login/apple', function (req, res) {
     });
     //let uri = `${process.env.FRONTEND_URI}` || 'http://localhost:3000';
     // Send the JWT as an HttpOnly cookie
-    res.cookie('dev_token', token, { httpOnly: true, sameSite: 'Strict' });
+    //res.cookie('dev_token', token, { httpOnly: true, sameSite: 'Strict' });
+    res.cookie('dev_token', {
+        secure: true,
+        sameSite: 'none'
+    });
     if (source === 'Spotify') {
         res.redirect("/transfer?source=".concat(source, "&sourcePlaylistId=").concat(sourcePlaylistId, "&sourcePlaylistName=").concat(sourcePlaylistName, "&target=").concat(target));
     }
     else {
-        res.redirect("/transer?source=".concat(source));
+        res.redirect("/transfer?source=".concat(source));
     }
 });
 app.get('/protected', function (req, res) {

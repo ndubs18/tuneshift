@@ -106,12 +106,16 @@ app.get('/login/apple', (req, res) => {
   //let uri = `${process.env.FRONTEND_URI}` || 'http://localhost:3000';
 
   // Send the JWT as an HttpOnly cookie
-  res.cookie('dev_token', token, { httpOnly: true, sameSite: 'Strict' });
+  //res.cookie('dev_token', token, { httpOnly: true, sameSite: 'Strict' });
+  res.cookie('dev_token', {
+    secure: true,
+    sameSite: 'none'
+  })
 
   if (source === 'Spotify') {
     res.redirect(`/transfer?source=${source}&sourcePlaylistId=${sourcePlaylistId}&sourcePlaylistName=${sourcePlaylistName}&target=${target}`)
   } else {
-    res.redirect(`/transer?source=${source}`)
+    res.redirect(`/transfer?source=${source}`)
   }
 })
 
