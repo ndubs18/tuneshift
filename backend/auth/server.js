@@ -107,7 +107,7 @@ app.get('/protected', function (req, res) {
         var path_1 = require('path');
         //let fullPath = path.resolve(__dirname, "AuthKey_ZN56MFKNYV.p8")
         //const private_key = fs.readFileSync(fullPath).toString();
-        var private_key = fs.readFileSync('/etc/secrets/AuthKey_ZN56MFKNYV.p8');
+        var private_key = fs.readFileSync('/etc/secrets/AuthKey_65643T9H2N.p8');
         var decoded = jwt.verify(token, private_key);
         res.json({ message: 'Protected data', token: token });
     }
