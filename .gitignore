@@ -1,3 +1,5 @@
 node_modules
 .env
-
+build
+!backend/build
+backend/auth/AuthKey_65643T9H2N.p8
