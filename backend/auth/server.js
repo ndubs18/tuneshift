@@ -18,9 +18,6 @@ var spotify_client_id = process.env.SPOTIFY_CLIENT_ID;
 var spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET;
 var spotify_access_token = '';
 var spotify_refresh_token = '';
-app.get('*', function (req, res) {
-    res.sendFile('index.html', { root: path.join(__dirname, '../build/') });
-});
 app.get('/login/spotify', function (req, res) {
     var source = req.query.source;
     var sourcePlaylistId = req.query.sourcePlaylistId;
@@ -116,6 +113,9 @@ app.get('/protected', function (req, res) {
     catch (err) {
         res.status(401).json({ message: 'Invalid token' });
     }
+});
+app.get('*', function (req, res) {
+    res.sendFile('index.html', { root: path.join(__dirname, '../client/build/') });
 });
 app.listen(port, function () {
     console.log("Listening on port ".concat(port, " \uD83E\uDE75"));
