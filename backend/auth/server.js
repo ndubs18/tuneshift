@@ -115,7 +115,7 @@ app.get('/protected', function (req, res) {
     }
 });
 app.get('*', function (req, res) {
-    res.sendFile('index.html', { root: path.join(__dirname, '../client/build/') });
+    res.sendFile('index.html', { root: path.join(__dirname, '../build/') });
 });
 app.listen(port, function () {
     console.log("Listening on port ".concat(port, " \uD83E\uDE75"));
