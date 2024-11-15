@@ -15,6 +15,7 @@ var spotify_redirect_uri_login = "".concat(process.env.AUTH_SERVICE_BASE_URL, "/
 var spotify_client_id = process.env.SPOTIFY_CLIENT_ID;
 var spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET;
 var spotify_access_token = '';
+var spotify_refresh_token = '';
 app.get('/', function (req, res) {
     res.send("This is not a valid route");
 });
@@ -49,18 +50,21 @@ app.get('/spotify/callback', function (req, res) {
     };
     request.post(authOptions, function (error, response, body) {
         spotify_access_token = body.access_token;
+        spotify_refresh_token = body.refresh_token;
         var uri = "".concat(process.env.FRONTEND_URI) || 'http://localhost:3000';
         res.cookie('access_token', spotify_access_token, {
             sameSite: 'none',
-            secure: true,
         });
-        /*
-            if (source === "Apple Music") {
-              res.redirect(`${uri}/transfer?source=${source}&sourcePlaylistId=${sourcePlaylistId}&sourcePlaylistName=${sourcePlaylistName}&target=Spotify`);
-            } else {
-              res.redirect(`${uri}/transfer?source=${source}`);
-            }
-            */
+        if (source === "Apple Music") {
+            res.redirect("".concat(uri, "/transfer?source=").concat(source, "&sourcePlaylistId=").concat(sourcePlaylistId, "&sourcePlaylistName=").concat(sourcePlaylistName, "&target=Spotify"));
+        }
+        else {
+            //res.redirect(`${uri}/transfer?source=${source}`); }
+            res.send(JSON.stringify({
+                access_token: spotify_access_token,
+                refresh_token: spotify_refresh_token
+            }));
+        }
     });
 });
 //apple music authentication

@@ -17,6 +17,7 @@ let spotify_redirect_uri_login: string = `${process.env.AUTH_SERVICE_BASE_URL}/s
 let spotify_client_id: string | undefined = process.env.SPOTIFY_CLIENT_ID;
 let spotify_client_secret: string | undefined = process.env.SPOTIFY_CLIENT_SECRET;
 let spotify_access_token: string = '';
+let spotify_refresh_token: string = '';
 
 app.get('/', (req: any, res: any) => {
   res.send("This is not a valid route");
@@ -61,20 +62,25 @@ app.get('/spotify/callback', (req, res) => {
 
   request.post(authOptions, (error, response, body) => {
     spotify_access_token = body.access_token;
+    spotify_refresh_token = body.refresh_token;
 
     let uri = `${process.env.FRONTEND_URI}` || 'http://localhost:3000'
 
     res.cookie('access_token', spotify_access_token, {
       sameSite: 'none',
-      secure: true,
     });
-    /*
-        if (source === "Apple Music") {
-          res.redirect(`${uri}/transfer?source=${source}&sourcePlaylistId=${sourcePlaylistId}&sourcePlaylistName=${sourcePlaylistName}&target=Spotify`);
-        } else {
-          res.redirect(`${uri}/transfer?source=${source}`);
-        }
-        */
+
+    if (source === "Apple Music") {
+      res.redirect(`${uri}/transfer?source=${source}&sourcePlaylistId=${sourcePlaylistId}&sourcePlaylistName=${sourcePlaylistName}&target=Spotify`);
+    } else {
+      //res.redirect(`${uri}/transfer?source=${source}`); }
+      res.send(JSON.stringify(
+        {
+          access_token: spotify_access_token,
+          refresh_token: spotify_refresh_token
+        }))
+    }
+
   })
 })
 
