@@ -73,8 +73,8 @@ app.get('/spotify/callback', (req, res) => {
     if (source === "Apple Music") {
       res.redirect(`${uri}/transfer?source=${source}&sourcePlaylistId=${sourcePlaylistId}&sourcePlaylistName=${sourcePlaylistName}&target=Spotify`);
     } else {
-      //res.redirect(`${uri}/transfer?source=${source}`);
-      res.json({ access_token: spotify_access_token })
+      res.redirect(`${uri}/transfer?source=${source}`);
+      //res.json({ access_token: spotify_access_token })
     }
   })
 })
