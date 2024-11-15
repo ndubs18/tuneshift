@@ -75,7 +75,7 @@ app.get('/login/apple', function (req, res) {
     var fullPath = path.resolve(__dirname, "AuthKey_ZN56MFKNYV.p8");
     console.log("FULLPATH: ".concat(fullPath));
     //const private_key = fs.readFileSync(fullPath).toString();
-    var private_key = fs.readFileSync('/etc/secrets/AuthKey_ZN56MFKNYV.p8');
+    var private_key = fs.readFileSync('/etc/secrets/AuthKey_65643T9H2N.p8');
     var team_id = 'MU3Z747TR4';
     var key_id = 'ZN56MFKNYV';
     var token = jwt.sign({}, private_key, {
