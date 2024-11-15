@@ -65,6 +65,7 @@ app.get('/spotify/callback', (req, res) => {
    // let uri = `${process.env.FRONTEND_URI}` || 'http://localhost:3000'
 
     res.cookie('access_token', spotify_access_token, {
+      secure: true,
       sameSite: 'none',
     });
 
