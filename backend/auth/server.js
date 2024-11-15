@@ -50,17 +50,17 @@ app.get('/spotify/callback', function (req, res) {
     request.post(authOptions, function (error, response, body) {
         spotify_access_token = body.access_token;
         var uri = "".concat(process.env.FRONTEND_URI) || 'http://localhost:3000';
-        res.cookie('access_tokenTest', spotify_access_token, {
+        res.cookie('access_token', spotify_access_token, {
             sameSite: 'none',
             secure: true,
         });
-        if (source === "Apple Music") {
-            res.redirect("".concat(uri, "/transfer?source=").concat(source, "&sourcePlaylistId=").concat(sourcePlaylistId, "&sourcePlaylistName=").concat(sourcePlaylistName, "&target=Spotify"));
-        }
-        else {
-            res.redirect("".concat(uri, "/transfer?source=").concat(source));
-            //res.json({ access_token: spotify_access_token })
-        }
+        /*
+            if (source === "Apple Music") {
+              res.redirect(`${uri}/transfer?source=${source}&sourcePlaylistId=${sourcePlaylistId}&sourcePlaylistName=${sourcePlaylistName}&target=Spotify`);
+            } else {
+              res.redirect(`${uri}/transfer?source=${source}`);
+            }
+            */
     });
 });
 //apple music authentication
