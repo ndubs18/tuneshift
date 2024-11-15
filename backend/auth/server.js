@@ -59,7 +59,7 @@ app.get('/spotify/callback', function (req, res) {
             res.redirect("".concat(uri, "/transfer?source=").concat(source, "&sourcePlaylistId=").concat(sourcePlaylistId, "&sourcePlaylistName=").concat(sourcePlaylistName, "&target=Spotify"));
         }
         else {
-            res.redirect("".concat(uri, "/transfer?source=").concat(source));
+            //res.redirect(`${uri}/transfer?source=${source}`);
             res.json({ access_token: spotify_access_token });
         }
     });
