@@ -39,7 +39,8 @@ app.get('/spotify/callback', function (req, res) {
         url: 'https://accounts.spotify.com/api/token',
         form: {
             code: code,
-            redirect_uri: spotify_redirect_uri_login,
+            //redirect_uri: spotify_redirect_uri_login,
+            redirect_uri: 'https://tuneshift-1.onrender.com/transfer',
             grant_type: 'authorization_code'
         },
         headers: {
