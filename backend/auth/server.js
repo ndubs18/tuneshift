@@ -87,7 +87,7 @@ app.get('/login/apple', function (req, res) {
             kid: key_id
         }
     });
-    var uri = "".concat(process.env.FRONTEND_URI) || 'http://localhost:3000';
+    //let uri = `${process.env.FRONTEND_URI}` || 'http://localhost:3000';
     // Send the JWT as an HttpOnly cookie
     res.cookie('dev_token', token, { httpOnly: true, sameSite: 'Strict' });
     if (source === 'Spotify') {
