@@ -9,7 +9,7 @@ declare global {
 //TODO we should rename this or make it more self explanatory
 let parseAccessToken = async () => {
   try {
-    const response = await fetch('http://localhost:8080/protected', {
+    const response = await fetch('/protected', {
       credentials: 'include', // Include cookies with the request
     });
 
