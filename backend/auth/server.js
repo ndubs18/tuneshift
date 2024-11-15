@@ -50,15 +50,15 @@ app.get('/spotify/callback', function (req, res) {
     request.post(authOptions, function (error, response, body) {
         spotify_access_token = body.access_token;
         spotify_refresh_token = body.refresh_token;
-        var uri = "".concat(process.env.FRONTEND_URI) || 'http://localhost:3000';
+        // let uri = `${process.env.FRONTEND_URI}` || 'http://localhost:3000'
         res.cookie('access_token', spotify_access_token, {
             sameSite: 'none',
         });
         if (source === "Apple Music") {
-            res.redirect("".concat(uri, "/transfer?source=").concat(source, "&sourcePlaylistId=").concat(sourcePlaylistId, "&sourcePlaylistName=").concat(sourcePlaylistName, "&target=Spotify"));
+            res.redirect("/transfer?source=".concat(source, "&sourcePlaylistId=").concat(sourcePlaylistId, "&sourcePlaylistName=").concat(sourcePlaylistName, "&target=Spotify"));
         }
         else {
-            res.redirect("".concat(uri, "/transfer?source=").concat(source));
+            res.redirect("/transfer?source=".concat(source));
         }
     });
 });
