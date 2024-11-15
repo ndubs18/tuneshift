@@ -9,7 +9,7 @@ const querystring = require("querystring");
 const request = require("request");
 const cors = require("cors")
 
-//app.use(cors({ credentials: true, origin: `${process.env.FRONTEND_URI}`, allowedHeaders: 'set-cookie' }));
+app.use(cors({ credentials: true, origin: `${process.env.FRONTEND_URI}`, allowedHeaders: 'set-cookie' }));
 app.use(express.static(path.join(__dirname, '../build')))
 app.use(cookieParser());
 

@@ -9,7 +9,7 @@ var path = require("path");
 var querystring = require("querystring");
 var request = require("request");
 var cors = require("cors");
-//app.use(cors({ credentials: true, origin: `${process.env.FRONTEND_URI}`, allowedHeaders: 'set-cookie' }));
+app.use(cors({ credentials: true, origin: "".concat(process.env.FRONTEND_URI), allowedHeaders: 'set-cookie' }));
 app.use(express.static(path.join(__dirname, '../build')));
 app.use(cookieParser());
 var port = process.env.PORT || 8080;
