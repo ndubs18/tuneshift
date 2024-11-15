@@ -56,7 +56,6 @@ export let getSpotifyPlaylistSongs = async (playlistId: string): Promise<Song[][
     let response = await fetch(`${baseSpotifyAPI}/playlists/${playlistId}/tracks?market=US`, {
         headers: {
             Authorization: `Bearer ${accessToken}`,
-            credentials: 'include'
         }
     })
     let data = await response.json();
