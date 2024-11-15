@@ -9,7 +9,7 @@ const querystring = require("querystring");
 const request = require("request");
 const cors = require("cors")
 
-app.use(cors({ credentials: true, origin: `${process.env.FRONTEND_URI}`, allowedHeaders: 'set-cookie' }));
+app.use(cors({ credentials: true }));
 app.use(express.static(path.join(__dirname, '../build')))
 app.use(cookieParser());
 
@@ -62,7 +62,7 @@ app.get('/spotify/callback', (req, res) => {
     spotify_access_token = body.access_token;
     spotify_refresh_token = body.refresh_token;
 
-   // let uri = `${process.env.FRONTEND_URI}` || 'http://localhost:3000'
+    // let uri = `${process.env.FRONTEND_URI}` || 'http://localhost:3000'
 
     res.cookie('access_token', spotify_access_token, {
       secure: true,
@@ -109,9 +109,9 @@ app.get('/login/apple', (req, res) => {
   res.cookie('dev_token', token, { httpOnly: true, sameSite: 'Strict' });
 
   if (source === 'Spotify') {
-    res.redirect(uri + `/transfer?source=${source}&sourcePlaylistId=${sourcePlaylistId}&sourcePlaylistName=${sourcePlaylistName}&target=${target}`)
+    res.redirect(`/transfer?source=${source}&sourcePlaylistId=${sourcePlaylistId}&sourcePlaylistName=${sourcePlaylistName}&target=${target}`)
   } else {
-    res.redirect(uri + `/transer?source=${source}`)
+    res.redirect(`/transer?source=${source}`)
   }
 })
 
@@ -137,7 +137,7 @@ app.get('/protected', (req, res) => {
 })
 
 app.get('*', function(req, res) {
-  res.sendFile('index.html', {root: path.join(__dirname, '../build/')});
+  res.sendFile('index.html', { root: path.join(__dirname, '../build/') });
 });
 
 app.listen(port, () => {

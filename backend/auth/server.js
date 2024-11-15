@@ -9,7 +9,7 @@ var path = require("path");
 var querystring = require("querystring");
 var request = require("request");
 var cors = require("cors");
-app.use(cors({ credentials: true, origin: "".concat(process.env.FRONTEND_URI), allowedHeaders: 'set-cookie' }));
+app.use(cors({ credentials: true }));
 app.use(express.static(path.join(__dirname, '../build')));
 app.use(cookieParser());
 var port = process.env.PORT || 8080;
@@ -91,10 +91,10 @@ app.get('/login/apple', function (req, res) {
     // Send the JWT as an HttpOnly cookie
     res.cookie('dev_token', token, { httpOnly: true, sameSite: 'Strict' });
     if (source === 'Spotify') {
-        res.redirect(uri + "/transfer?source=".concat(source, "&sourcePlaylistId=").concat(sourcePlaylistId, "&sourcePlaylistName=").concat(sourcePlaylistName, "&target=").concat(target));
+        res.redirect("/transfer?source=".concat(source, "&sourcePlaylistId=").concat(sourcePlaylistId, "&sourcePlaylistName=").concat(sourcePlaylistName, "&target=").concat(target));
     }
     else {
-        res.redirect(uri + "/transer?source=".concat(source));
+        res.redirect("/transer?source=".concat(source));
     }
 });
 app.get('/protected', function (req, res) {
