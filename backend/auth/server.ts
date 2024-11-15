@@ -21,11 +21,6 @@ let spotify_client_secret: string | undefined = process.env.SPOTIFY_CLIENT_SECRE
 let spotify_access_token: string = '';
 let spotify_refresh_token: string = '';
 
-
-app.get('*', function(req, res) {
-  res.sendFile('index.html', {root: path.join(__dirname, '../build/')});
-});
-
 app.get('/login/spotify', (req: any, res: any) => {
   let source = req.query.source;
   let sourcePlaylistId = req.query.sourcePlaylistId;
@@ -139,6 +134,10 @@ app.get('/protected', (req, res) => {
   }
 
 })
+
+app.get('*', function(req, res) {
+  res.sendFile('index.html', {root: path.join(__dirname, '../client/build/')});
+});
 
 app.listen(port, () => {
   console.log(`Listening on port ${port} 🩵`)
