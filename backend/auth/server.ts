@@ -1,14 +1,16 @@
 const express = require("express");
 const session = require("express-session")
 const jwt = require("jsonwebtoken");
-const cookieParser = require('cookie-parser');
+const cookieParser = require("cookie-parser");
 const app = express();
 
-const querystring = require('querystring');
-const request = require('request');
-const cors = require('cors')
+const path = require("path")
+const querystring = require("querystring");
+const request = require("request");
+const cors = require("cors")
 
-app.use(cors({ credentials: true, origin: `${process.env.FRONTEND_URI}`, allowedHeaders: 'set-cookie' }));
+//app.use(cors({ credentials: true, origin: `${process.env.FRONTEND_URI}`, allowedHeaders: 'set-cookie' }));
+app.use(express.static(path.join(__dirname, '../build')))
 app.use(cookieParser());
 
 const port: any = process.env.PORT || 8080;
@@ -18,10 +20,6 @@ let spotify_client_id: string | undefined = process.env.SPOTIFY_CLIENT_ID;
 let spotify_client_secret: string | undefined = process.env.SPOTIFY_CLIENT_SECRET;
 let spotify_access_token: string = '';
 let spotify_refresh_token: string = '';
-
-app.get('/', (req: any, res: any) => {
-  res.send("This is not a valid route");
-})
 
 app.get('/login/spotify', (req: any, res: any) => {
   let source = req.query.source;
@@ -75,13 +73,6 @@ app.get('/spotify/callback', (req, res) => {
     } else {
       res.redirect(`${uri}/transfer?source=${source}`);
     }
-    /*res.send(JSON.stringify(
-      {
-        access_token: spotify_access_token,
-        refresh_token: spotify_refresh_token
-      }))
-  }*/
-
   })
 })
 

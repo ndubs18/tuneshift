@@ -3,12 +3,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var session = require("express-session");
 var jwt = require("jsonwebtoken");
-var cookieParser = require('cookie-parser');
+var cookieParser = require("cookie-parser");
 var app = express();
-var querystring = require('querystring');
-var request = require('request');
-var cors = require('cors');
-app.use(cors({ credentials: true, origin: "".concat(process.env.FRONTEND_URI), allowedHeaders: 'set-cookie' }));
+var path = require("path");
+var querystring = require("querystring");
+var request = require("request");
+var cors = require("cors");
+//app.use(cors({ credentials: true, origin: `${process.env.FRONTEND_URI}`, allowedHeaders: 'set-cookie' }));
+app.use(express.static(path.join(__dirname, '../build')));
 app.use(cookieParser());
 var port = process.env.PORT || 8080;
 var spotify_redirect_uri_login = "".concat(process.env.AUTH_SERVICE_BASE_URL, "/spotify/callback");
@@ -16,9 +18,6 @@ var spotify_client_id = process.env.SPOTIFY_CLIENT_ID;
 var spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET;
 var spotify_access_token = '';
 var spotify_refresh_token = '';
-app.get('/', function (req, res) {
-    res.send("This is not a valid route");
-});
 app.get('/login/spotify', function (req, res) {
     var source = req.query.source;
     var sourcePlaylistId = req.query.sourcePlaylistId;
@@ -61,12 +60,6 @@ app.get('/spotify/callback', function (req, res) {
         else {
             res.redirect("".concat(uri, "/transfer?source=").concat(source));
         }
-        /*res.send(JSON.stringify(
-          {
-            access_token: spotify_access_token,
-            refresh_token: spotify_refresh_token
-          }))
-      }*/
     });
 });
 //apple music authentication
@@ -110,7 +103,7 @@ app.get('/protected', function (req, res) {
     }
     try {
         var fs = require('fs');
-        var path = require('path');
+        var path_1 = require('path');
         //let fullPath = path.resolve(__dirname, "AuthKey_ZN56MFKNYV.p8")
         //const private_key = fs.readFileSync(fullPath).toString();
         var private_key = fs.readFileSync('/etc/secrets/AuthKey_ZN56MFKNYV.p8');
