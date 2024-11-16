@@ -110,7 +110,7 @@ app.get('/login/apple', (req, res) => {
   if (source === 'Spotify') {
     res.redirect(`${uri}/transfer?source=${source}&sourcePlaylistId=${sourcePlaylistId}&sourcePlaylistName=${sourcePlaylistName}&target=${target}`)
   } else {
-    res.redirect(`${uri}/transfer?source=${source}`)
+    res.redirect(`/transfer?source=${source}`)
   }
 })
 

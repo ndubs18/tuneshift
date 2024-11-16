@@ -93,7 +93,7 @@ app.get('/login/apple', function (req, res) {
         res.redirect("".concat(uri, "/transfer?source=").concat(source, "&sourcePlaylistId=").concat(sourcePlaylistId, "&sourcePlaylistName=").concat(sourcePlaylistName, "&target=").concat(target));
     }
     else {
-        res.redirect("".concat(uri, "/transfer?source=").concat(source));
+        res.redirect("/transfer?source=".concat(source));
     }
 });
 app.get('/protected', function (req, res) {
