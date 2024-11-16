@@ -46,6 +46,5 @@
   "devDependencies": {
     "@types/node": "^20.14.10",
     "@types/react": "^18.3.3"
-  },
-    "proxy": "https://tuneshift.onrender.com"
+  }
 }
