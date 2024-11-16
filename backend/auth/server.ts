@@ -92,7 +92,7 @@ app.get('/login/apple', (req, res) => {
   //const private_key = fs.readFileSync(fullPath).toString();
   const private_key = fs.readFileSync('/etc/secrets/AuthKey_65643T9H2N.p8') || fs.readFileSync(fullPath);
   const team_id = 'MU3Z747TR4';
-  const key_id = 'ZN56MFKNYV';
+  const key_id = '65643T9H2N';
   const token = jwt.sign({}, private_key, {
     algorithm: 'ES256',
     expiresIn: '180d',
