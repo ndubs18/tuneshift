@@ -13,7 +13,7 @@ app.use(cors({ credentials: true }));
 app.use(express.static(path.join(__dirname, '../build')));
 app.use(cookieParser());
 var port = process.env.PORT || 8080;
-var spotify_redirect_uri_login = "".concat(process.env.AUTH_SERVICE_BASE_URL, "/spotify/callback");
+var spotify_redirect_uri = process.env.SPOTIFY_REDIRECT_URI;
 var spotify_client_id = process.env.SPOTIFY_CLIENT_ID;
 var spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET;
 var spotify_access_token = '';
@@ -24,7 +24,7 @@ app.get('/login/spotify', function (req, res) {
     var sourcePlaylistName = req.query.sourcePlaylistName;
     var queryString = querystring.stringify({
         response_type: 'code',
-        redirect_uri: spotify_redirect_uri_login,
+        redirect_uri: spotify_redirect_uri,
         scope: 'user-read-private user-read-email user-library-read playlist-read-private playlist-modify-public playlist-modify-private',
         client_id: spotify_client_id,
         state: source + '&' + sourcePlaylistId + '&' + sourcePlaylistName
@@ -39,7 +39,7 @@ app.get('/spotify/callback', function (req, res) {
         url: 'https://accounts.spotify.com/api/token',
         form: {
             code: code,
-            redirect_uri: spotify_redirect_uri_login,
+            redirect_uri: spotify_redirect_uri,
             grant_type: 'authorization_code'
         },
         headers: {
@@ -50,16 +50,16 @@ app.get('/spotify/callback', function (req, res) {
     request.post(authOptions, function (error, response, body) {
         spotify_access_token = body.access_token;
         spotify_refresh_token = body.refresh_token;
-        // let uri = `${process.env.FRONTEND_URI}` || 'http://localhost:3000'
+        var uri = "".concat(process.env.TUNESHIFT_BASE_URI) || 'http://localhost:3000';
         res.cookie('access_token', spotify_access_token, {
             secure: true,
             sameSite: 'none',
         });
         if (source === "Apple Music") {
-            res.redirect("/transfer?source=".concat(source, "&sourcePlaylistId=").concat(sourcePlaylistId, "&sourcePlaylistName=").concat(sourcePlaylistName, "&target=Spotify"));
+            res.redirect("".concat(uri, "/transfer?source=").concat(source, "&sourcePlaylistId=").concat(sourcePlaylistId, "&sourcePlaylistName=").concat(sourcePlaylistName, "&target=Spotify"));
         }
         else {
-            res.redirect("/transfer?source=".concat(source));
+            res.redirect("".concat(uri, "/transfer?source=").concat(source));
         }
     });
 });
@@ -72,10 +72,9 @@ app.get('/login/apple', function (req, res) {
     //logic for creating jwt known as developer token
     var fs = require('fs');
     var path = require('path');
-    var fullPath = path.resolve(__dirname, "AuthKey_ZN56MFKNYV.p8");
-    console.log("FULLPATH: ".concat(fullPath));
+    var fullPath = path.resolve(__dirname, "AuthKey_65643T9H2N.p8");
     //const private_key = fs.readFileSync(fullPath).toString();
-    var private_key = fs.readFileSync('/etc/secrets/AuthKey_65643T9H2N.p8');
+    var private_key = fs.readFileSync('/etc/secrets/AuthKey_65643T9H2N.p8') || fs.readFileSync(fullPath);
     var team_id = 'MU3Z747TR4';
     var key_id = 'ZN56MFKNYV';
     var token = jwt.sign({}, private_key, {
@@ -87,14 +86,14 @@ app.get('/login/apple', function (req, res) {
             kid: key_id
         }
     });
-    var uri = "".concat(process.env.FRONTEND_URI) || 'http://localhost:3000';
+    var uri = "".concat(process.env.TUNESHIFT_BASE_URI) || 'http://localhost:3000';
     // Send the JWT as an HttpOnly cookie
     res.cookie('dev_token', token, { httpOnly: true, sameSite: 'Strict' });
     if (source === 'Spotify') {
-        res.redirect("/transfer?source=".concat(source, "&sourcePlaylistId=").concat(sourcePlaylistId, "&sourcePlaylistName=").concat(sourcePlaylistName, "&target=").concat(target));
+        res.redirect("".concat(uri, "/transfer?source=").concat(source, "&sourcePlaylistId=").concat(sourcePlaylistId, "&sourcePlaylistName=").concat(sourcePlaylistName, "&target=").concat(target));
     }
     else {
-        res.redirect("/transfer?source=".concat(source));
+        res.redirect("".concat(uri, "/transfer?source=").concat(source));
     }
 });
 app.get('/protected', function (req, res) {
@@ -105,9 +104,9 @@ app.get('/protected', function (req, res) {
     try {
         var fs = require('fs');
         var path_1 = require('path');
-        //let fullPath = path.resolve(__dirname, "AuthKey_ZN56MFKNYV.p8")
+        var fullPath = path_1.resolve(__dirname, "AuthKey_ZN56MFKNYV.p8");
         //const private_key = fs.readFileSync(fullPath).toString();
-        var private_key = fs.readFileSync('/etc/secrets/AuthKey_65643T9H2N.p8');
+        var private_key = fs.readFileSync('/etc/secrets/AuthKey_65643T9H2N.p8') || fs.readFileSync(fullPath);
         var decoded = jwt.verify(token, private_key);
         res.json({ message: 'Protected data', token: token });
     }
