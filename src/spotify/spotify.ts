@@ -153,7 +153,6 @@ export let getSpotifyCatalogSongIds = async (songs: Song[][]): Promise<[Song[][]
             if (song.releaseDate) {
                 year = parseYear(song.releaseDate);
             }
-
             let q = `q=isrc:${song.isrc}`
 
             try {

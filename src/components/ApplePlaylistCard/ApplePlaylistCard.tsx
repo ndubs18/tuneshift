@@ -42,7 +42,7 @@ export default function ApplePlaylistCard({ playlistId, name, imgUrl, owner }
                             }>Transfer</button>
                             :
                             <button onClick={async () => {
-                                window.location.replace(`/login/spotify?source=${sourcePlatform}&sourcePlaylistId=${playlistId}&sourcePlaylistName=${name}`)
+                                window.location.replace(`http://localhost:8080/login/spotify?source=${sourcePlatform}&sourcePlaylistId=${playlistId}&sourcePlaylistName=${name}`)
                             }}>Transfer</button>
                     }
                 </div>

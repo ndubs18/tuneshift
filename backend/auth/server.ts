@@ -62,7 +62,7 @@ app.get('/spotify/callback', (req, res) => {
     spotify_access_token = body.access_token;
     spotify_refresh_token = body.refresh_token;
 
-    let uri = `${process.env.TUNESHIFT_BASE_URI}` || 'http://localhost:3000'
+    let uri = process.env.TUNESHIFT_BASE_URI || 'http://localhost:3000'
 
     res.cookie('access_token', spotify_access_token, {
       secure: true,
@@ -87,10 +87,9 @@ app.get('/login/apple', (req, res) => {
   //logic for creating jwt known as developer token
   const fs = require('fs');
   const path = require('path');
-  let fullPath = path.resolve(__dirname, "AuthKey_65643T9H2N.p8")
+  let fullPath = path.resolve(__dirname, "../AuthKey_65643T9H2N.p8")
 
-  //const private_key = fs.readFileSync(fullPath).toString();
-  const private_key = fs.readFileSync('/etc/secrets/AuthKey_65643T9H2N.p8') || fs.readFileSync(fullPath);
+  const private_key = fs.readFileSync(fullPath);
   const team_id = 'MU3Z747TR4';
   const key_id = '65643T9H2N';
   const token = jwt.sign({}, private_key, {
@@ -102,7 +101,7 @@ app.get('/login/apple', (req, res) => {
       kid: key_id
     }
   });
-  let uri = `${process.env.TUNESHIFT_BASE_URI}` || 'http://localhost:3000';
+  let uri = process.env.TUNESHIFT_BASE_URI || 'http://localhost:3000';
 
   // Send the JWT as an HttpOnly cookie
   res.cookie('dev_token', token, { httpOnly: true, sameSite: 'Strict' });
@@ -124,9 +123,8 @@ app.get('/protected', (req, res) => {
   try {
     const fs = require('fs');
     const path = require('path');
-    let fullPath = path.resolve(__dirname, "AuthKey_65643T9H2N.p8")
-    //const private_key = fs.readFileSync(fullPath).toString();
-    const private_key = fs.readFileSync('/etc/secrets/AuthKey_65643T9H2N.p8') || fs.readFileSync(fullPath);
+    let fullPath = path.resolve(__dirname, "../AuthKey_65643T9H2N.p8")
+    const private_key = fs.readFileSync(fullPath);
     const decoded = jwt.verify(token, private_key);
     res.json({ message: 'Protected data', token: token });
   } catch (err) {

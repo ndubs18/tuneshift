@@ -50,7 +50,7 @@ app.get('/spotify/callback', function (req, res) {
     request.post(authOptions, function (error, response, body) {
         spotify_access_token = body.access_token;
         spotify_refresh_token = body.refresh_token;
-        var uri = "".concat(process.env.TUNESHIFT_BASE_URI) || 'http://localhost:3000';
+        var uri = process.env.TUNESHIFT_BASE_URI || 'http://localhost:3000';
         res.cookie('access_token', spotify_access_token, {
             secure: true,
             sameSite: 'none',
@@ -72,9 +72,8 @@ app.get('/login/apple', function (req, res) {
     //logic for creating jwt known as developer token
     var fs = require('fs');
     var path = require('path');
-    var fullPath = path.resolve(__dirname, "AuthKey_65643T9H2N.p8");
-    //const private_key = fs.readFileSync(fullPath).toString();
-    var private_key = fs.readFileSync('/etc/secrets/AuthKey_65643T9H2N.p8') || fs.readFileSync(fullPath);
+    var fullPath = path.resolve(__dirname, "../AuthKey_65643T9H2N.p8");
+    var private_key = fs.readFileSync(fullPath);
     var team_id = 'MU3Z747TR4';
     var key_id = '65643T9H2N';
     var token = jwt.sign({}, private_key, {
@@ -86,7 +85,7 @@ app.get('/login/apple', function (req, res) {
             kid: key_id
         }
     });
-    var uri = "".concat(process.env.TUNESHIFT_BASE_URI) || 'http://localhost:3000';
+    var uri = process.env.TUNESHIFT_BASE_URI || 'http://localhost:3000';
     // Send the JWT as an HttpOnly cookie
     res.cookie('dev_token', token, { httpOnly: true, sameSite: 'Strict' });
     if (source === 'Spotify') {
@@ -104,9 +103,8 @@ app.get('/protected', function (req, res) {
     try {
         var fs = require('fs');
         var path_1 = require('path');
-        var fullPath = path_1.resolve(__dirname, "AuthKey_65643T9H2N.p8");
-        //const private_key = fs.readFileSync(fullPath).toString();
-        var private_key = fs.readFileSync('/etc/secrets/AuthKey_65643T9H2N.p8') || fs.readFileSync(fullPath);
+        var fullPath = path_1.resolve(__dirname, "../AuthKey_65643T9H2N.p8");
+        var private_key = fs.readFileSync(fullPath);
         var decoded = jwt.verify(token, private_key);
         res.json({ message: 'Protected data', token: token });
     }
