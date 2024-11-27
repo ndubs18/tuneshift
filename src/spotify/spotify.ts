@@ -26,7 +26,7 @@ export let getCurrentUserProfile = async (): Promise<Profile> => {
 }
 
 export let getCurrentUsersPlaylits = async () => {
-    let accessToken = await parseAccessToken();
+    let accessToken = parseAccessToken();
     let response = await fetch(`${baseSpotifyAPI}/me/playlists`, {
         headers: {
             Authorization: `Bearer ${accessToken}`
