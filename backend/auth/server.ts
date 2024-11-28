@@ -17,7 +17,8 @@ const port: any = process.env.PORT || 8080;
 
 let spotify_redirect_uri: string | undefined = process.env.SPOTIFY_REDIRECT_URI;
 let spotify_client_id: string | undefined = process.env.SPOTIFY_CLIENT_ID;
-let spotify_client_secret: string | undefined = process.env.SPOTIFY_CLIENT_SECRET; let apple_team_id: string | undefined = process.env.APPLE_TEAM_ID;
+let spotify_client_secret: string | undefined = process.env.SPOTIFY_CLIENT_SECRET;
+let apple_team_id: string | undefined = process.env.APPLE_TEAM_ID;
 let tuneshift_base_uri: string | undefined = process.env.TUNESHIFT_BASE_URI;
 let apple_key_id: string | undefined = process.env.APPLE_KEY_ID;
 let apple_key_name: string | undefined = process.env.APPLE_KEY_NAME;
