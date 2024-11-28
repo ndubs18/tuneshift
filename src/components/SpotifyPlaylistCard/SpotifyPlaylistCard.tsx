@@ -45,7 +45,7 @@ export default function SpotifyPlaylistCard({ playlistId, name, imgUrl, owner }
                             }>Transfer</button>
                             :
                             <button onClick={async () => {
-                                window.location.replace(`http://localhost:8080/login/Apple?source=${sourcePlatform}&sourcePlaylistId=${playlistId}&sourcePlaylistName=${name}&target=Apple Music`)
+                                window.location.replace(`${process.env.REACT_APP_AUTH_SERVER_URI}/login/Apple?source=${sourcePlatform}&sourcePlaylistId=${playlistId}&sourcePlaylistName=${name}&target=Apple Music`)
                             }}>Transfer</button>
                     }
                 </div>

@@ -17,7 +17,10 @@ const port: any = process.env.PORT || 8080;
 
 let spotify_redirect_uri: string | undefined = process.env.SPOTIFY_REDIRECT_URI;
 let spotify_client_id: string | undefined = process.env.SPOTIFY_CLIENT_ID;
-let spotify_client_secret: string | undefined = process.env.SPOTIFY_CLIENT_SECRET;
+let spotify_client_secret: string | undefined = process.env.SPOTIFY_CLIENT_SECRET; let apple_team_id: string | undefined = process.env.APPLE_TEAM_ID;
+let tuneshift_base_uri: string | undefined = process.env.TUNESHIFT_BASE_URI;
+let apple_key_id: string | undefined = process.env.APPLE_KEY_ID;
+let apple_key_name: string | undefined = process.env.APPLE_KEY_NAME;
 let spotify_access_token: string = '';
 let spotify_refresh_token: string = '';
 
@@ -62,7 +65,7 @@ app.get('/spotify/callback', (req, res) => {
     spotify_access_token = body.access_token;
     spotify_refresh_token = body.refresh_token;
 
-    let uri = process.env.TUNESHIFT_BASE_URI || 'http://localhost:3000'
+    let uri = tuneshift_base_uri;
 
     res.cookie('access_token', spotify_access_token, {
       secure: true,
@@ -87,11 +90,11 @@ app.get('/login/apple', (req, res) => {
   //logic for creating jwt known as developer token
   const fs = require('fs');
   const path = require('path');
-  let fullPath = path.resolve(__dirname, "../AuthKey_65643T9H2N.p8")
+  let fullPath = path.resolve(__dirname, `../${apple_key_name}`)
 
   const private_key = fs.readFileSync(fullPath);
-  const team_id = 'MU3Z747TR4';
-  const key_id = '65643T9H2N';
+  const team_id = apple_team_id;
+  const key_id = apple_key_id;
   const token = jwt.sign({}, private_key, {
     algorithm: 'ES256',
     expiresIn: '180d',
@@ -101,7 +104,7 @@ app.get('/login/apple', (req, res) => {
       kid: key_id
     }
   });
-  let uri = process.env.TUNESHIFT_BASE_URI || 'http://localhost:3000';
+  let uri = tuneshift_base_uri;
 
   // Send the JWT as an HttpOnly cookie
   res.cookie('dev_token', token, { httpOnly: true, sameSite: 'Strict' });
@@ -123,7 +126,7 @@ app.get('/protected', (req, res) => {
   try {
     const fs = require('fs');
     const path = require('path');
-    let fullPath = path.resolve(__dirname, "../AuthKey_65643T9H2N.p8")
+    let fullPath = path.resolve(__dirname, `../${apple_key_name}`)
     const private_key = fs.readFileSync(fullPath);
     const decoded = jwt.verify(token, private_key);
     res.json({ message: 'Protected data', token: token });

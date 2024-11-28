@@ -14,6 +14,10 @@ var port = process.env.PORT || 8080;
 var spotify_redirect_uri = process.env.SPOTIFY_REDIRECT_URI;
 var spotify_client_id = process.env.SPOTIFY_CLIENT_ID;
 var spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET;
+var apple_team_id = process.env.APPLE_TEAM_ID;
+var tuneshift_base_uri = process.env.TUNESHIFT_BASE_URI;
+var apple_key_id = process.env.APPLE_KEY_ID;
+var apple_key_name = process.env.APPLE_KEY_NAME;
 var spotify_access_token = '';
 var spotify_refresh_token = '';
 app.get('/login/spotify', function (req, res) {
@@ -48,7 +52,7 @@ app.get('/spotify/callback', function (req, res) {
     request.post(authOptions, function (error, response, body) {
         spotify_access_token = body.access_token;
         spotify_refresh_token = body.refresh_token;
-        var uri = process.env.TUNESHIFT_BASE_URI || 'http://localhost:3000';
+        var uri = tuneshift_base_uri;
         res.cookie('access_token', spotify_access_token, {
             secure: true,
             sameSite: 'none',
@@ -70,10 +74,10 @@ app.get('/login/apple', function (req, res) {
     //logic for creating jwt known as developer token
     var fs = require('fs');
     var path = require('path');
-    var fullPath = path.resolve(__dirname, "../AuthKey_65643T9H2N.p8");
+    var fullPath = path.resolve(__dirname, "../".concat(apple_key_name));
     var private_key = fs.readFileSync(fullPath);
-    var team_id = 'MU3Z747TR4';
-    var key_id = '65643T9H2N';
+    var team_id = apple_team_id;
+    var key_id = apple_key_id;
     var token = jwt.sign({}, private_key, {
         algorithm: 'ES256',
         expiresIn: '180d',
@@ -83,7 +87,7 @@ app.get('/login/apple', function (req, res) {
             kid: key_id
         }
     });
-    var uri = process.env.TUNESHIFT_BASE_URI || 'http://localhost:3000';
+    var uri = tuneshift_base_uri;
     // Send the JWT as an HttpOnly cookie
     res.cookie('dev_token', token, { httpOnly: true, sameSite: 'Strict' });
     if (source === 'Spotify') {
@@ -101,7 +105,7 @@ app.get('/protected', function (req, res) {
     try {
         var fs = require('fs');
         var path_1 = require('path');
-        var fullPath = path_1.resolve(__dirname, "../AuthKey_65643T9H2N.p8");
+        var fullPath = path_1.resolve(__dirname, "../".concat(apple_key_name));
         var private_key = fs.readFileSync(fullPath);
         var decoded = jwt.verify(token, private_key);
         res.json({ message: 'Protected data', token: token });
