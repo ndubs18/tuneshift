@@ -72,5 +72,3 @@
  */
 
 //! We need to find an alternative to using the non-null assertion operator '!'
-
-//! We're alread logged after the redirect to the current page so we don't need to login again!!!
