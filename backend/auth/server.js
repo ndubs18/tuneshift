@@ -8,7 +8,7 @@ var querystring = require("querystring");
 var request = require("request");
 var cors = require("cors");
 app.use(cors({ credentials: true }));
-app.use(express.static(path.join(__dirname, '../build')));
+//app.use(express.static(path.join(__dirname, '../build')))
 app.use(cookieParser());
 var port = process.env.PORT || 8080;
 var spotify_redirect_uri = process.env.SPOTIFY_REDIRECT_URI;
@@ -114,9 +114,11 @@ app.get('/protected', function (req, res) {
         res.status(401).json({ message: 'Invalid token' });
     }
 });
-app.get('*', function (req, res) {
-    res.sendFile('index.html', { root: path.join(__dirname, '../build/') });
+/*
+app.get('*', function(req, res) {
+  res.sendFile('index.html', { root: path.join(__dirname, '../build/') });
 });
+*/
 app.listen(port, function () {
     console.log("Listening on port ".concat(port, " \uD83E\uDE75"));
 });

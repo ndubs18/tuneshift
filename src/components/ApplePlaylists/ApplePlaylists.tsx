@@ -44,7 +44,7 @@ let ApplePlaylists = () => {
 
           {loading ? <h3>Loading...</h3> :
             playlists?.map(playlist =>
-              <li key={playlist.id}>
+              <li className={styles.playlistsLi} key={playlist.id}>
                 <ApplePlaylistCard
                   playlistId={playlist.id}
                   name={playlist.attributes.name ? playlist.attributes.name : 'null'}
@@ -63,7 +63,7 @@ let ApplePlaylists = () => {
             {loading ? <h3>Loading...</h3> :
               playlists?.map(playlist => {
                 if (playlist.attributes.canEdit) {
-                  return <li key={playlist.id}>
+                  return <li className={styles.playlistsLi} key={playlist.id}>
                     <ApplePlaylistCard playlistId={playlist.id}
                       name={playlist.attributes.name ? playlist.attributes.name : 'null'}
                       sourcePlatform={sourcePlatform}
