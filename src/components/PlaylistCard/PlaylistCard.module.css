@@ -3,12 +3,7 @@
 }
 
 .playlistCard {
-    width: 25rem;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
     width: 100%;
-
 }
 
 .playlistCardDropdown ul {
@@ -16,24 +11,29 @@
 }
 
 .playlistCard img {
-    max-width: 5rem;
-    max-height: 5rem;
-    margin-right: 2rem;
-}
-
-.playlistCard:hover {
-    background-color: rgba(128, 128, 128, 0.25);
-    cursor: pointer;
-}
-
-.playlistCardDropdown {
+    height: 14rem;
     width: 100%;
-    padding: 1rem;
-    background-color: rgba(128, 128, 128, 0.058);
+    max-width: 100%;
+    max-height: 100%;
 }
-.playlistCardDropdown button {
-    padding: 1rem;
-    width: 8rem;
-    margin: 0 auto
+.cardHeader {
+    margin: .5rem;
+    font-size: 1rem;
+    text-align: start;
+}
+
+@media (max-width: 885px) {
+    .playlistCard {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+    }
+
+.playlistCard img {
+        max-width: 5rem;
+        max-height: 5rem;
+        margin-right: 2rem;
+    }
 
 }

@@ -52,7 +52,7 @@ let SpotifyPlaylists = () => {
                         {loading ? <h3>Loading...</h3> :
                             playlists?.items.map(playlist => {
                                 if (playlist !== null) {
-                                    return <li key={playlist.id}>
+                                    return <li className={styles.playlistsLi} key={playlist.id}>
                                         <SpotifyPlaylistCard playlistId={playlist.id}
                                             name={playlist.name ? playlist.name : 'null'}
                                             owner={playlist.owner.display_name}
@@ -68,7 +68,7 @@ let SpotifyPlaylists = () => {
                         {loading ? <h3>Loading...</h3> :
                             playlists?.items.map(playlist => {
                                 if (playlist !== null && playlist.owner.id === profile?.id) {
-                                    return <li key={playlist.id}>
+                                    return <li className={styles.playlistsLi} key={playlist.id}>
                                         <SpotifyPlaylistCard playlistId={playlist.id}
                                             name={playlist.name ? playlist.name : 'null'}
                                             owner={playlist.owner.display_name}
