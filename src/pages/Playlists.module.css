@@ -37,7 +37,7 @@ h2 {
         scrollbar-color: grey #e9e5e1;
     }
 
-    ul li {
+    .playlistsLi {
         margin: 0.25rem 0;
         list-style: none;
         width: 100%;
