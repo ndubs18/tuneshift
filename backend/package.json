@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node --env-file=.env auth/server.js",
+    "build": "tsc auth/server.ts",
+    "start": "node auth/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
