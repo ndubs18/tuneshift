@@ -1,10 +1,49 @@
-# Getting Started with Create React App
+# TuneShift
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Description
+
+TuneShift is a web app created to ease the process of transferring music between Spotify and Apple Music.
+
+## Structure
+
+This repo is comprised of a front end client and authorization server in order to 
+authenticate with the Spotify api (via OAuth2.0) and Apple's music api (MusicKit)
+
+**backend /** folder is where the authorization server code exists
+
+Everything else is related to the front end react client
+
+## Environment variables
+
+**Rename the *.env.template* to *.env* and change the values**
+
+#### Client `.env.template`
+
+| Key | Description |
+| :--- | --- |
+| REACT_APP_SERVER_URI | The uri of you server |
+
+#### Server `/.env.template`
+
+| Key | Description |
+| :--- | --- |
+| SPOTIFY_CLIENT_ID | The client id of your registered Spotify app |
+| SPOTIFY_CLIENT_SECRET | The client secret |
+| SPOTIFY_REDIRECT_URI | Registered redirect uri for to retrieve access token |
+| TUNESHIFT_BASE_URI | The uri to redirect the client after successfull authentication |
+| APPLE_TEAM_ID | Apple developer account team id |
+| APPLE_KEY_ID | The id of the key created for your registered app on your Apple developer account |
+| APPLE_KEY_NAME | Name of the key you created |
+
+## For Development
+**Make sure the values of respective environment variables align with webpack dev server and express server host:port**
+1. Execute `npm install` in both client and server folders
+2. Run `npm run build` in backend/ folder
+3. Run both the client and server separately by executing
+   - backend/: `node --env-file=.env auth/server.js`
+   - Client folder: `npm run start`
 
 ## Available Scripts
-
-In the project directory, you can run:
 
 ### `npm start`
 
@@ -14,33 +53,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
+Builds the app for production to the `backend/build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
