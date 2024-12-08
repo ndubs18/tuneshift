@@ -35,7 +35,7 @@ let Transferring = () => {
             let songsNotFound: Song[] = [];
             //if there are some songs not found
             if (result.length) {
-                //call helper to get song info to display to client
+
                 for (const isrc of result) {
                     for (const page of spotifySongs) {
                         for (const song of page) {
@@ -134,27 +134,23 @@ let Transferring = () => {
                             return (<li key={i + 1}><p className={`${styles.m0} ${styles.fs1rem} ${styles.song}`}><b>{song.name}</b> by {song.artists}</p></li>)
                         })}
                     </ul>
-                    {transferring ? <h2>Transferring...</h2> : <> </>}
                     <button className={styles.transferButton} onClick={() => {
                         if (sourcePlatform === "Apple Music") {
                             handleMusicKitLoaded().then(() => {
                                 if (sourcePlatform && sourcePlaylistId && targetPlaylistId) {
                                     setTransferring(true);
-                                    TransferAppleSongs(sourcePlaylistId, targetPlaylistId).then(() => {
-                                        setTransferring(false);
-                                    })
+                                    TransferAppleSongs(sourcePlaylistId, targetPlaylistId);
                                 }
                             })
                         }
                         else if (sourcePlatform === "Spotify") {
                             if (sourcePlatform && sourcePlaylistId && targetPlaylistId) {
                                 setTransferring(true);
-                                transferSpotifySongs(sourcePlaylistId, targetPlaylistId).then(() => {
-                                    setTransferring(false);
-                                })
+                                transferSpotifySongs(sourcePlaylistId, targetPlaylistId);
                             }
                         }
                     }}>Transfer</button>
+                    {transferring ? <h3>Transferring...</h3> : <> </>}
                 </div> : <h2> Loading... </h2>
             }
         </div>
