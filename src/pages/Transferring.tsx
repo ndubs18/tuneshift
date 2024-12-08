@@ -148,7 +148,7 @@ let Transferring = () => {
                         }
                         else if (sourcePlatform === "Spotify") {
                             if (sourcePlatform && sourcePlaylistId && targetPlaylistId) {
-                                setTransferring(false);
+                                setTransferring(true);
                                 transferSpotifySongs(sourcePlaylistId, targetPlaylistId).then(() => {
                                     setTransferring(false);
                                 })
