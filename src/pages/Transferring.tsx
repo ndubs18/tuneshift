@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from './Transferring.module.css';
-import { addToSpotifyPlaylist, getSpotifyCatalogSongIds, getSpotifyPlaylistInfo, getSpotifyPlaylistSongs } from '../spotify/spotify';
+import styles from './Transferring.module.css'; import { addToSpotifyPlaylist, getSpotifyCatalogSongIds, getSpotifyPlaylistInfo, getSpotifyPlaylistSongs } from '../spotify/spotify';
 import { Song } from "../types/types";
 import { addToApplePlaylist, getApplePlaylistInfo, getApplePlaylistItems, getApplePlaylistSongIsrcs, handleMusicKitLoaded } from "../apple/apple";
 
@@ -135,18 +134,23 @@ let Transferring = () => {
                             return (<li key={i + 1}><p className={`${styles.m0} ${styles.fs1rem} ${styles.song}`}><b>{song.name}</b> by {song.artists}</p></li>)
                         })}
                     </ul>
+                    {transferring ? <h2>Transferring...</h2> : <> </>}
                     <button className={styles.transferButton} onClick={() => {
                         if (sourcePlatform === "Apple Music") {
                             handleMusicKitLoaded().then(() => {
                                 if (sourcePlatform && sourcePlaylistId && targetPlaylistId) {
+                                    setTransferring(true);
                                     TransferAppleSongs(sourcePlaylistId, targetPlaylistId).then(() => {
+                                        setTransferring(false);
                                     })
                                 }
                             })
                         }
                         else if (sourcePlatform === "Spotify") {
                             if (sourcePlatform && sourcePlaylistId && targetPlaylistId) {
+                                setTransferring(false);
                                 transferSpotifySongs(sourcePlaylistId, targetPlaylistId).then(() => {
+                                    setTransferring(false);
                                 })
                             }
                         }
