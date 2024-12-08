@@ -1,7 +1,5 @@
 .status {
     width: 70%;
-    padding: 0rem;
-    text-align: none;
 }
 
 .center {
@@ -11,6 +9,7 @@
 .m0 {
     margin: 0;
 }
+
 .p0 {
     padding: 0;
 }
@@ -40,9 +39,10 @@
     display: block;
     font-size: 1.4rem
 }
+
 .songList {
     overflow: scroll;
-    height: 45vh;
+    height: 40vh;
     width: 60%;
     scrollbar-color: grey #e9e5e1;
     margin-top: 1.5;
@@ -59,17 +59,24 @@
 
 .transferButton {
     width: 8rem;
+    margin-bottom: .5rem;
+}
+
+.transferringH {
+    margin-top: 0;
 }
 
 @media (max-width: 725px) {
-    
+
     .status {
         width: 100%;
     }
+
     .transferringHeader {
         font-size: 1.5rem;
     }
 }
+
 @media (max-width: 656px) {
     .songList {
         width: 100%;
