@@ -150,7 +150,7 @@ let Transferring = () => {
                             }
                         }
                     }}>Transfer</button>
-                    {transferring ? <h3>Transferring...</h3> : <> </>}
+                    {transferring ? <h3 className={styles.transferringH}>Transferring...</h3> : <> </>}
                 </div> : <h2> Loading... </h2>
             }
         </div>
