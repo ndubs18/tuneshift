@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styles from '../PlaylistCard/PlaylistCard.module.css'
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { useSource } from '../../App';
+import { useSource } from '../../pages/Source';
 
 export default function ApplePlaylistCard({ playlistId, name, imgUrl, owner }
     : { playlistId: string, name: string, imgUrl?: string, owner?: string, sourcePlatform: string | null }) {

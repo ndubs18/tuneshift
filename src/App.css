@@ -1,88 +1,198 @@
 * {
-  box-sizing: border-box
+  box-sizing: border-box;
+  font-family: "Roboto", serif;
+
+
 }
 
 .App {
   text-align: center;
-  background-color: #e9e5e1;
+  background-color: #282c34;
+}
+
+.container {
+  width: 90%;
+  margin: 0 auto;
 }
 
 a {
   text-decoration: none;
 }
 
-.navTitle {
-  background-color: #282c34;
-  color: white;
-  margin: 0;
-  padding: 1rem 0;
-  position: absolute;
-  width: 100%;
-}
-
-.App-header {
-  width: 80%;
-  margin: 0 auto;
-  background-color: #e9e5e1;
-  min-height: 100vh;
+nav {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  font-size: calc(10px + 2vmin);
-  color: #282c34;
-  padding-top: 5rem;
+  width: 100%;
+  padding: 1.25rem 0;
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
 }
 
-/* .App-header h4 {
-  margin: 5rem 0 3rem
-} */
-.sourceSelection {
-  width: 75%;
+nav img {
+  width: 120px;
+}
+
+nav ul {
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  align-items: center;
+  gap: 4em;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+nav li a {
+  font-size: 1.15rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: white;
+}
+
+nav li a:hover {
+  color: #5f92b7;
 
 }
 
-.sourceSelection span {
-  align-self: center;
 
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 85%;
+  margin: 0 auto;
+  gap: 8rem;
+  padding: 0rem 0 2rem;
+  flex-basis: 50%;
 }
 
-.sourceSelection span img {
+.caption {
+  text-align: left;
+  flex-basis: 32%;
+  color: white;
+}
+
+.caption h1 {
+  letter-spacing: 1.5px;
+  font-size: 2.75rem;
+}
+
+.caption p {
+  color: #e9e5e1;
+  letter-spacing: 1px;
+  font-size: 1rem;
+}
+
+.main img {
+  max-height: 500px;
+  max-width: 500px;
   position: relative;
-  bottom: 35px;
-  width: 100px;
+  bottom: 2rem;
+  left: 2rem;
 }
 
-.sourceSelection .sourceCard img {
-  display: block;
-  width: 150px;
+
+.transferLink {
+  font-weight: bold;
+  color: #5f92b7;
+  padding: .75rem 1rem;
+  border-radius: 50px;
+  background-color: #e9e5e1;
+  transition-duration: .2s;
 }
 
-@media (max-width: 695px) {
+.transferLink:hover {
+  background-color: #5f92b7;
+  color: white;
+  transform: scale(1.05)
+}
 
-  .sourceSelection {
-    flex-direction: column;
+.transferButton {
+  background-color: #5f92b7;
+  border: 1px solid transparent;
+  border-radius: .75rem;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  flex: 0 0 auto;
+  font-family: "Inter var", ui-sans-serif, system-ui, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5rem;
+  padding: .5rem 1rem;
+  margin: 0 0 1.5rem;
+  text-align: center;
+  text-decoration: none #6B7280 solid;
+  text-decoration-thickness: auto;
+  transition-duration: .2s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  margin-top: 1rem !important;
+}
+
+.transferButton:hover {
+  background-color: #5f92b7;
+}
+
+.transferButton:focus {
+  box-shadow: none;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+@media (max-width: 1100px) {
+
+  .main {
+    gap: 0;
+
   }
 
-  .selectSourceHeader {
-    font-size: 1.35rem;
+  .caption {
+    flex-basis: 70%;
   }
 
-  .sourceSelection span img {
-    display: none;
+  .main img {
+    width: 400px;
+    object-fit: fill;
+  }
+}
+
+@media (max-width: 950px) {
+  .caption h1 {
+    font-size: 2.15rem;
   }
 
-  .sourceSelection .sourceCard img {
+  .caption p {
+    font-size: .85rem;
+  }
+}
+
+@media (max-width: 800px) {
+
+  nav img {
+    width: 100px;
+  }
+
+  nav {
+    gap: 1.25rem;
+  }
+
+  nav ul {
+    gap: 2rem;
+
+  }
+
+  .main {
     display: block;
-    width: 115px;
   }
 
-  .sourceCard {
-    width: fit-content;
-    margin: 1rem auto;
+  .main img {
+    position: static;
+    width: 100%;
   }
 
-
+  .main {
+    width: 90%;
+  }
 }

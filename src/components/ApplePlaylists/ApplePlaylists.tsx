@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import styles from '../../pages/Playlists.module.css';
-import { useSource } from '../../App';
+import { useSource } from '../../pages/Source';
 import { ApplePlaylistCard } from '../ApplePlaylistCard/ApplePlaylistCard'
 import noArtImg from '../../assets/images/noArtwork.png'
 import { getApplePlaylists, handleMusicKitLoaded, formatImgUrl } from '../../apple/apple';

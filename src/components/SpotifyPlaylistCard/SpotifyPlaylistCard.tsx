@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styles from '../PlaylistCard/PlaylistCard.module.css'
 import { useSearchParams } from 'react-router-dom';
-import { useSource } from '../../App';
+import { useSource } from '../../pages/Source'
 import { useNavigate } from 'react-router-dom';
 
 export default function SpotifyPlaylistCard({ playlistId, name, imgUrl, owner }

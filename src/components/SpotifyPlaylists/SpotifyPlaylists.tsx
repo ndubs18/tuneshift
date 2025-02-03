@@ -1,6 +1,6 @@
 import { Profile } from '../../types/types';
 import { useState, useEffect } from 'react';
-import { useSource } from "../../App";
+import { useSource } from "../../pages/Source";
 import { SpotifyPlaylistCard } from '../SpotifyPlaylistCard/SpotifyPlaylistCard'
 import styles from '../../pages/Playlists.module.css';
 import '../PlaylistCard/PlaylistCard.module.css';
