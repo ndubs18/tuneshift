@@ -8,7 +8,6 @@ let Navbar = () => {
 				<Link to='/' onClick={() => {
 				}}><img src={TuneshiftLogo} />
 				</Link>
-				<li><Link to='/'>Home</Link></li>
 				<li><Link to='about'>About</Link></li>
 				<li><Link to='plans'>Plans</Link></li>
 			</ul>
