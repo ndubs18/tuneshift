@@ -28,3 +28,16 @@
 	cursor: pointer;
 	transform: scale(1.05);
 }
+
+@media (max-width: 485px) {
+
+	.spotifyLogo,
+	.appleLogo {
+		height: 100px;
+		width: 100px;
+	}
+
+	.sourceCard {
+		width: fit-content
+	}
+}

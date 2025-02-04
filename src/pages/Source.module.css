@@ -1,5 +1,5 @@
 .source {
-    width: 80;
+    width: 80%;
     height: 80vh;
     margin: 0 auto;
 }
@@ -27,4 +27,12 @@
     gap: 2.5rem;
     justify-content: center;
     margin: 0 auto;
+}
+
+@media (max-width: 485px) {
+
+    .sourceSelection {
+        align-items: center;
+        gap: 1rem;
+    }
 }

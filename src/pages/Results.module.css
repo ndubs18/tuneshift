@@ -1,6 +1,25 @@
+.resultsHeading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    gap: 1rem;
+}
+
+.resultHeading h2 {
+    width: fit-content !important;
+}
+
+.greenCheck {
+    height: 50px;
+    width: 50px;
+}
+
 .results {
     text-align: left;
-    width: 70%;
+    width: 100%;
+    margin: 0 auto;
+    height: 80vh;
 }
 
 .resultsNotFoundContainer {
@@ -10,6 +29,7 @@
 .notFoundHeader {
     margin: 0.75rem 0;
 }
+
 .resultsNotFoundContainer ul {
     overflow: scroll;
     height: 50vh;
@@ -23,12 +43,13 @@
     width: auto;
     display: block;
 }
+
 .resultsNotFoundContainer ul li p {
     font-size: 1rem;
 }
 
 @media (max-width: 769px) {
     .resultsNotFoundContainer {
-    width: 100%;
+        width: 100%;
     }
 }

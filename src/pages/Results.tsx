@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import styles from './Results.module.css'
+import greenCheck from '../assets/images/check.png'
 
 import { Song } from '../types/types'
 let Results = () => {
@@ -19,7 +20,7 @@ let Results = () => {
   }, [location.state])
   return (
     <div className={styles.results}>
-      <h2>Transfer complete!</h2>
+      <div className={styles.resultsHeading}><h2>Transfer complete!</h2><img className={styles.greenCheck} src={greenCheck} /></div>
       {songsNotFound ? <h4 className={styles.notFoundHeader}>Songs not found: </h4> : null}
       {songsNotFound ?
         <div className={styles.resultsNotFoundContainer}>

@@ -121,9 +121,9 @@ let Transferring = () => {
 
     return (
         <div className={styles.status}>
-            <h2 className={styles.transferringHeader}>Songs to be Transferred</h2>
-            {!loading ?
-                <div className={styles.transferContainer}>
+            <h1 className={styles.transferringHeader}>Songs to be Transferred</h1>
+            <div className={styles.transferContainer}>
+                {!loading ? <>
                     <ul className={`${styles.p0} ${styles.textAlignStart} ${styles.mb}`}>
                         <li className={`${styles.metaLi}`}>Source playlist: <span className={styles.bold}>{sourcePlaylistName}</span></li>
                         <li className={`${styles.metaLi}`}>Target playlist: <span className={styles.bold}>{targetPlaylistName}</span></li>
@@ -149,10 +149,9 @@ let Transferring = () => {
                                 transferSpotifySongs(sourcePlaylistId, targetPlaylistId);
                             }
                         }
-                    }}>Transfer</button>
-                    {transferring ? <h3 className={styles.transferringH}>Transferring...</h3> : <> </>}
-                </div> : <h2> Loading... </h2>
-            }
+                    }}>Transfer</button></> : <h2 className={styles.loading}> Loading... </h2>}
+                {transferring ? <h3 className={styles.transferringH}>Transferring...</h3> : <> </>}
+            </div>
         </div>
     )
 }

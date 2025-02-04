@@ -45,12 +45,13 @@ let SpotifyPlaylists = () => {
 
     return (
         <div>
-            <h1>Spotify Playlists</h1>
+            <h1 className={styles.playlistHeading}>Spotify Playlists</h1>
             {sourcePlatform === 'Spotify' ?
                 <>
-                    <h2>Choose a playlist to transfer</h2>
+                    <h2 className={styles.playlistSecondaryHeading}>Choose a playlist to transfer</h2>
+                    {loading ? <h2 className={styles.loading}>Loading...</h2> : <></>}
                     <ul className={styles.playlists}>
-                        {loading ? <h3>Loading...</h3> :
+                        {loading ? <> </> :
                             playlists?.items.map(playlist => {
                                 if (playlist !== null) {
                                     return <li className={styles.playlistsLi} key={playlist.id}>
@@ -64,9 +65,10 @@ let SpotifyPlaylists = () => {
                     </ul>
                 </> :
                 <>
-                    <h2>Where would you like to transfer this playlist?</h2>
+                    <h2 className={styles.playlistSecondaryHeading}>Where would you like to transfer this playlist?</h2>
+                    {loading ? <h2 className={styles.loading}>Loading...</h2> : <></>}
                     <ul className={styles.playlists}>
-                        {loading ? <h3>Loading...</h3> :
+                        {loading ? <></> :
                             playlists?.items.map(playlist => {
                                 if (playlist !== null && playlist.owner.id === profile?.id) {
                                     return <li className={styles.playlistsLi} key={playlist.id}>
