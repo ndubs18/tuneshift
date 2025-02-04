@@ -24,27 +24,25 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
       },
       {
-        path: "/source",
+        path: "source",
         element: <Source />,
-        errorElement: <ErrorPage />,
-        children: [
-          {
-            path: "transfer",
-            element: <Playlists />,
-            errorElement: <ErrorPage />,
-          },
-          {
-            path: "transferring",
-            element: <Transferring />,
-            errorElement: <ErrorPage />,
-          },
-          {
-            path: "results",
-            element: <Results />,
-            errorElement: <ErrorPage />
-          }
-        ]
+        errorElement: <ErrorPage />
       },
+      {
+        path: "transfer",
+        element: <Playlists />,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: "transferring",
+        element: <Transferring />,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: "results",
+        element: <Results />,
+        errorElement: <ErrorPage />
+      }
     ]
   }
 ])

@@ -5,6 +5,7 @@ import { SpotifyPlaylistCard } from '../SpotifyPlaylistCard/SpotifyPlaylistCard'
 import styles from '../../pages/Playlists.module.css';
 import '../PlaylistCard/PlaylistCard.module.css';
 import noArtImg from '../../assets/images/noArtwork.png'
+import spotifyLogo from '../../assets/images/Full_Logo_White_RGB.svg'
 import { getCurrentUserProfile, getCurrentUsersPlaylits, parseAccessToken } from '../../spotify/spotify';
 
 interface IPlaylists {
@@ -83,6 +84,8 @@ let SpotifyPlaylists = () => {
                     </ul>
                 </>
             }
+
+            <img className={styles.spotifyFullLogo} src={spotifyLogo} />
         </div>
     )
 }

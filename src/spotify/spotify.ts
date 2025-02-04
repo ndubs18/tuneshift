@@ -3,11 +3,20 @@ import { Profile, Song } from '../types/types';
 let baseSpotifyAPI = "https://api.spotify.com/v1";
 
 export let parseAccessToken = () => {
-    let cookie: string[] = document.cookie.split('=');
-    let accessToken: string | undefined = cookie.at(1);
+    let accessToken: string | undefined;
+    let cookies = document.cookie.split(';');
 
+    let splitCookies = cookies.map(cookie => {
+        let sepCookie = cookie.split('=');
+        return [sepCookie[0].trimStart(), sepCookie[1]];
+    })
+
+    splitCookies.forEach(cookie => {
+        if (cookie[0] === 'access_token') {
+            accessToken = cookie[1];
+        }
+    })
     return accessToken;
-
 }
 export let getCurrentUserProfile = async (): Promise<Profile> => {
     let accessToken = parseAccessToken();

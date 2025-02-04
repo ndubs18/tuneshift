@@ -1,12 +1,10 @@
-/*! TODO this will be the source component  */
 import { useState, useEffect } from 'react';
+import './Source.module.css';
 import { Link, useSearchParams, Outlet, useOutletContext } from 'react-router-dom';
 
-import LoginButton from '../components/LoginButton/LoginButton';
-import SpotifyLogo from '../assets/images/spotify_icon.svg';
-import AppleLogo from '../assets/images/apple_music_icon.svg'
-import BidirectionalArrow from '../assets/images/double_arrow_icon.svg'
+import styles from './Source.module.css';
 import { Song } from '../types/types';
+import { SourceCard } from '../components/SourceCard/SourceCard';
 
 type ContextType = {
   sourcePlatform: string | null,
@@ -20,10 +18,6 @@ export let Source = () => {
   let [sourcePlatform, setSourcePlatform] = useState<string | null>("");
   let [sourcePlaylist, setSourcePlaylist] = useState<Song[]>([]);
   let [errorSongs, setErrorSongs] = useState<Song[] | null>([]);
-
-  // TODO we need to manage state globally to handle re-authenticating
-  // let [sourceLoggedIn, setSourceLoggedIn] = useState(false);
-  // let [targetLoggedIn, setTargetLoggedIn] = useState(false);
 
   const [searchParams] = useSearchParams();
 
@@ -54,32 +48,20 @@ export let Source = () => {
 
   }, [sourcePlatform])
   return (
-    <>
-      <Link to="/" onClick={() => {
-        setSourcePlatform("");
-      }}><h1 className='navTitle'>TuneShift</h1>
-      </Link>
-      <header className="App-header">
-        {sourcePlatform == null ? (
-          <>
-            <h3 className='selectSourceHeader'>Select the source platform</h3>
-            <div className='sourceSelection'>
-              <div className='sourceCard'>
-                <img src={SpotifyLogo} alt="spotify" />
-                <LoginButton name="Spotify" setSourcePlatform={setSourcePlatformWrapper} />
-              </div>
-              <span><img src={BidirectionalArrow} alt="arrow" /></span>
-              <div className='sourceCard'>
-                <img src={AppleLogo} alt="apple music" />
-                <LoginButton name="Apple Music" setSourcePlatform={setSourcePlatformWrapper} />
-              </div>
-            </div>
-          </>) : (
-          <Outlet context={{ sourcePlatform, sourcePlaylist, errorSongs, setSourcePlaylist } as ContextType} />
-        )
-        }
-      </header>
-    </>
+    <section className={styles.source}>
+      {sourcePlatform == null ? (
+        <>
+          <h1 className={styles.selectSourceHeader}>Source Platform</h1>
+          <h2 className={styles.selectSourceSecondary}>Where would you like to transfer from?</h2>
+          <div className={styles.sourceSelection}>
+            <SourceCard platform="Spotify" setSourcePlatform={setSourcePlatformWrapper} />
+            <SourceCard platform="Apple Music" setSourcePlatform={setSourcePlatformWrapper} />
+          </div>
+        </>) : (
+        <Outlet context={{ sourcePlatform, sourcePlaylist, errorSongs, setSourcePlaylist } as ContextType} />
+      )
+      }
+    </section>
   )
 }
 export function useSource() {

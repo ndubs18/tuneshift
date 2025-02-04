@@ -1,0 +1,30 @@
+.source {
+    width: 80;
+    height: 80vh;
+    margin: 0 auto;
+}
+
+.selectSourceHeader {
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-size: 3rem;
+    letter-spacing: 1.25px;
+    margin-bottom: 1rem;
+}
+
+.selectSourceSecondary {
+    font-size: 1.5rem;
+    width: 100%;
+    color: white;
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.sourceSelection {
+    width: 100%;
+    display: flex;
+    gap: 2.5rem;
+    justify-content: center;
+    margin: 0 auto;
+}

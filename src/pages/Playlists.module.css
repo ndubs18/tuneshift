@@ -1,26 +1,49 @@
+.spotifyFullLogo {
+    display: block;
+    margin: 0 auto;
+    max-width: 7rem;
+    min-width: 70px;
+}
+
+.appleLogo {
+    display: block;
+    margin: 0rem auto;
+    max-width: 2.5rem;
+}
+
+h1 {
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-size: 3rem;
+    margin: 0
+}
+
 h2 {
+    font-size: 1.5rem;
+    color: white;
     width: 100%;
     text-align: center;
 }
 
 .playlists {
-    width: 100%;
-    height: 60vh;
-    padding: 0;
-    margin: auto 0;
-    display: flex;
-    flex-direction: row;
+    width: 80%;
+    height: 58vh;
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 150px);
+    gap: 2rem 4rem;
     justify-content: center;
-    scrollbar-color: grey #e9e5e1;
-    flex-wrap: wrap;
+    scrollbar-color: #e9e5e1 rgba(0, 0, 0, 0);
     overflow-y: auto;
+    margin: 0 auto 2rem;
 }
 
 .playlistsLi {
+    border-radius: 4px;
+    width: 200px;
+    background-color: rgba(0, 0, 0, 0);
     list-style: none;
-    width: 16rem;
-    margin: 1rem;
-    box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.05);
 }
 
 .playlistsLi:hover {

@@ -26,7 +26,7 @@ export default function ApplePlaylistCard({ playlistId, name, imgUrl, owner }
                 }
             }}>
                 <img src={imgUrl} alt={name} />
-                <h5 className={styles.cardHeader}>{name}</h5>
+                <p className={styles.cardHeader}>{name.length > 25 ? name.substring(0, 25) + '...' : name}</p>
             </div>
         </>
     )

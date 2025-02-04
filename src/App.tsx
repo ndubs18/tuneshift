@@ -1,17 +1,10 @@
-// import React from 'react';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react'
 import { Link, useSearchParams, Outlet, useOutletContext } from 'react-router-dom';
 import './App.css';
 
-import TuneshiftLogo from './assets/images/TuneShiftLogo.png';
-import abstractImg from './assets/images/015.png'
-import Phone from './assets/images/phoneIllustration.svg';
-import LoginButton from './components/LoginButton/LoginButton';
-import SpotifyLogo from './assets/images/spotify_icon.svg';
-import AppleLogo from './assets/images/apple_music_icon.svg'
-import BidirectionalArrow from './assets/images/double_arrow_icon.svg'
 import { Song } from './types/types';
 import Navbar from './components/Navbar/Navbar';
+import { Footer } from './components/Footer/Footer';
 
 type ContextType = {
   sourcePlatform: string | null,
@@ -21,16 +14,36 @@ type ContextType = {
 }
 
 function App() {
+  let [sourcePlatform, setSourcePlatform] = useState<string | null>("");
+  let [sourcePlaylist, setSourcePlaylist] = useState<Song[]>([]);
+  let [errorSongs, setErrorSongs] = useState<Song[] | null>([]);
 
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    let source = searchParams.get('source');
+    setSourcePlatform(source);
+
+    let sourceSongs = window.localStorage.getItem("sourceSongs")
+    let errorSongs = window.localStorage.getItem("errorSongs")
+
+    if (sourceSongs !== null && errorSongs !== null) {
+      setSourcePlaylist(JSON.parse(sourceSongs));
+      setErrorSongs(JSON.parse(errorSongs))
+    }
+  })
   return (
     <div className="App">
+      <Navbar />
       <div className="container">
-        <Navbar />
-        <Outlet />
+        <Outlet context={{ sourcePlatform, sourcePlaylist, errorSongs, setSourcePlaylist } as ContextType} />
       </div>
+      <Footer />
     </div>
   );
 }
-
+export function useSource() {
+  return useOutletContext<ContextType>();
+}
 
 export default App;

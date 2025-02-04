@@ -4,6 +4,7 @@ import styles from '../../pages/Playlists.module.css';
 import { useSource } from '../../pages/Source';
 import { ApplePlaylistCard } from '../ApplePlaylistCard/ApplePlaylistCard'
 import noArtImg from '../../assets/images/noArtwork.png'
+import appleLogo from '../../assets/images/Apple_Music_Icon_wht_lg_072420.svg'
 import { getApplePlaylists, handleMusicKitLoaded, formatImgUrl } from '../../apple/apple';
 
 interface IPlaylist {
@@ -78,6 +79,7 @@ let ApplePlaylists = () => {
           </ul>
         </>
       }
+      <img className={styles.appleLogo} src={appleLogo} />
     </div>
   )
 }
