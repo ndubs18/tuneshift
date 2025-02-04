@@ -12,7 +12,7 @@ export let Footer = () => {
 						<Link to="/" >Home</Link>
 						<Link to="/about" >About</Link>
 
-						<Link to="/plans" >Plans</Link>
+						<Link to="/future" >Future</Link>
 						<Link to="/source" >Transfer</Link>
 					</ul>
 				</div>

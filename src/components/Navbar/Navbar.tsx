@@ -9,7 +9,7 @@ let Navbar = () => {
 				}}><img src={TuneshiftLogo} />
 				</Link>
 				<li><Link to='about'>About</Link></li>
-				<li><Link to='plans'>Plans</Link></li>
+				<li><Link to='future'>Future</Link></li>
 			</ul>
 			<Link className="transferLink" to='source'>Transfer</Link>
 		</nav>
