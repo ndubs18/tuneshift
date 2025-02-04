@@ -1,9 +1,10 @@
 {
   "files": {
     "main.css": "/static/css/main.9354a5cc.css",
-    "main.js": "/static/js/main.2ec13a02.js",
+    "main.js": "/static/js/main.62390e47.js",
     "static/js/453.f86d87b9.chunk.js": "/static/js/453.f86d87b9.chunk.js",
     "static/media/015.png": "/static/media/015.aed85850e89325e06cd1.png",
+    "static/media/construct.jpg": "/static/media/construct.76bbc0cb1e0eb3dc06e9.jpg",
     "static/media/noArtwork.png": "/static/media/noArtwork.e0e37b80e78175584eef.png",
     "static/media/TuneShiftLogo.png": "/static/media/TuneShiftLogo.9820a0c0bc9c58cf571e.png",
     "static/media/check.png": "/static/media/check.9685e04e5049641bea6b.png",
@@ -14,11 +15,11 @@
     "index.html": "/index.html",
     "static/media/apple_music_icon.svg": "/static/media/apple_music_icon.9697b89040902bb4f225064006fdecf7.svg",
     "main.9354a5cc.css.map": "/static/css/main.9354a5cc.css.map",
-    "main.2ec13a02.js.map": "/static/js/main.2ec13a02.js.map",
+    "main.62390e47.js.map": "/static/js/main.62390e47.js.map",
     "453.f86d87b9.chunk.js.map": "/static/js/453.f86d87b9.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.9354a5cc.css",
-    "static/js/main.2ec13a02.js"
+    "static/js/main.62390e47.js"
   ]
 }
