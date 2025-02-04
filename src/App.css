@@ -1,11 +1,6 @@
 * {
   box-sizing: border-box;
-  /*font-family: "Manrope", serif;*/
   font-family: sans-serif;
-}
-
-.App {
-  /*background-color: #282c34;*/
 }
 
 .container {
@@ -24,7 +19,7 @@ nav {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 2rem 1.75rem;
+  padding: 1.5rem 1.75rem 2rem;
   letter-spacing: 1px;
   margin: 0 auto;
   background-color: #282c34;
@@ -76,7 +71,7 @@ nav li a:hover {
 @media (max-width: 800px) {
 
   nav img {
-    width: 80px;
+    width: 100px;
   }
 
   nav {
@@ -104,5 +99,30 @@ nav li a:hover {
   nav li a,
   nav a {
     font-size: 1.15rem;
+  }
+}
+
+@media (max-width: 400px) {
+  nav img {
+    display: none;
+  }
+
+  nav {
+    justify-content: space-evenly;
+    gap: 0.5rem;
+    padding: 0.75rem 0
+  }
+
+  nav ul {
+    gap: 1.25rem;
+  }
+
+  nav li a,
+  nav a {
+    font-size: 1rem;
+  }
+
+  .transferLink {
+    padding: 0.5rem 0.75rem;
   }
 }

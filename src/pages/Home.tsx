@@ -1,19 +1,20 @@
 import abstractImg from '../assets/images/015.png'
 import { Link } from 'react-router-dom'
-//import jsIllust from '../assets/images/javascript_illustration.svg'
 import jsIllust from '../assets/images/toolllust.svg'
+import tuneshiftLogo from '../assets/images/TuneShiftLogo.png'
 
 import styles from './Home.module.css'
 let Home = () => {
   return (
     <>
       <div className={styles.hero}>
+        <img className={styles.tuneshiftOnMobile} src={tuneshiftLogo} />
         <div className={styles.caption}>
           <h1>Transfer Between Spotify and Apple Music</h1>
           <p>Quick and secure solution for transferring between two of the most popular streaming platforms</p>
           <Link to='/source'><button className={styles.transferButton + " " + styles.transferLink}>Get Started</button></Link>
         </div>
-        <img src={abstractImg} />
+        <img className={styles.abstractImg} src={abstractImg} />
       </div>
 
       <section className={styles.what}>

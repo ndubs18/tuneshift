@@ -23,8 +23,6 @@ export let Footer = () => {
 
 					</ul>
 				</div>
-
-
 			</div>
 			<div className={styles.footerBottom}>
 				<p>&copy; ndubcodes</p>
