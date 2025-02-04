@@ -5,7 +5,8 @@ import { PlaylistProps } from '../types/types';
 
 import '../components/PlaylistCard/PlaylistCard.module.css'
 import userEvent from '@testing-library/user-event';
-import { useSource } from '../App';
+import { useSource } from '../pages/Source';
+import { handleMusicKitLoaded } from '../apple/apple';
 
 let Playlists = () => {
 

@@ -1,5 +1,24 @@
+.loading {
+    color: white;
+    margin: 0;
+}
+
 .status {
+    margin: 0 auto;
     width: 70%;
+}
+
+.transferContainer {
+    height: 80vh;
+    padding-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+}
+
+.transferContainer ul:nth-child(1) {
+    width: 60%;
 }
 
 .center {
@@ -12,6 +31,14 @@
 
 .p0 {
     padding: 0;
+}
+
+.transferringHeader {
+    width: 100%;
+    text-align: center;
+    font-size: 2.5rem;
+    margin: 0;
+    color: white;
 }
 
 .fs1rem {
@@ -66,6 +93,31 @@
     margin-top: 0;
 }
 
+.transferButton {
+    background-color: #5f92b7;
+    border: 1px solid transparent;
+    border-radius: .75rem;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    flex: 0 0 auto;
+    font-family: "Inter var", ui-sans-serif, system-ui, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5rem;
+    letter-spacing: 1px;
+    padding: .5rem 1rem;
+    margin: 0 0 1.5rem;
+    text-align: center;
+    text-decoration: none #6B7280 solid;
+    text-decoration-thickness: auto;
+    transition-duration: .2s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    margin-top: 1rem !important;
+}
+
 @media (max-width: 725px) {
 
     .status {
@@ -79,7 +131,8 @@
 
 @media (max-width: 656px) {
     .songList {
-        width: 100%;
+        height: auto;
+        width: 60%
     }
 
     .metaLi {

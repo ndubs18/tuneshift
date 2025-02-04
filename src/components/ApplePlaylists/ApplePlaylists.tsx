@@ -1,9 +1,10 @@
 
 import { useState, useEffect } from 'react';
 import styles from '../../pages/Playlists.module.css';
-import { useSource } from '../../App';
+import { useSource } from '../../pages/Source';
 import { ApplePlaylistCard } from '../ApplePlaylistCard/ApplePlaylistCard'
 import noArtImg from '../../assets/images/noArtwork.png'
+import appleLogo from '../../assets/images/Apple_Music_Icon_wht_lg_072420.svg'
 import { getApplePlaylists, handleMusicKitLoaded, formatImgUrl } from '../../apple/apple';
 
 interface IPlaylist {
@@ -37,12 +38,13 @@ let ApplePlaylists = () => {
 
   return (
     <div>
-      <h1>Apple Music Playlists</h1>
+      <h1 className={styles.playlistHeading}>Apple Music Playlists</h1>
       {sourcePlatform === "Apple Music" ? <>
-        <h2>Choose a playlist to transfer</h2>
+        <h2 className={styles.playlistSecondaryHeading}>Choose a playlist to transfer</h2>
+        {loading ? <h2 className={styles.loading}>Loading...</h2> : <></>}
         <ul className={styles.playlists}>
 
-          {loading ? <h3>Loading...</h3> :
+          {loading ? <> </> :
             playlists?.map(playlist =>
               <li className={styles.playlistsLi} key={playlist.id}>
                 <ApplePlaylistCard
@@ -57,10 +59,10 @@ let ApplePlaylists = () => {
         </ul>
       </> :
         <>
-          <h2>What playlist would you like to transfer to?</h2>
+          <h2 className={styles.playlistSecondaryHeading}>What playlist would you like to transfer to?</h2>
+          {loading ? <h2 className={styles.loading}>Loading...</h2> : <></>}
           <ul className={styles.playlists}>
-
-            {loading ? <h3>Loading...</h3> :
+            {loading ? <></> :
               playlists?.map(playlist => {
                 if (playlist.attributes.canEdit) {
                   return <li className={styles.playlistsLi} key={playlist.id}>
@@ -78,6 +80,7 @@ let ApplePlaylists = () => {
           </ul>
         </>
       }
+      <img className={styles.appleLogo} src={appleLogo} />
     </div>
   )
 }

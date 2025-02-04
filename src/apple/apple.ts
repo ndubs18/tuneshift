@@ -12,7 +12,6 @@ let parseAccessToken = async () => {
     const response = await fetch('/protected', {
       credentials: 'include', // Include cookies with the request
     });
-
     const data = await response.json();
     const token: string = data.token;
     return token;
@@ -25,7 +24,7 @@ const handleMusicKitLoaded = async (): Promise<void> => {
   let key = await parseAccessToken();
   try {
     await window.MusicKit.configure({
-      developerToken: key, // Replace with your actual developer token
+      developerToken: key,
       app: {
         name: 'tuneshift',
         build: '1.0.0',

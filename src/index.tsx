@@ -4,11 +4,13 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import ErrorPage from "./pages/Error-page";
+import ErrorPage from './pages/Error-page';
 import Playlists from "./pages/Playlists";
-import Transferring from "./pages/Transferring";
+import Transferring from './pages/Transferring';
 import Results from "./pages/Results";
+import { Source } from "./pages/Source"
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Home from './pages/Home';
 
 const router = createBrowserRouter([
   {
@@ -16,6 +18,16 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
+      {
+        path: "/",
+        element: <Home />,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: "source",
+        element: <Source />,
+        errorElement: <ErrorPage />
+      },
       {
         path: "transfer",
         element: <Playlists />,
