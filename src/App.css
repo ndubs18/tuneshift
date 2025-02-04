@@ -75,7 +75,7 @@ nav li a:hover {
   }
 
   nav {
-    padding: 1rem;
+    padding: 1rem 1.25rem;
     gap: 1.25rem;
   }
 
@@ -102,13 +102,17 @@ nav li a:hover {
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 530px) {
+
   nav img {
     display: none;
   }
+}
+
+@media (max-width: 400px) {
 
   nav {
-    justify-content: space-evenly;
+    justify-content: center;
     gap: 0.5rem;
     padding: 0.75rem 0
   }

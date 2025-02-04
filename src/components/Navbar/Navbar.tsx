@@ -5,9 +5,8 @@ let Navbar = () => {
 
 		<nav>
 			<ul>
-				<Link to='/' onClick={() => {
-				}}><img src={TuneshiftLogo} />
-				</Link>
+				<img src={TuneshiftLogo} />
+				<li><Link to='/'>Home</Link></li>
 				<li><Link to='about'>About</Link></li>
 				<li><Link to='future'>Future</Link></li>
 			</ul>

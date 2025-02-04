@@ -209,18 +209,20 @@
 
 }
 
-@media (max-width: 400px) {
-    .hero {
-        padding-top: 0.5rem;
-        padding-bottom: 2.25rem;
-
-    }
-
+@media (max-width: 530px) {
     .tuneshiftOnMobile {
         display: block;
         height: 140px;
         width: 250px;
         margin: 0.5rem auto 3.15rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .hero {
+        padding-top: 0.5rem;
+        padding-bottom: 2.25rem;
+
     }
 
     .caption h1 {
