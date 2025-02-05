@@ -1,0 +1,19 @@
+.constructionImg {
+    width: 100%;
+    height: 300px;
+    border-radius: 12px
+}
+
+.constructionContainer {
+    padding-top: 1rem;
+    width: 500px;
+    margin: 0 auto;
+
+}
+
+@media (max-width: 775px) {
+    .constructionContainer {
+        height: 50vh;
+        width: 350px;
+    }
+}
