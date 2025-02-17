@@ -25,7 +25,7 @@ export let Footer = () => {
 				</div>
 			</div>
 			<div className={styles.footerBottom}>
-				<p>&copy; ndubcodes</p>
+				<p>&copy; ndubscodes</p>
 				<img className={styles.tuneshiftLogo} src={tuneshiftLogo} />
 			</div>
 		</div>
