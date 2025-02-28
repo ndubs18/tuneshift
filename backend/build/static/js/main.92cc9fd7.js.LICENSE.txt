@@ -70,5 +70,3 @@
  *
  * @license MIT
  */
-
-//! We need to find an alternative to using the non-null assertion operator '!'
